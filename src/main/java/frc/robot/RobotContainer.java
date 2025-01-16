@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -70,26 +71,26 @@ public class RobotContainer {
         //     thing2.set(-0.1);
         // }));
 
-        canRangeTrigger.whileTrue(new RunCommand(() -> {
-            // Set values while trigger is active
+        canRangeTrigger.onTrue(new RunCommand(() -> {
+            // When the sensor detects something, disable the controller
             disableControllerIn = true;
-            thing1.set(0.1);
+            thing1.set(0.1); // Motor action when sensor is triggered
             thing2.set(-0.1);
         }));
         
         canRangeTrigger.onFalse(new RunCommand(() -> {
+            // Wait for 2 seconds and then stop the motors and re-enable the controller
             Commands.sequence(
-                // new RunCommand(() -> {
-                //     disableControllerIn = true;
-                // }),
                 new WaitCommand(2.0), // Wait for 2 seconds
                 new RunCommand(() -> {
                     thing1.set(0.0);  // Stop motor 1
                     thing2.set(0.0);  // Stop motor 2
-                    disableControllerIn = false;
+                    disableControllerIn = false;  // Re-enable the controller inputs
+                    CommandScheduler.getInstance().cancelAll();
                 })
             ).schedule();
         }));
+        
         
         
 
@@ -123,7 +124,7 @@ public class RobotContainer {
             )
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));
@@ -146,37 +147,62 @@ public class RobotContainer {
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
-        joystick.leftBumper()
-            .onTrue(
-                Commands.run(
-                    () -> {
-                        thing1.set(0.0);
-                        thing2.set(0.0);
-                    }))
-            .whileTrue(
-                Commands.run(
-                    () -> {
-                        thing1.set(0.1);
-                        thing2.set(-0.1);
-                    }));
+        // Left Bumper
+joystick.leftBumper()
+.onTrue(
+    Commands.run(
+        () -> {
+            if (!disableControllerIn) { // Only execute if controller is enabled
+                thing1.set(0.0);
+                thing2.set(0.0);
+            }
+        }))
+        // .onFalse(
+        //     Commands.run(
+        //         () -> {
+        //             if (!disableControllerIn) { // Only execute if controller is enabled
+        //                 thing1.set(0.0);
+        //                 thing2.set(0.0);
+        //             }
+        //         }));
+.whileTrue(
+    Commands.run(
+        () -> {
+            if (!disableControllerIn) { // Only execute if controller is enabled
+                thing1.set(0.1);
+                thing2.set(-0.1);
+            }
+        }));
 
-        joystick.rightBumper()
-            .onTrue(
-                Commands.run(
-                    () -> {
-                        if (!disableControllerIn) {
-                            thing1.set(0.0);
-                            thing2.set(0.0);
-                        }
-                    }))
-            .whileTrue(
-                Commands.run(
-                    () -> {
-                        if (!disableControllerIn) {
-                            thing1.set(-0.1);
-                            thing2.set(0.1);
-                        }
-                    }));
+// Right Bumper
+joystick.rightBumper()
+.onTrue(
+    Commands.run(
+        () -> {
+            if (!disableControllerIn) { // Only execute if controller is enabled
+                thing1.set(0.0);
+                thing2.set(0.0);
+            }
+        }))
+.whileTrue(
+    Commands.run(
+        () -> {
+            if (!disableControllerIn) { // Only execute if controller is enabled
+                thing1.set(-0.1);
+                thing2.set(0.1);
+            }
+        }));
+
+        joystick.a()
+        .onTrue(
+            Commands.run(
+        () -> {
+                thing1.set(0.0);
+                thing2.set(0.0);
+                disableControllerIn = false;
+        })
+        );
+
 
 
         drivetrain.registerTelemetry(logger::telemeterize);

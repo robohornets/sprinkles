@@ -17,7 +17,7 @@ public class Robot extends TimedRobot {
 
   private final RobotContainer m_robotContainer;
 
-  private CANrange canRangeSensor = new CANrange(1);
+  public CANrange canRangeSensor = new CANrange(34);
 
   private final boolean kUseLimelight = false;
 
@@ -44,8 +44,9 @@ public class Robot extends TimedRobot {
       }
     }
 
+    print(RobotContainer.disableControllerIn);
     // Test code for CANrange sensor
-    // print(canRangeSensor.getDistance(false).refresh().getValueAsDouble());
+    System.out.println(canRangeSensor.getDistance(true).refresh().getValueAsDouble());
   }
 
   @Override

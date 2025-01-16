@@ -9,6 +9,8 @@ import static edu.wpi.first.units.Units.*;
 import java.io.IOException;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+import com.ctre.phoenix6.hardware.CANrange;
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -21,7 +23,11 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
@@ -46,10 +52,56 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+    public final TalonFX thing1 = new TalonFX(9);
+    public final TalonFX thing2 = new TalonFX(10);
+
+    public CANrange canRangeSensor = new CANrange(34);
+
+    Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2); 
+
     /* Path follower */
     private final SendableChooser<Command> autoChooser;
 
+    public static Boolean disableControllerIn = false;
+
     public RobotContainer() {
+        // canRangeTrigger.whileTrue(new RunCommand(() -> {
+        //     thing1.set(0.1);
+        //     thing2.set(-0.1);
+        // }));
+
+        canRangeTrigger.whileTrue(new RunCommand(() -> {
+            // Set values while trigger is active
+            disableControllerIn = true;
+            thing1.set(0.1);
+            thing2.set(-0.1);
+        }));
+        
+        canRangeTrigger.onFalse(new RunCommand(() -> {
+            Commands.sequence(
+                // new RunCommand(() -> {
+                //     disableControllerIn = true;
+                // }),
+                new WaitCommand(2.0), // Wait for 2 seconds
+                new RunCommand(() -> {
+                    thing1.set(0.0);  // Stop motor 1
+                    thing2.set(0.0);  // Stop motor 2
+                    disableControllerIn = false;
+                })
+            ).schedule();
+        }));
+        
+        
+
+
+        // canRangeTrigger.onFalse(new SequentialCommandGroup(() -> {
+
+        //     thing1.set(0.1);
+        //     thing2.set(-0.1);
+        // }));
+
+        
+
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Mode", autoChooser);
@@ -91,7 +143,41 @@ public class RobotContainer {
         joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+
+        joystick.leftBumper()
+            .onTrue(
+                Commands.run(
+                    () -> {
+                        thing1.set(0.0);
+                        thing2.set(0.0);
+                    }))
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        thing1.set(0.1);
+                        thing2.set(-0.1);
+                    }));
+
+        joystick.rightBumper()
+            .onTrue(
+                Commands.run(
+                    () -> {
+                        if (!disableControllerIn) {
+                            thing1.set(0.0);
+                            thing2.set(0.0);
+                        }
+                    }))
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        if (!disableControllerIn) {
+                            thing1.set(-0.1);
+                            thing2.set(0.1);
+                        }
+                    }));
+
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

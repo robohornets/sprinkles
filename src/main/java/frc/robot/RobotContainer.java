@@ -14,6 +14,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
@@ -65,7 +66,14 @@ public class RobotContainer {
 
     public static Boolean disableControllerIn = false;
 
+    public Aquamarine aquamarine;
+
     public RobotContainer() {
+
+        aquamarine = new Aquamarine();
+        
+        NamedCommands.registerCommand("driveByTime", Aquamarine.driveByTime(drivetrain, drive));
+
         // canRangeTrigger.whileTrue(new RunCommand(() -> {
         //     thing1.set(0.1);
         //     thing2.set(-0.1);

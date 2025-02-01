@@ -26,7 +26,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -72,8 +74,63 @@ public class RobotContainer {
 
         aquamarine = new Aquamarine();
         
-        NamedCommands.registerCommand("driveByTime", Aquamarine.driveByTime(drivetrain, drive));
+        // NamedCommands.registerCommand("driveByTime", Aquamarine.driveByTime(drivetrain, drive));
+NamedCommands.registerCommand("driveByTime", 
+Commands.sequence(
+            Commands.print("Starting wait command"),
+            drivetrain.applyRequest(
+                () -> {
+                    return (SwerveRequest) drive.withVelocityX(0.0).withVelocityY(0.0);
+                    
+                }
+            ).withTimeout(5)
+        )
+);
+NamedCommands.registerCommand("driveByTimeAlt", 
+    new SequentialCommandGroup(
+        new PrintCommand("Starting drive command"),  // This is to make sure we see this in the log
+        drivetrain.applyRequest(() -> {
+            return drive.withVelocityX(0.0).withVelocityY(0.0);
+        }).withTimeout(5), 
+        new PrintCommand("Drive command finished"),
+        // new WaitCommand(5), // Wait for 5 seconds
+        new PrintCommand("Clearning commands")
+        // new RunCommand(() -> {
+        //                     CommandScheduler.getInstance().cancelAll();
+        //                 })
+    )
+);
 
+NamedCommands.registerCommand("driveByTimeAltAlt", 
+    new SequentialCommandGroup(
+        new PrintCommand("Starting drive command"),  // This is to make sure we see this in the log
+        drivetrain.applyRequest(() -> {
+            return drive.withVelocityX(0.0).withVelocityY(0.0);
+        }).withTimeout(2), 
+        new PrintCommand("Drive command finished"),
+        // new WaitCommand(5), // Wait for 5 seconds
+        new PrintCommand("Clearning commands")
+        // new RunCommand(() -> {
+        //                     CommandScheduler.getInstance().cancelAll();
+        //                 })
+    )
+);
+
+// NamedCommands.registerCommand("driveByTimeAlt", 
+// Commands.sequence(
+//             Commands.print("Starting wait command Alt"),
+//             drivetrain.applyRequest(
+//                 () -> {
+//                     return (SwerveRequest) drive.withVelocityX(0.0).withVelocityY(0.0);
+                    
+//                 }
+//             ).withTimeout(5),
+//             //Commands.waitSeconds(5),
+//             new RunCommand(() -> {
+//                 CommandScheduler.getInstance().cancelAll();
+//             })
+//         )
+// );
         // canRangeTrigger.whileTrue(new RunCommand(() -> {
         //     thing1.set(0.1);
         //     thing2.set(-0.1);

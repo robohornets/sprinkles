@@ -58,7 +58,7 @@ public class RobotContainer {
 
     public CANrange canRangeSensor = new CANrange(34);
 
-    Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2); 
+    Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
 
     /* Path follower */
     private final SendableChooser<Command> autoChooser;

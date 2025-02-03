@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom-To-First"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom-To-First-Human"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom-Human-To-Coral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom-To-First-Human2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom-Human-To-Coral2"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

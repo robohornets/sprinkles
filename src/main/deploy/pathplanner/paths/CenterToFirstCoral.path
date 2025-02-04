@@ -3,48 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9180327868839953,
-        "y": 6.128842213109117
+        "x": 8.073205128205126,
+        "y": 6.140705128205128
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5411212913493673,
-        "y": 6.156299511912212
+        "x": 8.829508944913115,
+        "y": 6.3451647972102405
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.800102459016393,
-        "y": 6.1
+        "x": 5.307307692307692,
+        "y": 5.170576923076924
       },
       "prevControl": {
-        "x": 2.6702344866210663,
-        "y": 6.094219219533799
+        "x": 5.021993983878974,
+        "y": 5.222752588454308
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CenterToFirstStop"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "driveByTime",
-      "waypointRelativePos": 0.36731937879810844,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "driveByTime",
-      "waypointRelativePos": 0.6995273463875782,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -55,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -131.78451600825179
   },
   "reversed": false,
-  "folder": "Pre-game",
+  "folder": "MiddleBlueAuto",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleRedToFirstCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleFirstCoralToRestock"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleRestocktoSecondCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleFirstCoralToRestock"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "MiddleRestockToThirdCoral"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

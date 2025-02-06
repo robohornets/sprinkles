@@ -45,7 +45,7 @@
     "rotation": -120.01507283632431
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Pre-game",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.097777677837171,
-        "y": 5.099436870374178
+        "x": 1.7842500000000001,
+        "y": 7.320499999999999
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.4673114977384865,
-        "y": 6.003802490234375
+        "x": 6.893249999999999,
+        "y": 6.49175
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Human-1"
     },
     {
       "anchor": {
-        "x": 1.9025429173519735,
-        "y": 5.849366519325657
+        "x": 5.937750000000001,
+        "y": 4.0055
       },
       "prevControl": {
-        "x": 3.2405244526110177,
-        "y": 5.8952199835526296
+        "x": 5.687750000000001,
+        "y": 4.0055
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "Coral-1"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.7082596305031453,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 178.56790381583545
   },
   "reversed": false,
-  "folder": "Pre-game",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 127.34934904464062
   },
   "useDefaultConstraints": true
 }

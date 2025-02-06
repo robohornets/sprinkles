@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.097777677837171,
-        "y": 5.099436870374178
+        "x": 8.176410256410257,
+        "y": 1.909294871794872
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.4673114977384865,
-        "y": 6.003802490234375
+        "x": 9.176410256410257,
+        "y": 1.909294871794872
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.9025429173519735,
-        "y": 5.849366519325657
+        "x": 5.22474358974359,
+        "y": 2.8071794871794875
       },
       "prevControl": {
-        "x": 3.2405244526110177,
-        "y": 5.8952199835526296
+        "x": 4.22474358974359,
+        "y": 2.8071794871794875
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "MiddleRedToFirstCoral"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.7082596305031453,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -47,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 119.29136217098423
   },
   "reversed": false,
-  "folder": "Pre-game",
+  "folder": "MiddleRedAuto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

@@ -14,6 +14,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
@@ -26,7 +27,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -67,7 +70,69 @@ public class RobotContainer {
 
     public static Boolean disableControllerIn = false;
 
+    public Aquamarine aquamarine;
+
     public RobotContainer() {
+
+        aquamarine = new Aquamarine();
+        
+        // NamedCommands.registerCommand("driveByTime", Aquamarine.driveByTime(drivetrain, drive));
+NamedCommands.registerCommand("driveByTime", 
+Commands.sequence(
+            Commands.print("Starting wait command"),
+            drivetrain.applyRequest(
+                () -> {
+                    return (SwerveRequest) drive.withVelocityX(0.0).withVelocityY(0.0);
+                    
+                }
+            ).withTimeout(5)
+        )
+);
+NamedCommands.registerCommand("driveByTimeAlt", 
+    new SequentialCommandGroup(
+        new PrintCommand("Starting drive command"),  // This is to make sure we see this in the log
+        drivetrain.applyRequest(() -> {
+            return drive.withVelocityX(0.0).withVelocityY(0.0);
+        }).withTimeout(5), 
+        new PrintCommand("Drive command finished"),
+        // new WaitCommand(5), // Wait for 5 seconds
+        new PrintCommand("Clearning commands")
+        // new RunCommand(() -> {
+        //                     CommandScheduler.getInstance().cancelAll();
+        //                 })
+    )
+);
+
+NamedCommands.registerCommand("driveByTimeAltAlt", 
+    new SequentialCommandGroup(
+        new PrintCommand("Starting drive command"),  // This is to make sure we see this in the log
+        drivetrain.applyRequest(() -> {
+            return drive.withVelocityX(0.0).withVelocityY(0.0);
+        }).withTimeout(2), 
+        new PrintCommand("Drive command finished"),
+        // new WaitCommand(5), // Wait for 5 seconds
+        new PrintCommand("Clearning commands")
+        // new RunCommand(() -> {
+        //                     CommandScheduler.getInstance().cancelAll();
+        //                 })
+    )
+);
+
+// NamedCommands.registerCommand("driveByTimeAlt", 
+// Commands.sequence(
+//             Commands.print("Starting wait command Alt"),
+//             drivetrain.applyRequest(
+//                 () -> {
+//                     return (SwerveRequest) drive.withVelocityX(0.0).withVelocityY(0.0);
+                    
+//                 }
+//             ).withTimeout(5),
+//             //Commands.waitSeconds(5),
+//             new RunCommand(() -> {
+//                 CommandScheduler.getInstance().cancelAll();
+//             })
+//         )
+// );
         // canRangeTrigger.whileTrue(new RunCommand(() -> {
         //     thing1.set(0.1);
         //     thing2.set(-0.1);
@@ -122,8 +187,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed * 0.5) // Drive left with negative X (left)
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
@@ -142,10 +207,10 @@ public class RobotContainer {
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));

@@ -3,6 +3,7 @@ package frc.robot.subsystems.photonvision;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Vision {
+ public class Vision {
 
     // Load the field layout
     private final AprilTagFieldLayout aprilTagFieldLayout = AprilTagFieldLayout.loadField(AprilTagFields.kDefaultField);
@@ -116,3 +117,9 @@ public class Vision {
         });
     }
 }
+/**  Calculate robot's field relative pose
+if (aprilTagFieldLayout.getTagPose(target.getFiducialId()).isPresent()) {
+    Pose3d robotPose = PhotonUtils.estimateFieldToRobotAprilTag(target.getBestCameraToTarget(), aprilTagFieldLayout.getTagPose(target.getFiducialId()).get(), cameraToRobot);
+  } 
+ */
+//figure out where to put this and find out why there are errors on "target"

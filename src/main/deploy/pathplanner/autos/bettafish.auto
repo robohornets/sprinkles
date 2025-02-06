@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "THERON"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveByTimeAlt"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "THERON2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveByTimeAltAlt"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "THERON3"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

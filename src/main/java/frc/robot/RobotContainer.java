@@ -20,6 +20,7 @@ import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -55,6 +56,7 @@ public class RobotContainer {
 
     public final TalonFX thing1 = new TalonFX(9);
     public final TalonFX thing2 = new TalonFX(10);
+    public DutyCycleEncoder encoder1;
 
     public CANrange canRangeSensor = new CANrange(34);
 
@@ -108,6 +110,8 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", autoChooser);
         
         configureBindings();
+
+        encoder1 = new DutyCycleEncoder(0);
     }
     
 

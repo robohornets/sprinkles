@@ -28,6 +28,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+    double num = m_robotContainer.encoder1.get();
+    System.out.println(num);
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.

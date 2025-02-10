@@ -1,0 +1,2 @@
+# Hello people. You are probably wondering what this is.
+Well, to run autonomous code for alignment and moving to a path in teleop mode, we have to generate a trajectory on the fly (that's where the acronym OTF comes from). This is essentially what PathPlanner does, but it doesn't use a pre-programmed path. For this to work, vision processing has to be able to update the field position accurately.

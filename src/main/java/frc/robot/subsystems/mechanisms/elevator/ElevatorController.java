@@ -3,6 +3,8 @@ package frc.robot.subsystems.mechanisms.elevator;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class ElevatorController {
@@ -17,20 +19,32 @@ public class ElevatorController {
     public CANrange elevatorDownSensor = new CANrange(34);
     Trigger elevatorDownTrigger = new Trigger(() -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
 
-    public void elevatorUp() {
-        elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
-        elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+    public Command elevatorUp() {
+        return Commands.run(
+            () -> {
+                elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
+                elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+            }
+        );
     }
 
-    public void elevatorDown() {
+    public Command elevatorDown() {
+        return Commands.run(
+            () -> {
         elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
         elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
+        }
+        );
     }
 
-    public void stopElevator() {
+    public Command stopElevator() {
+        return Commands.run(
+            () -> {
         elevatorLeft.set(0.0);
         elevatorRight.set(0.0);
     }
+    );
+}
 
     // These manage the enabled/disabled state of the elevator's range of motion
     public void disableElevatorUp() {

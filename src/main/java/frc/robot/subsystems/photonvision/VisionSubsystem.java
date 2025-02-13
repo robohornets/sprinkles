@@ -1,6 +1,7 @@
 package frc.robot.subsystems.photonvision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -17,6 +18,8 @@ import java.util.Optional;
 
 public class VisionSubsystem extends SubsystemBase {
 
+    RobotContainer robotContainer = new RobotContainer();
+    
     // Instantiate PhotonCameras for each of the four cameras
     private final PhotonCamera cameraFrontLeft  = new PhotonCamera("FrontLeft");
     private final PhotonCamera cameraFrontRight = new PhotonCamera("FrontRight");
@@ -43,6 +46,7 @@ public class VisionSubsystem extends SubsystemBase {
 
     // Load the AprilTagFieldLayout for the 2025 game
     private final AprilTagFieldLayout fieldLayout = loadAprilTagFieldLayout();
+    
 
     // Create PhotonPoseEstimators for each camera
     private final PhotonPoseEstimator estimatorFrontLeft  = 
@@ -55,7 +59,7 @@ public class VisionSubsystem extends SubsystemBase {
         new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamBackRight);
 
     // Hold the latest estimated robot pose
-    private Pose2d latestEstimatedPose = new Pose2d();
+    public Pose2d latestEstimatedPose = new Pose2d();
 
     public VisionSubsystem() {
         // Additional initialization if needed
@@ -73,6 +77,7 @@ public class VisionSubsystem extends SubsystemBase {
      */
     private Pose2d getOdometryPose() {
         // TODO: Replace with your drivetrain's odometry pose retrieval
+
         return new Pose2d();
     }
 

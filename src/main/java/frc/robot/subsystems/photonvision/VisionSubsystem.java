@@ -55,68 +55,69 @@ public class VisionSubsystem extends SubsystemBase {
         new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamBackRight);
 
     // Hold the latest estimated robot pose
-    private Pose2d latestEstimatedPose = new Pose2d();
-
-    public VisionSubsystem() {
-        // Additional initialization if needed
-    }
-
-    @Override
-    public void periodic() {
-        // Update the pose estimate periodically
-        updatePose();
-    }
-
-    /**
-     * Retrieves the current odometry-based pose.
-     * Replace this with your drivetrain's odometry retrieval.
-     */
-    private Pose2d getOdometryPose() {
-        // TODO: Replace with your drivetrain's odometry pose retrieval
-        return new Pose2d();
-    }
-
-    /**
-     * Updates the robot's pose estimate using PhotonVision data from all cameras.
-     */
-    public void updatePose() {
-        // Get the current odometry pose to provide a reference
-        Pose2d currentOdometryPose = getOdometryPose();
-
-        // Set the reference pose for each estimator
-        estimatorFrontLeft.setReferencePose(currentOdometryPose);
-        estimatorFrontRight.setReferencePose(currentOdometryPose);
-        estimatorBackLeft.setReferencePose(currentOdometryPose);
-        estimatorBackRight.setReferencePose(currentOdometryPose);
-
-        // Get the latest pipeline results from each camera
-        Optional<EstimatedRobotPose> estimatedPoseFL = 
-            estimatorFrontLeft.update(cameraFrontLeft.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseFR = 
-            estimatorFrontRight.update(cameraFrontRight.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseBL = 
-            estimatorBackLeft.update(cameraBackLeft.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseBR = 
-            estimatorBackRight.update(cameraBackRight.getLatestResult());
-
-        // Combine the pose estimates as needed
-        // For simplicity, this example uses the first available estimate
-        if (estimatedPoseFL.isPresent()) {
-            latestEstimatedPose = estimatedPoseFL.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseFR.isPresent()) {
-            latestEstimatedPose = estimatedPoseFR.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseBL.isPresent()) {
-            latestEstimatedPose = estimatedPoseBL.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseBR.isPresent()) {
-            latestEstimatedPose = estimatedPoseBR.get().estimatedPose.toPose2d();
+    private static Pose2d latestEstimatedPose = new Pose2d();
+    
+        public VisionSubsystem() {
+            // Additional initialization if needed
         }
-    }
-
-    /**
-     * Returns the most recent vision-based pose estimate.
-     */
-    public Pose2d getLatestEstimatedPose() {
-        return latestEstimatedPose;
+    
+        @Override
+        public void periodic() {
+            // Update the pose estimate periodically
+            updatePose();
+        }
+    
+        /**
+         * Retrieves the current odometry-based pose.
+         * Replace this with your drivetrain's odometry retrieval.
+         */
+        private Pose2d getOdometryPose() {
+            
+            return new Pose2d();
+        }
+    
+        /**
+         * Updates the robot's pose estimate using PhotonVision data from all cameras.
+         */
+        public void updatePose() {
+            // Get the current odometry pose to provide a reference
+            Pose2d currentOdometryPose = getOdometryPose();
+    
+            // Set the reference pose for each estimator
+            estimatorFrontLeft.setReferencePose(currentOdometryPose);
+            estimatorFrontRight.setReferencePose(currentOdometryPose);
+            estimatorBackLeft.setReferencePose(currentOdometryPose);
+            estimatorBackRight.setReferencePose(currentOdometryPose);
+    
+            // Get the latest pipeline results from each camera
+            Optional<EstimatedRobotPose> estimatedPoseFL = 
+                estimatorFrontLeft.update(cameraFrontLeft.getLatestResult());
+            Optional<EstimatedRobotPose> estimatedPoseFR = 
+                estimatorFrontRight.update(cameraFrontRight.getLatestResult());
+            Optional<EstimatedRobotPose> estimatedPoseBL = 
+                estimatorBackLeft.update(cameraBackLeft.getLatestResult());
+            Optional<EstimatedRobotPose> estimatedPoseBR = 
+                estimatorBackRight.update(cameraBackRight.getLatestResult());
+    
+            // Combine the pose estimates as needed
+            // For simplicity, this example uses the first available estimate
+            if (estimatedPoseFL.isPresent()) {
+                latestEstimatedPose = estimatedPoseFL.get().estimatedPose.toPose2d();
+            } else if (estimatedPoseFR.isPresent()) {
+                latestEstimatedPose = estimatedPoseFR.get().estimatedPose.toPose2d();
+            } else if (estimatedPoseBL.isPresent()) {
+                latestEstimatedPose = estimatedPoseBL.get().estimatedPose.toPose2d();
+            } else if (estimatedPoseBR.isPresent()) {
+                latestEstimatedPose = estimatedPoseBR.get().estimatedPose.toPose2d();
+            }
+            System.out.println(latestEstimatedPose);
+        }
+    
+        /**
+         * Returns the most recent vision-based pose estimate.
+         */
+        public static Pose2d getLatestEstimatedPose() {
+            return latestEstimatedPose;
     }
 
     /**

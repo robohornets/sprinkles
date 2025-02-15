@@ -18,5 +18,4 @@ public class ElevatorVariables {
     // CANrange sensor and trigger for lower elevator
     public CANrange elevatorDownSensor = new CANrange(34);
     Trigger elevatorDownTrigger = new Trigger(() -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
-
 }

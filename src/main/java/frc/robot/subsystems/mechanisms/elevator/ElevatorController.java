@@ -8,22 +8,12 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class ElevatorController {
-    public final TalonFX elevatorLeft = new TalonFX(9);
-    public final TalonFX elevatorRight = new TalonFX(10);
-
-    // Disables all control of the elevator
-    public static Boolean elevatorDownDisabled = false;
-    public static Boolean elevatorUpDisabled = false;
-
-    // CANrange sensor and trigger for lower elevator
-    public CANrange elevatorDownSensor = new CANrange(34);
-    Trigger elevatorDownTrigger = new Trigger(() -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
 
     public Command elevatorUp() {
         return Commands.run(
             () -> {
-                elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
-                elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+                ElevatorVariables.elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
+                ElevatorVariables.elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
             }
         );
     }
@@ -31,8 +21,8 @@ public class ElevatorController {
     public Command elevatorDown() {
         return Commands.run(
             () -> {
-        elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
-        elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
+                ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
+                ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
         }
         );
     }
@@ -40,8 +30,8 @@ public class ElevatorController {
     public Command stopElevator() {
         return Commands.run(
             () -> {
-        elevatorLeft.set(0.0);
-        elevatorRight.set(0.0);
+                ElevatorVariables.elevatorLeft.set(0.0);
+                ElevatorVariables.elevatorRight.set(0.0);
     }
     );
 }

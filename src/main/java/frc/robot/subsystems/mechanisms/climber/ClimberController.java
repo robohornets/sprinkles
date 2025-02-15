@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 
 public class ClimberController {
-        public final TalonFX climberLeft = new TalonFX(11);
+    public final TalonFX climberLeft = new TalonFX(11);
     public final TalonFX climberRight = new TalonFX(12);
 
     // CANrange sensor and trigger for lower elevator

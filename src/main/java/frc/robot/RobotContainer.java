@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -37,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -55,10 +57,13 @@ public class RobotContainer {
 
     private final CommandXboxController joystick = new CommandXboxController(0);
 
-    public static CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    private final ElevatorController elevator = new ElevatorController();
 
-    public final TalonFX thing1 = new TalonFX(9);
-    public final TalonFX thing2 = new TalonFX(10);
+    // public final TalonFX thing1 = new TalonFX(9);
+    // public final TalonFX thing2 = new TalonFX(10);
+    public final TalonFX elevatorLeft = new TalonFX(9);
+    public final TalonFX elevatorRight = new TalonFX(10);
     public DutyCycleEncoder encoder1;
 
     public CANrange canRangeSensor = new CANrange(34);
@@ -138,28 +143,25 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
         //     thing2.set(-0.1);
         // }));
 
-        canRangeTrigger.onTrue(new RunCommand(() -> {
-            // When the sensor detects something, disable the controller
-            disableControllerIn = true;
-            thing1.set(0.1); // Motor action when sensor is triggered
-            thing2.set(-0.1);
-        }));
+        // canRangeTrigger.onTrue(new RunCommand(() -> {
+        //     // When the sensor detects something, disable the controller
+        //     disableControllerIn = true;
+        //     thing1.set(0.1); // Motor action when sensor is triggered
+        //     thing2.set(-0.1);
+        // }));
         
-        canRangeTrigger.onFalse(new RunCommand(() -> {
-            // Wait for 2 seconds and then stop the motors and re-enable the controller
-            Commands.sequence(
-                new WaitCommand(2.0), // Wait for 2 seconds
-                new RunCommand(() -> {
-                    thing1.set(0.0);  // Stop motor 1
-                    thing2.set(0.0);  // Stop motor 2
-                    disableControllerIn = false;  // Re-enable the controller inputs
-                    CommandScheduler.getInstance().cancelAll();
-                })
-            ).schedule();
-        }));
-        
-        
-        
+        // canRangeTrigger.onFalse(new RunCommand(() -> {
+        //     // Wait for 2 seconds and then stop the motors and re-enable the controller
+        //     Commands.sequence(
+        //         new WaitCommand(2.0), // Wait for 2 seconds
+        //         new RunCommand(() -> {
+        //             thing1.set(0.0);  // Stop motor 1
+        //             thing2.set(0.0);  // Stop motor 2
+        //             disableControllerIn = false;  // Re-enable the controller inputs
+        //             CommandScheduler.getInstance().cancelAll();
+        //         })
+        //     ).schedule();
+        // }));
 
 
         // canRangeTrigger.onFalse(new SequentialCommandGroup(() -> {
@@ -216,65 +218,16 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
-        // Left Bumper
-joystick.leftBumper()
-.onTrue(
-    Commands.run(
-        () -> {
-            if (!disableControllerIn) { // Only execute if controller is enabled
-                thing1.set(0.0);
-                thing2.set(0.0);
-            }
-        }))
-        // .onFalse(
-        //     Commands.run(
-        //         () -> {
-        //             if (!disableControllerIn) { // Only execute if controller is enabled
-        //                 thing1.set(0.0);
-        //                 thing2.set(0.0);
-        //             }
-        //         }));
-.whileTrue(
-    Commands.run(
-        () -> {
-            if (!disableControllerIn) { // Only execute if controller is enabled
-                thing1.set(0.1);
-                thing2.set(-0.1);
-            }
-        }));
+        joystick
+        .leftBumper()
+        .whileTrue(elevator.elevatorDown())
+        .onFalse(elevator.stopElevator());
 
-// Right Bumper
-joystick.rightBumper()
-.onTrue(
-    Commands.run(
-        () -> {
-            if (!disableControllerIn) { // Only execute if controller is enabled
-                thing1.set(0.0);
-                thing2.set(0.0);
-            }
-        }))
-.whileTrue(
-    Commands.run(
-        () -> {
-            if (!disableControllerIn) { // Only execute if controller is enabled
-                thing1.set(-0.1);
-                thing2.set(0.1);
-            }
-        }));
-
-        joystick.a()
-        .onTrue(
-            Commands.run(
-        () -> {
-                thing1.set(0.0);
-                thing2.set(0.0);
-                disableControllerIn = false;
-        })
-        );
-
-
-
-        drivetrain.registerTelemetry(logger::telemeterize);
+        joystick
+        .rightBumper()
+        .whileTrue(elevator.elevatorUp())
+        .onFalse(elevator.stopElevator());
+        
     }
 
     public Command getAutonomousCommand() {

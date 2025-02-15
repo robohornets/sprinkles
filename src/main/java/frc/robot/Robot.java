@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
     // print(RobotContainer.disableControllerIn);
     // Test code for CANrange sensor
     // System.out.println(canRangeSensor.getDistance(true).refresh().getValueAsDouble());
-    System.out.println(VisionSubsystem.getLatestEstimatedPose());
+    // System.out.println(VisionSubsystem.getLatestEstimatedPose());
   }
 
   @Override

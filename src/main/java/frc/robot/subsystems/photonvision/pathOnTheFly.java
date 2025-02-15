@@ -16,7 +16,8 @@ public class pathOnTheFly {
 // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
 
 VisionSubsystem visionSubsystem1 = new VisionSubsystem();
-Pose2d pose = visionSubsystem1.getLatestEstimatedPose();
+// Pose2d pose = visionSubsystem1.getLatestEstimatedPose();
+Pose2d pose = new Pose2d();
 
 List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
         pose,

@@ -114,6 +114,8 @@ public class VisionSubsystem extends SubsystemBase {
             latestEstimatedPose = estimatedPoseBL.get().estimatedPose.toPose2d();
         } else if (estimatedPoseBR.isPresent()) {
             latestEstimatedPose = estimatedPoseBR.get().estimatedPose.toPose2d();
+        }
+    }
 
 
     /**

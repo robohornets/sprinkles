@@ -9,6 +9,8 @@ import com.ctre.phoenix6.Utils;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.photonvision.VisionSubsystem;
+
 import com.ctre.phoenix6.hardware.CANrange;
 
 
@@ -44,6 +46,7 @@ public class Robot extends TimedRobot {
     // print(RobotContainer.disableControllerIn);
     // Test code for CANrange sensor
     // System.out.println(canRangeSensor.getDistance(true).refresh().getValueAsDouble());
+    System.out.println(VisionSubsystem.getLatestEstimatedPose());
   }
 
   @Override

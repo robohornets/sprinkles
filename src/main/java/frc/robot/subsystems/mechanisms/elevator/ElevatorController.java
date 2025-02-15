@@ -23,7 +23,7 @@ public class ElevatorController {
             () -> {
                 ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
                 ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
-        }
+            }
         );
     }
 
@@ -32,9 +32,17 @@ public class ElevatorController {
             () -> {
                 ElevatorVariables.elevatorLeft.set(0.0);
                 ElevatorVariables.elevatorRight.set(0.0);
+            }
+        );
     }
-    );
-}
+
+    public Command elevatorTest() {
+        return Commands.run(
+            () -> {
+                
+            }
+        );
+    }
 
     // These manage the enabled/disabled state of the elevator's range of motion
     public void disableElevatorUp() {
@@ -45,15 +53,17 @@ public class ElevatorController {
     public void enableElevatorUp() {
         ElevatorVariables.elevatorUpDisabled = false;
     }
+
     public void disableElevatorDown() {
         ElevatorVariables.elevatorDownDisabled = true;
         ElevatorVariables.elevatorUpDisabled = false;
     }
+
     public void enableElevatorDown() {
         ElevatorVariables.elevatorDownDisabled = false;
     }
 
     public double getHeight() {
-        return 0.0;
+        return ElevatorVariables.elevatorEncoder.getDistance();
     }
 }

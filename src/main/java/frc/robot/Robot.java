@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.Utils;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -23,12 +24,16 @@ public class Robot extends TimedRobot {
 
   private final boolean kUseLimelight = false;
 
+  private PowerDistribution pdp = new PowerDistribution();
+
   public Robot() {
     m_robotContainer = new RobotContainer();
   }
 
   @Override
   public void robotPeriodic() {
+    pdp.clearStickyFaults();
+    
     CommandScheduler.getInstance().run();
     double num = m_robotContainer.encoder1.get();
     System.out.println(num);

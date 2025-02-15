@@ -114,15 +114,7 @@ public class VisionSubsystem extends SubsystemBase {
             latestEstimatedPose = estimatedPoseBL.get().estimatedPose.toPose2d();
         } else if (estimatedPoseBR.isPresent()) {
             latestEstimatedPose = estimatedPoseBR.get().estimatedPose.toPose2d();
-        }
-    }
 
-    /**
-     * Returns the most recent vision-based pose estimate.
-     */
-    public Pose2d getLatestEstimatedPose() {
-        return latestEstimatedPose;
-    }
 
     /**
      * Loads the AprilTagFieldLayout for the 2025 game.

@@ -10,10 +10,10 @@ import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 public class ElevatorController {
 
     public ElevatorController() {
-        ElevatorVariables.disableDownTrigger.onTrue(Commands.runOnce(() -> ElevatorVariables.elevatorDownDisabled = true));
-        ElevatorVariables.disableDownTrigger.onFalse(Commands.runOnce(() -> ElevatorVariables.elevatorDownDisabled = false));
-        ElevatorVariables.disableUpTrigger.onTrue(Commands.runOnce(() -> ElevatorVariables.elevatorUpDisabled = true));
-        ElevatorVariables.disableUpTrigger.onFalse(Commands.runOnce(() -> ElevatorVariables.elevatorUpDisabled = false));
+        ElevatorVariables.disableDownTrigger.whileTrue(Commands.runOnce(() -> ElevatorVariables.elevatorDownDisabled = true));
+        ElevatorVariables.disableDownTrigger.whileFalse(Commands.runOnce(() -> ElevatorVariables.elevatorDownDisabled = false));
+        ElevatorVariables.disableUpTrigger.whileTrue(Commands.runOnce(() -> ElevatorVariables.elevatorUpDisabled = true));
+        ElevatorVariables.disableUpTrigger.whileFalse(Commands.runOnce(() -> ElevatorVariables.elevatorUpDisabled = false));
     }
 
     public Command elevatorUp() {

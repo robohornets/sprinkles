@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.photonvision.VisionSubsystem;
+import edu.wpi.first.wpilibj.Encoder;
 
 import com.ctre.phoenix6.hardware.CANrange;
 
@@ -26,8 +27,15 @@ public class Robot extends TimedRobot {
 
   private PowerDistribution pdp = new PowerDistribution();
 
+  public static Encoder elevatorEncoder = new Encoder(0, 1);
+
   public Robot() {
     m_robotContainer = new RobotContainer();
+  }
+
+  @Override
+  public void robotInit() {
+    elevatorEncoder.setDistancePerPulse(1.0/2048);
   }
 
   @Override
@@ -35,8 +43,8 @@ public class Robot extends TimedRobot {
     pdp.clearStickyFaults();
     
     CommandScheduler.getInstance().run();
-    double num = m_robotContainer.encoder1.get();
-    System.out.println(num);
+    //double num = m_robotContainer.encoder1.get();
+    //System.out.println(num);
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.
@@ -86,7 +94,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    System.out.println("------");
+    System.out.println(elevatorEncoder.get());
+    System.out.println(elevatorEncoder.getDistance());
+  }
 
   @Override
   public void teleopExit() {}

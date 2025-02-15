@@ -66,7 +66,6 @@ public class RobotContainer {
     // public final TalonFX thing2 = new TalonFX(10);
     public final TalonFX elevatorLeft = new TalonFX(9);
     public final TalonFX elevatorRight = new TalonFX(10);
-    public DutyCycleEncoder encoder1;
 
     public CANrange canRangeSensor = new CANrange(34);
 
@@ -179,8 +178,6 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
         SmartDashboard.putData("Auto Mode", autoChooser);
         
         configureBindings();
-
-        encoder1 = new DutyCycleEncoder(0);
     }
     
 
@@ -218,6 +215,15 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
 
         // reset the field-centric heading on left bumper press
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        joystick.x()
+        .whileFalse(
+            Commands.run(
+                () -> {
+                    //System.out.println(ElevatorVariables.elevatorEncoder.getDistance());
+                }
+            )
+        );
 
 
         joystick

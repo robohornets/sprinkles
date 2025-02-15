@@ -6,45 +6,42 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class ElevatorController {
-    public final TalonFX elevatorLeft = new TalonFX(9);
-    public final TalonFX elevatorRight = new TalonFX(10);
-
-    // Disables all control of the elevator
-    public static Boolean elevatorDownDisabled = false;
-    public static Boolean elevatorUpDisabled = false;
-
-    // CANrange sensor and trigger for lower elevator
-    public CANrange elevatorDownSensor = new CANrange(34);
-    Trigger elevatorDownTrigger = new Trigger(() -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
-
+    // Moves the elevator up
     public void elevatorUp() {
-        elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
-        elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+        ElevatorVariables.elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
+        ElevatorVariables.elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
     }
 
+    // Moves the elevator down
     public void elevatorDown() {
-        elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
-        elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
+        ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
+        ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
     }
 
+    // Stops the elevator
     public void stopElevator() {
-        elevatorLeft.set(0.0);
-        elevatorRight.set(0.0);
+        ElevatorVariables.elevatorLeft.set(0.0);
+        ElevatorVariables.elevatorRight.set(0.0);
     }
 
     // These manage the enabled/disabled state of the elevator's range of motion
     public void disableElevatorUp() {
-        elevatorUpDisabled = true;
-        elevatorDownDisabled = false;
+        ElevatorVariables.elevatorUpDisabled = true;
+        ElevatorVariables.elevatorDownDisabled = false;
     }
+    
     public void enableElevatorUp() {
-        elevatorUpDisabled = false;
+        ElevatorVariables.elevatorUpDisabled = false;
     }
     public void disableElevatorDown() {
-        elevatorDownDisabled = true;
-        elevatorUpDisabled = false;
+        ElevatorVariables.elevatorDownDisabled = true;
+        ElevatorVariables.elevatorUpDisabled = false;
     }
     public void enableElevatorDown() {
-        elevatorDownDisabled = false;
+        ElevatorVariables.elevatorDownDisabled = false;
+    }
+
+    public double getHeight() {
+        return 0.0;
     }
 }

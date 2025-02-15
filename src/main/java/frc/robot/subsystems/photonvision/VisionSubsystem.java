@@ -1,6 +1,7 @@
 package frc.robot.subsystems.photonvision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.RobotContainer;
 
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -72,8 +73,9 @@ public class VisionSubsystem extends SubsystemBase {
      * Replace this with your drivetrain's odometry retrieval.
      */
     private Pose2d getOdometryPose() {
-        // TODO: Replace with your drivetrain's odometry pose retrieval
-        return new Pose2d();
+        RobotContainer.drivetrain.getPose();
+
+        return new ;
     }
 
     /**

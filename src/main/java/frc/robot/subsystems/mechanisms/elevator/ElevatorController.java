@@ -1,19 +1,28 @@
 package frc.robot.subsystems.mechanisms.elevator;
 
-import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
-
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 
 public class ElevatorController {
+
+    public ElevatorController() {
+        ElevatorVariables.disableDownTrigger.onTrue(Commands.runOnce(() -> ElevatorVariables.elevatorDownDisabled = true));
+        ElevatorVariables.disableDownTrigger.onFalse(Commands.runOnce(() -> ElevatorVariables.elevatorDownDisabled = false));
+        ElevatorVariables.disableUpTrigger.onTrue(Commands.runOnce(() -> ElevatorVariables.elevatorUpDisabled = true));
+        ElevatorVariables.disableUpTrigger.onFalse(Commands.runOnce(() -> ElevatorVariables.elevatorUpDisabled = false));
+    }
 
     public Command elevatorUp() {
         return Commands.run(
             () -> {
-                ElevatorVariables.elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
-                ElevatorVariables.elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+                if (!ElevatorVariables.elevatorUpDisabled) {
+                    ElevatorVariables.elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
+                    ElevatorVariables.elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+                }
             }
         );
     }
@@ -21,8 +30,10 @@ public class ElevatorController {
     public Command elevatorDown() {
         return Commands.run(
             () -> {
-                ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
-                ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
+                if (!ElevatorVariables.elevatorDownDisabled) {
+                    ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
+                    ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
+                }
             }
         );
     }
@@ -36,34 +47,27 @@ public class ElevatorController {
         );
     }
 
-    public Command elevatorTest() {
+    public Command elevatorTestDown() {
         return Commands.run(
             () -> {
-                
+                if (!ElevatorVariables.elevatorDownDisabled) {
+                    CoralVariables.flywheelMotor.set(0.2);
+                } else {
+                    CoralVariables.flywheelMotor.set(0.0);
+                }
             }
         );
     }
 
-    // These manage the enabled/disabled state of the elevator's range of motion
-    public void disableElevatorUp() {
-        ElevatorVariables.elevatorUpDisabled = true;
-        ElevatorVariables.elevatorDownDisabled = false;
-    }
-    
-    public void enableElevatorUp() {
-        ElevatorVariables.elevatorUpDisabled = false;
-    }
-
-    public void disableElevatorDown() {
-        ElevatorVariables.elevatorDownDisabled = true;
-        ElevatorVariables.elevatorUpDisabled = false;
-    }
-
-    public void enableElevatorDown() {
-        ElevatorVariables.elevatorDownDisabled = false;
-    }
-
-    public double getHeight() {
-        return ElevatorVariables.elevatorEncoder.getDistance();
+    public Command elevatorTestUp() {
+        return Commands.run(
+            () -> {
+                if (!ElevatorVariables.elevatorUpDisabled) {
+                    CoralVariables.flywheelMotor.set(-0.2);
+                } else {
+                    CoralVariables.flywheelMotor.set(0.0);
+                }
+            }
+        );
     }
 }

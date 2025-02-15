@@ -38,6 +38,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 
 public class RobotContainer {
@@ -220,13 +221,25 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
 
         joystick
         .leftBumper()
-        .whileTrue(elevator.elevatorDown())
-        .onFalse(elevator.stopElevator());
+        // .whileTrue(elevator.elevatorDown())
+        // .onFalse(elevator.stopElevator());
+        .whileTrue(elevator.elevatorTestDown())
+        .onFalse(Commands.run(
+            () -> {
+                CoralVariables.flywheelMotor.set(0.0);
+            }
+        ));
 
         joystick
         .rightBumper()
-        .whileTrue(elevator.elevatorUp())
-        .onFalse(elevator.stopElevator());
+        // .whileTrue(elevator.elevatorUp())
+        // .onFalse(elevator.stopElevator());
+        .whileTrue(elevator.elevatorTestUp())
+        .onFalse(Commands.run(
+            () -> {
+                CoralVariables.flywheelMotor.set(0.0);
+            }
+        ));
         
     }
 

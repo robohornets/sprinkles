@@ -19,7 +19,14 @@ public class ElevatorVariables {
 
     // CANrange sensor and trigger for lower elevator
     public static final CANrange elevatorDownSensor = new CANrange(34);
-    Trigger elevatorDownTrigger = new Trigger(() -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
+
+    public static Trigger disableDownTrigger = new Trigger(
+        () -> ElevatorVariables.elevatorEncoder.getDistance() >= -1 && ElevatorVariables.elevatorEncoder.getDistance() <= 0.5
+    );
+    
+    public static Trigger disableUpTrigger = new Trigger(
+        () -> ElevatorVariables.elevatorEncoder.getDistance() > 5
+    );
 
     // **Added Encoder (REV Through Bore in Quadrature Mode)**
     public static final Encoder elevatorEncoder = new Encoder(0, 1);

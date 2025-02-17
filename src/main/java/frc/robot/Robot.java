@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.photonvision.VisionSubsystem;
 import edu.wpi.first.wpilibj.Encoder;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 
 import com.ctre.phoenix6.hardware.CANrange;
+import com.ctre.phoenix6.hardware.TalonFX;
 
 
 public class Robot extends TimedRobot {
@@ -27,7 +29,7 @@ public class Robot extends TimedRobot {
 
   private PowerDistribution pdp = new PowerDistribution();
 
-  public static Encoder elevatorEncoder = new Encoder(0, 1);
+  //public static Encoder elevatorEncoder = new Encoder(0, 1);
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -35,7 +37,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    elevatorEncoder.setDistancePerPulse(1.0/2048);
+    //elevatorEncoder.setDistancePerPulse(1.0/2048);
   }
 
   @Override
@@ -43,6 +45,9 @@ public class Robot extends TimedRobot {
     pdp.clearStickyFaults();
     
     CommandScheduler.getInstance().run();
+
+    System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
+    
     //double num = m_robotContainer.encoder1.get();
     //System.out.println(num);
 
@@ -95,9 +100,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    System.out.println("------");
-    System.out.println(elevatorEncoder.get());
-    System.out.println(elevatorEncoder.getDistance());
+    //System.out.println("------");
+    //System.out.println(elevatorEncoder.get());
+    //System.out.println(elevatorEncoder.getDistance());
   }
 
   @Override

@@ -76,7 +76,7 @@ public class VisionSubsystem extends SubsystemBase {
      * Replace this with your drivetrain's odometry retrieval.
      */
     private Pose2d getOdometryPose() {
-        // TODO: Replace with your drivetrain's odometry pose retrieval
+        
 
         return new Pose2d();
     }

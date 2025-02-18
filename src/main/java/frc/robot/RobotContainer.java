@@ -76,11 +76,7 @@ public class RobotContainer {
 
     public static Boolean disableControllerIn = false;
 
-    public Aquamarine aquamarine;
-
     public RobotContainer() {
-
-        aquamarine = new Aquamarine();
         
         // NamedCommands.registerCommand("driveByTime", Aquamarine.driveByTime(drivetrain, drive));
 NamedCommands.registerCommand("driveByTime", 
@@ -102,7 +98,7 @@ NamedCommands.registerCommand("driveByTimeAlt",
         }).withTimeout(5), 
         new PrintCommand("Drive command finished"),
         // new WaitCommand(5), // Wait for 5 seconds
-        new PrintCommand("Clearning commands")
+        new PrintCommand("Clearing commands")
         // new RunCommand(() -> {
         //                     CommandScheduler.getInstance().cancelAll();
         //                 })
@@ -194,36 +190,9 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
             )
         );
 
-        // joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
-
-        joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.5).withVelocityY(0))
-        );
-        joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-        );
-
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        // joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        // joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        // joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        // joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
-        joystick.x()
-        .whileFalse(
-            Commands.run(
-                () -> {
-                    //System.out.println(ElevatorVariables.elevatorEncoder.getDistance());
-                }
-            )
-        );
 
 
         joystick

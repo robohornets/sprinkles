@@ -21,20 +21,22 @@ public class ElevatorVariables {
     // CANrange sensor and trigger for lower elevator
     //public static final CANrange elevatorDownSensor = new CANrange(34);
 
+    // public static Trigger disableDownTrigger = new Trigger(
+    //     () -> Robot.elevatorEncoder.getDistance() >= -1 && Robot.elevatorEncoder.getDistance() <= 0.5
+    // );
+    
+    // public static Trigger disableUpTrigger = new Trigger(
+    //     () -> Robot.elevatorEncoder.getDistance() > 5
+    // );
+
     public static Trigger disableDownTrigger = new Trigger(
-        () -> Robot.elevatorEncoder.getDistance() >= -1 && Robot.elevatorEncoder.getDistance() <= 0.5
+        () -> elevatorRight.getPosition().getValueAsDouble() <= 0.5
     );
     
     public static Trigger disableUpTrigger = new Trigger(
-        () -> Robot.elevatorEncoder.getDistance() > 5
+        () -> elevatorRight.getPosition().getValueAsDouble() >= 5.0
     );
 
     // **Added Encoder (REV Through Bore in Quadrature Mode)**
     //public static Encoder elevatorEncoder = new Encoder(0, 1);
-
-    // **Zero the encoder at startup**
-    // static {
-    //     elevatorEncoder.reset();
-    //     System.out.println("Elevator encoder zeroed at startup.");
-    // }
 }

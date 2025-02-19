@@ -40,7 +40,10 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
+import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -61,6 +64,7 @@ public class RobotContainer {
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final ElevatorController elevator = new ElevatorController();
+    private final CoralController coral = new CoralController();
 
     // public final TalonFX thing1 = new TalonFX(9);
     // public final TalonFX thing2 = new TalonFX(10);
@@ -199,10 +203,14 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
         .leftBumper()
         // .whileTrue(elevator.elevatorDown())
         // .onFalse(elevator.stopElevator());
-        .whileTrue(elevator.elevatorTestDown())
+        .whileTrue(elevator.elevatorDown())
         .onFalse(Commands.run(
             () -> {
-                CoralVariables.flywheelMotor.set(0.0);
+                ElevatorVariables.elevatorLeft.set(0.0);
+                ElevatorVariables.elevatorRight.set(0.0);
+                ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                CommandScheduler.getInstance().cancelAll();
             }
         ));
 
@@ -210,10 +218,50 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
         .rightBumper()
         // .whileTrue(elevator.elevatorUp())
         // .onFalse(elevator.stopElevator());
-        .whileTrue(elevator.elevatorTestUp())
+        .whileTrue(elevator.elevatorUp())
+        .onFalse(Commands.run(
+            () -> {
+                ElevatorVariables.elevatorLeft.set(0.0);
+                ElevatorVariables.elevatorRight.set(0.0);
+                ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                CommandScheduler.getInstance().cancelAll();
+
+            }
+        ));
+
+        joystick.a()
+        .whileTrue(coral.flywheelOut())
         .onFalse(Commands.run(
             () -> {
                 CoralVariables.flywheelMotor.set(0.0);
+                CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+            }
+        ));
+
+        joystick.b()
+        .whileTrue(coral.flywheelIn())
+        .onFalse(Commands.run(
+            () -> {
+                CoralVariables.flywheelMotor.set(0.0);
+                CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+            }
+        ));
+
+        joystick.leftTrigger()
+        .whileTrue(coral.angleDown())
+        .onFalse(Commands.run(
+            () -> {
+                CoralVariables.angleMotor.set(0.0);
+                CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
+        ));
+        joystick.rightTrigger()
+        .whileTrue(coral.angleUp())
+        .onFalse(Commands.run(
+            () -> {
+                CoralVariables.angleMotor.set(0.0);
+                CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
             }
         ));
         

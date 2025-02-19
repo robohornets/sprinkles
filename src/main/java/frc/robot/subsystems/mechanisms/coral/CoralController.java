@@ -1,44 +1,45 @@
 package frc.robot.subsystems.mechanisms.coral;
 
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.Command;
 
 public class CoralController {
 
     //Flywheel commands
-    public void flywheelOut() {
-        Commands.run(
+    public Command flywheelOut() {
+        return Commands.run(
             () -> {
         CoralVariables.flywheelMotor.set(CoralVariables.flywheelSpeed);
     });}
-    public void flywheelIn() {
-        Commands.run(
+    public Command flywheelIn() {
+        return Commands.run(
             () -> {
         CoralVariables.flywheelMotor.set(-CoralVariables.flywheelSpeed);
     });}
-    public void flywheelStop() {
-        Commands.run(
+    public Command flywheelStop() {
+        return Commands.run(
             () -> {
         CoralVariables.flywheelMotor.set(0.0);
     }); }
 
     //Angle commands
-    public void angleUp() {
-        Commands.run(
+    public Command angleUp() {
+        return Commands.run(
             () -> {
         CoralVariables.angleMotor.set(CoralVariables.angleSpeed);
     }); }
-    public void angleDown() {
-        Commands.run(
+    public Command angleDown() {
+        return Commands.run(
             () -> {
         CoralVariables.angleMotor.set(-CoralVariables.angleSpeed);
     }); }
-    public void angleStop() {
-        Commands.run(
+    public Command angleStop() {
+        return Commands.run(
             () -> {
         CoralVariables.angleMotor.set(0.0);
     }); } 
-    public void angleGetAngle() {
-        Commands.run(
+    public Command angleGetAngle() {
+        return Commands.run(
             () -> {
         CoralVariables.angleDCEncoder.get();
     }); } 

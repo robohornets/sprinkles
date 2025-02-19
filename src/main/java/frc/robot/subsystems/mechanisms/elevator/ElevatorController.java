@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class ElevatorController {
 
@@ -19,9 +20,14 @@ public class ElevatorController {
     public Command elevatorUp() {
         return Commands.run(
             () -> {
-                if (!ElevatorVariables.elevatorUpDisabled) {
-                    ElevatorVariables.elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
-                    ElevatorVariables.elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+                if (Math.abs(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble()) <= 57.0) {
+                    ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
+                    ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
+                } else {
+                    ElevatorVariables.elevatorLeft.set(0.0);
+                    ElevatorVariables.elevatorRight.set(0.0);
+                    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -30,9 +36,14 @@ public class ElevatorController {
     public Command elevatorDown() {
         return Commands.run(
             () -> {
-                if (!ElevatorVariables.elevatorDownDisabled) {
-                    ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
-                    ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
+                if (Math.abs(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble()) >= 5.0) {
+                    ElevatorVariables.elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeed);
+                    ElevatorVariables.elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+                } else {
+                    ElevatorVariables.elevatorLeft.set(0.0);
+                    ElevatorVariables.elevatorRight.set(0.0);
+                    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -50,7 +61,7 @@ public class ElevatorController {
     public Command elevatorTestDown() {
         return Commands.run(
             () -> {
-                if (!ElevatorVariables.elevatorDownDisabled) {
+                if (Math.abs(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble()) >= 5.0) {
                     CoralVariables.flywheelMotor.set(0.2);
                 } else {
                     CoralVariables.flywheelMotor.set(0.0);
@@ -62,7 +73,7 @@ public class ElevatorController {
     public Command elevatorTestUp() {
         return Commands.run(
             () -> {
-                if (!ElevatorVariables.elevatorUpDisabled) {
+                if (Math.abs(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble()) <= 55) {
                     CoralVariables.flywheelMotor.set(-0.2);
                 } else {
                     CoralVariables.flywheelMotor.set(0.0);

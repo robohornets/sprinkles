@@ -9,10 +9,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 
 public class ElevatorVariables {
-    public static final double elevatorUpDownSpeed = 0.2;
+    public static final double elevatorUpDownSpeed = 0.5;
 
-    public static final TalonFX elevatorLeft = new TalonFX(9);
-    public static final TalonFX elevatorRight = new TalonFX(10);
+    public static final TalonFX elevatorLeft = new TalonFX(10);
+    public static final TalonFX elevatorRight = new TalonFX(9);
 
     // Disables all control of the elevator
     public static boolean elevatorDownDisabled = false;

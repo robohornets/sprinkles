@@ -4,46 +4,32 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
-
-import java.io.IOException;
-
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj.PowerDistribution;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
+import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -236,6 +222,7 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
             () -> {
                 CoralVariables.flywheelMotor.set(0.0);
                 CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                CommandScheduler.getInstance().cancelAll();
             }
         ));
 
@@ -245,6 +232,7 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
             () -> {
                 CoralVariables.flywheelMotor.set(0.0);
                 CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                CommandScheduler.getInstance().cancelAll();
             }
         ));
 
@@ -254,6 +242,7 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
             () -> {
                 CoralVariables.angleMotor.set(0.0);
                 CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                CommandScheduler.getInstance().cancelAll();
             }
         ));
         joystick.rightTrigger()
@@ -262,6 +251,7 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
             () -> {
                 CoralVariables.angleMotor.set(0.0);
                 CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                CommandScheduler.getInstance().cancelAll();
             }
         ));
         

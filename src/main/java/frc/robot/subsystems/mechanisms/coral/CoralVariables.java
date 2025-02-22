@@ -13,7 +13,7 @@ public class CoralVariables {
     public static Boolean flywheelDisabled = false;
     
     // Angle 12, flywheel 11
-    public static Double angleSpeed = 0.2;
-    public static Double flywheelSpeed = 0.2;
+    public static Double angleSpeed = 0.1;
+    public static Double flywheelSpeed = 0.9;
 
 }

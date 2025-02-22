@@ -1,7 +1,9 @@
 package frc.robot.subsystems.mechanisms.coral;
 
-import edu.wpi.first.wpilibj2.command.Commands;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class CoralController {
 
@@ -24,14 +26,25 @@ public class CoralController {
 
     //Angle commands
     public Command angleUp() {
+        
         return Commands.run(
             () -> {
-        CoralVariables.angleMotor.set(CoralVariables.angleSpeed);
+        if (CoralVariables.angleMotor.getPosition().getValueAsDouble() >= -0.1) {
+            CoralVariables.angleMotor.set(-CoralVariables.angleSpeed); }
+        else {
+            CoralVariables.angleMotor.set(0.0);
+            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
     }); }
     public Command angleDown() {
         return Commands.run(
             () -> {
-        CoralVariables.angleMotor.set(-CoralVariables.angleSpeed);
+        if (Math.abs(CoralVariables.angleMotor.getPosition().getValueAsDouble()) <= 8.2) {
+        CoralVariables.angleMotor.set(CoralVariables.angleSpeed);} 
+        else {
+            CoralVariables.angleMotor.set(0.0);
+            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
     }); }
     public Command angleStop() {
         return Commands.run(
@@ -56,4 +69,3 @@ public class CoralController {
         CoralVariables.angleDisabled = true;
     }); }
 }
-

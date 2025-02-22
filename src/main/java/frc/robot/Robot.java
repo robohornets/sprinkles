@@ -4,18 +4,13 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.CANrange;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.photonvision.VisionSubsystem;
-import edu.wpi.first.wpilibj.Encoder;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
-
-import com.ctre.phoenix6.hardware.CANrange;
-import com.ctre.phoenix6.hardware.TalonFX;
+import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 
 
 public class Robot extends TimedRobot {
@@ -46,7 +41,7 @@ public class Robot extends TimedRobot {
     
     CommandScheduler.getInstance().run();
 
-    System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
+    System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
     
     //double num = m_robotContainer.encoder1.get();
     //System.out.println(num);

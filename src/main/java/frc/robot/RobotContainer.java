@@ -274,8 +274,8 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
         ));
 
 
-        joystick2.x()
-        .onTrue(AutoNamedCommands.goToLevel1());
+        // joystick2.x()
+        // .onTrue(AutoNamedCommands.goToLevel1());
 
         // A button on joystick2 adds extra speed to angleMotor unless triggers are
         // pressed

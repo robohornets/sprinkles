@@ -20,13 +20,13 @@ public class AutoNamedCommands {
 
                 // If below range, move elevator up
                 if (currentPosition < 14.8) {
-                    ElevatorVariables.elevatorLeft.set(-0.5);
-                    ElevatorVariables.elevatorRight.set(0.5);
+                    ElevatorVariables.elevatorLeft.set(-0.1);
+                    ElevatorVariables.elevatorRight.set(0.1);
                 }
                 // If above range, move elevator down
                 else if (currentPosition > 15.2) {
-                    ElevatorVariables.elevatorLeft.set(0.5);
-                    ElevatorVariables.elevatorRight.set(-0.5);
+                    ElevatorVariables.elevatorLeft.set(0.1);
+                    ElevatorVariables.elevatorRight.set(-0.1);
                 }
                 // If within 14.8–15.2, hold (stop motor)
                 else {

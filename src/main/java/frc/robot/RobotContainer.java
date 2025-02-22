@@ -30,6 +30,9 @@ import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import frc.robot.subsystems.photonvision.pathOnTheFly;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -179,6 +182,8 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
+
+        joystick.a().onTrue(new pathOnTheFly(new Pose2d(0.0, 2.0, Rotation2d.fromDegrees(0)), drivetrain));
 
 
         // reset the field-centric heading on left bumper press

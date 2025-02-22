@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.generated.TunerConstants;
+import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
@@ -47,6 +48,7 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController joystick2 = new CommandXboxController(1);
 
     public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final ElevatorController elevator = new ElevatorController();
@@ -254,6 +256,10 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
                 CommandScheduler.getInstance().cancelAll();
             }
         ));
+
+
+        joystick2.x()
+        .onTrue(AutoNamedCommands.goToLevel1());
         
     }
 

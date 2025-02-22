@@ -15,6 +15,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -73,9 +76,10 @@ public class RobotContainer {
 
     public static Boolean disableControllerIn = false;
 
-// Editable speed value for additional current from Shuffleboard
 private GenericEntry additionalAngleSpeed = Shuffleboard.getTab("Coral")
-    .add("Additional Angle Speed", 0.1) // Default value set to 0.1
+    .add("Additional Angle Speed", 0.1)
+    .withWidget("Number Slider")
+    .withProperties(Map.of("min", -1.0, "max", 1.0)) // adjust min and max as needed
     .getEntry();
 
 

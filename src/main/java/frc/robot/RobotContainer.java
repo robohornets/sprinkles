@@ -15,6 +15,9 @@ import com.pathplanner.lib.auto.NamedCommands;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
+
+import java.util.Map;
+
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -25,11 +28,17 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.generated.TunerConstants;
+import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+
+
 import frc.robot.subsystems.photonvision.pathOnTheFly;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -50,8 +59,9 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController joystick2 = new CommandXboxController(1);
 
-    public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final ElevatorController elevator = new ElevatorController();
     private final CoralController coral = new CoralController();
 
@@ -68,6 +78,14 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     public static Boolean disableControllerIn = false;
+
+private GenericEntry additionalAngleSpeed = Shuffleboard.getTab("Coral")
+    .add("Additional Angle Speed", 0.1)
+    .withWidget("Number Slider")
+    .withProperties(Map.of("min", -1.0, "max", 1.0)) // adjust min and max as needed
+    .getEntry();
+
+
 
     public RobotContainer() {
         
@@ -259,6 +277,31 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
                 CommandScheduler.getInstance().cancelAll();
             }
         ));
+
+
+        // joystick2.x()
+        // .onTrue(AutoNamedCommands.goToLevel1());
+
+        // A button on joystick2 adds extra speed to angleMotor unless triggers are
+        // pressed
+        joystick2.a()
+                .whileTrue(Commands.run(() -> {
+                    // Check if either trigger is pressed
+                    boolean leftTriggerPressed = joystick2.getLeftTriggerAxis() > 0.1;
+                    boolean rightTriggerPressed = joystick2.getRightTriggerAxis() > 0.1;
+
+                    // Only apply speed if neither trigger is pressed
+                    if (!leftTriggerPressed && !rightTriggerPressed) {
+                        // Get the speed from Shuffleboard and apply it to angleMotor
+                        double additionalSpeed = additionalAngleSpeed.getDouble(0.0);
+                        CoralVariables.angleMotor.set(additionalSpeed);
+                    }
+                }).withTimeout(0.02)) // Run periodically
+                .onFalse(Commands.run(() -> {
+                    // Stop angleMotor and apply brake mode when button is released
+                    CoralVariables.angleMotor.set(0.0);
+                    CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                }));
         
     }
 

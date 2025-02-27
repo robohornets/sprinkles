@@ -16,17 +16,22 @@ import com.pathplanner.lib.path.Waypoint;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class pathOnTheFly extends Command{
         private final CommandSwerveDrivetrain m_drivetrain;
         private final Pose2d m_destinationPose;
+        private PathPlannerPath m_path; 
+        
 
         public pathOnTheFly(Pose2d destinationPose, CommandSwerveDrivetrain drivetrain){
                 m_drivetrain = drivetrain;
                 m_destinationPose = destinationPose;
                 addRequirements(drivetrain);
+
+
         }
 
 
@@ -36,8 +41,9 @@ public class pathOnTheFly extends Command{
 @Override
 public void initialize(){
 
-VisionSubsystem visionSubsystem1 = new VisionSubsystem();
-Pose2d pose = visionSubsystem1.getLatestEstimatedPose();
+//VisionSubsystem visionSubsystem1 = new VisionSubsystem();
+//Pose2d pose = visionSubsystem1.getLatestEstimatedPose();
+Pose2d pose = m_drivetrain.getPose2d();
 // WORK HERE
 //Pose2d currentPose = m_drivetrain.Pose2d;
 
@@ -62,12 +68,26 @@ PathPlannerPath path = new PathPlannerPath(
 );
 
 path.preventFlipping = true;
-AutoBuilder.followPath(path);
+m_path = path;
 
+//AutoBuilder.followPath(path);
+
+}
+
+@Override
+public void execute() {
+        if(m_path != null){
+                Commands.sequence(
+                        Commands.runOnce(() ->{
+                System.out.println("y AlignOnTheFly PathPoses: ");
+                m_path.getPathPoses().forEach(System.out::println);}, m_drivetrain),
+                AutoBuilder.followPath(m_path)
+        ).schedule();
+        }
 }
 
 // Prevent the path from being flipped if the coordinates are already correct
 //path.preventFlipping = true;
 
 
-}
+} 

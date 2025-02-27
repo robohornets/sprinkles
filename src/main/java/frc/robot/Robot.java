@@ -8,8 +8,11 @@ import com.ctre.phoenix6.hardware.CANrange;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 
 
@@ -35,15 +38,20 @@ public class Robot extends TimedRobot {
     //elevatorEncoder.setDistancePerPulse(1.0/2048);
   }
 
+  double previousValue = 0.0;
   @Override
   public void robotPeriodic() {
     pdp.clearStickyFaults();
     
     CommandScheduler.getInstance().run();
+    double value = ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble();
 
     //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
 
+    if (value!= previousValue){
     System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
+    previousValue = value;
+    }
     //double num = m_robotContainer.encoder1.get();
     //System.out.println(num);
 
@@ -61,6 +69,8 @@ public class Robot extends TimedRobot {
     // Test code for CANrange sensor
     // System.out.println(canRangeSensor.getDistance(true).refresh().getValueAsDouble());
     // System.out.println(VisionSubsystem.getLatestEstimatedPose());
+    SmartDashboard.putData("Field", m_field);
+    
   }
 
   @Override
@@ -123,4 +133,7 @@ public class Robot extends TimedRobot {
   public void print(Object printValue) {
     System.out.println(printValue);
   }
+
+  private final Field2d m_field = new Field2d();
+  
 }

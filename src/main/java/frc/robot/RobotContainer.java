@@ -6,24 +6,20 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.io.IOException;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.commands.PathPlannerAuto;
-import com.pathplanner.lib.path.PathPlannerPath;
-import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-
+import frc.robot.commands.AlignOnTheFly;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -71,7 +67,16 @@ public class RobotContainer {
             )
         );
 
-        joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+        joystick.b().onTrue(Commands.runOnce(() -> { 
+                System.out.println("y getPose: " + drivetrain.getState().Pose);
+        }, drivetrain));
+                
+        joystick.a().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(216.0)), drivetrain));
+
+        joystick.y().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(230.0)), drivetrain));
+
+        //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
+                
         joystick.b().whileTrue(drivetrain.applyRequest(() ->
             point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
         ));

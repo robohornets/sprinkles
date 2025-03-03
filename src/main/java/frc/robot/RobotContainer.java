@@ -13,6 +13,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -71,9 +72,9 @@ public class RobotContainer {
                 System.out.println("y getPose: " + drivetrain.getState().Pose);
         }, drivetrain));
                 
-        joystick.a().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(216.0)), drivetrain));
+        joystick.a().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
 
-        joystick.y().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(230.0)), drivetrain));
+        joystick.y().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
 
         //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
                 

@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.commands.AlignOnTheFly;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -32,11 +31,7 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-
+    
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
@@ -53,51 +48,29 @@ public class RobotContainer {
         
         configureBindings();
     }
-    
-
 
     private void configureBindings() {
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                drive.withVelocityX(-joystick.getLeftX() * MaxSpeed) // Drive forward with negative X (forward)
+                    .withVelocityY(joystick.getLeftY() * MaxSpeed) // Drive left with positive Y (right)
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
-        joystick.b().onTrue(Commands.runOnce(() -> { 
+        joystick.a().onTrue(Commands.runOnce(() -> { 
                 System.out.println("y getPose: " + drivetrain.getState().Pose);
         }, drivetrain));
                 
-        joystick.a().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
+        // collect algae
+        joystick.y().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
 
-        joystick.y().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
+        // align with top left coral
+        joystick.x().onTrue(new AlignOnTheFly(new Pose2d(3.46, 5.088, new Rotation2d(Units.degreesToRadians(300.0))), drivetrain));
 
-        //joystick.a().whileTrue(drivetrain.applyRequest(() -> brake));
-                
-        joystick.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-joystick.getLeftY(), -joystick.getLeftX()))
-        ));
-
-        joystick.pov(0).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(0.5).withVelocityY(0))
-        );
-        joystick.pov(180).whileTrue(drivetrain.applyRequest(() ->
-            forwardStraight.withVelocityX(-0.5).withVelocityY(0))
-        );
-
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        joystick.back().and(joystick.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        joystick.back().and(joystick.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        joystick.start().and(joystick.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        joystick.start().and(joystick.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
-
-        // reset the field-centric heading on left bumper press
-        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // align with top right coral
+        joystick.b().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

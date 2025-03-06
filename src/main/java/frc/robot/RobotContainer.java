@@ -6,6 +6,10 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Optional;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -31,7 +35,7 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController joystick = new CommandXboxController(0);
@@ -45,10 +49,20 @@ public class RobotContainer {
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Mode", autoChooser);
-        
         configureBindings();
     }
 
+    /*
+    collector AlignOnTheFly currentPose: Pose2d(Translation2d(X: 1.06, Y: 6.39), Rotation2d(Rads: 2.18, Deg: 124.92))
+
+    top left coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 3.45, Y: 5.10), Rotation2d(Rads: -1.05, Deg: -60.15))
+    top right coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 5.85, Y: 3.80), Rotation2d(Rads: -3.12, Deg: -178.51))
+    right middle coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 2.67, Y: 3.73), Rotation2d(Rads: -0.01, Deg: -0.29))
+    bottom right middle coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 1.06, Y: 6.39), Rotation2d(Rads: 2.18, Deg: 124.84))
+    bottom left middle coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 3.45, Y: 5.10), Rotation2d(Rads: -1.05, Deg: -60.28))
+    left middle coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 5.14, Y: 5.10), Rotation2d(Rads: -2.11, Deg: -120.65))
+    */
+    
     private void configureBindings() {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
@@ -64,13 +78,14 @@ public class RobotContainer {
         }, drivetrain));
                 
         // collect algae
-        joystick.y().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
+        //joystick.y().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
 
         // align with top left coral
-        joystick.x().onTrue(new AlignOnTheFly(new Pose2d(3.46, 5.088, new Rotation2d(Units.degreesToRadians(300.0))), drivetrain));
+        joystick.x().onTrue(new AlignOnTheFly(drivetrain));
+        //joystick.x().onTrue(new AlignOnTheFly(new Pose2d(3.46, 5.088, new Rotation2d(Units.degreesToRadians(300.0))), drivetrain));
 
         // align with top right coral
-        joystick.b().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
+        //joystick.b().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

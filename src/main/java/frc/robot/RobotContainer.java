@@ -6,18 +6,15 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Optional;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,17 +48,6 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", autoChooser);
         configureBindings();
     }
-
-    /*
-    collector AlignOnTheFly currentPose: Pose2d(Translation2d(X: 1.06, Y: 6.39), Rotation2d(Rads: 2.18, Deg: 124.92))
-
-    top left coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 3.45, Y: 5.10), Rotation2d(Rads: -1.05, Deg: -60.15))
-    top right coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 5.85, Y: 3.80), Rotation2d(Rads: -3.12, Deg: -178.51))
-    right middle coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 2.67, Y: 3.73), Rotation2d(Rads: -0.01, Deg: -0.29))
-    bottom right middle coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 1.06, Y: 6.39), Rotation2d(Rads: 2.18, Deg: 124.84))
-    bottom left middle coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 3.45, Y: 5.10), Rotation2d(Rads: -1.05, Deg: -60.28))
-    left middle coral AlignOnTheFly currentPose: Pose2d(Translation2d(X: 5.14, Y: 5.10), Rotation2d(Rads: -2.11, Deg: -120.65))
-    */
     
     private void configureBindings() {
         drivetrain.setDefaultCommand(
@@ -74,7 +60,7 @@ public class RobotContainer {
         );
 
         joystick.a().onTrue(Commands.runOnce(() -> { 
-                System.out.println("y getPose: " + drivetrain.getState().Pose);
+                System.out.println("getPose: " + drivetrain.getState().Pose);
         }, drivetrain));
                 
         // collect algae from closest station
@@ -85,6 +71,8 @@ public class RobotContainer {
         
         // align with left side of closed reef
         joystick.x().onTrue(new AlignOnTheFly("leftReef", drivetrain));
+
+        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         
         drivetrain.registerTelemetry(logger::telemeterize);
     }

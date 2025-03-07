@@ -77,16 +77,15 @@ public class RobotContainer {
                 System.out.println("y getPose: " + drivetrain.getState().Pose);
         }, drivetrain));
                 
-        // collect algae
-        //joystick.y().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
+        // collect algae from closest station
+        joystick.y().onTrue(new AlignOnTheFly("collector", drivetrain));
 
-        // align with top left coral
-        joystick.x().onTrue(new AlignOnTheFly(drivetrain));
-        //joystick.x().onTrue(new AlignOnTheFly(new Pose2d(3.46, 5.088, new Rotation2d(Units.degreesToRadians(300.0))), drivetrain));
-
-        // align with top right coral
-        //joystick.b().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
-
+        // align right side of closest reef
+        joystick.b().onTrue(new AlignOnTheFly("rightReef", drivetrain));
+        
+        // align with left side of closed reef
+        joystick.x().onTrue(new AlignOnTheFly("leftReef", drivetrain));
+        
         drivetrain.registerTelemetry(logger::telemeterize);
     }
 

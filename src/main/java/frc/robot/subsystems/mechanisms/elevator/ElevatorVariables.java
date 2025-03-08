@@ -5,11 +5,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 
-public class ElevatorVariables {
-    public static final double elevatorUpDownSpeed = 0.5;
+public class ElevatorVariables extends SubsystemBase {
+    public static final double elevatorUpDownSpeed = 0.1;
 
     public static final TalonFX elevatorLeft = new TalonFX(10);
     public static final TalonFX elevatorRight = new TalonFX(9);

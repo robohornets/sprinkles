@@ -27,21 +27,24 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AlignOnTheFly;
 import frc.robot.generated.TunerConstants;
 import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorAutoHeight;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 
-import frc.robot.subsystems.photonvision.pathOnTheFly;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -64,6 +67,8 @@ public class RobotContainer {
     public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final ElevatorController elevator = new ElevatorController();
     private final CoralController coral = new CoralController();
+
+    public final ElevatorVariables elevatorSubsystem = new ElevatorVariables();
 
     // public final TalonFX thing1 = new TalonFX(9);
     // public final TalonFX thing2 = new TalonFX(10);
@@ -88,7 +93,7 @@ private GenericEntry additionalAngleSpeed = Shuffleboard.getTab("Coral")
 
 
     public RobotContainer() {
-        
+        DriverStation.silenceJoystickConnectionWarning(true);
         // NamedCommands.registerCommand("driveByTime", Aquamarine.driveByTime(drivetrain, drive));
 NamedCommands.registerCommand("driveByTime", 
 Commands.sequence(
@@ -201,11 +206,9 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
             )
         );
 
-        joystick.a().onTrue(new pathOnTheFly(new Pose2d(0.0, 2.0, Rotation2d.fromDegrees(0)), drivetrain));
-
 
         // reset the field-centric heading on left bumper press
-        joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        //joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
         joystick
@@ -279,29 +282,24 @@ NamedCommands.registerCommand("driveByTimeAltAlt",
         ));
 
 
-        // joystick2.x()
-        // .onTrue(AutoNamedCommands.goToLevel1());
+                
+        joystick2.a().onTrue(Commands.runOnce(() -> { 
+                System.out.println("y getPose: " + drivetrain.getState().Pose);
+        }, drivetrain));
+                
+        // collect algae
+        joystick2.y().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
 
-        // A button on joystick2 adds extra speed to angleMotor unless triggers are
-        // pressed
-        joystick2.a()
-                .whileTrue(Commands.run(() -> {
-                    // Check if either trigger is pressed
-                    boolean leftTriggerPressed = joystick2.getLeftTriggerAxis() > 0.1;
-                    boolean rightTriggerPressed = joystick2.getRightTriggerAxis() > 0.1;
+        // align with top left coral
+        joystick2.x().onTrue(new AlignOnTheFly(new Pose2d(3.46, 5.088, new Rotation2d(Units.degreesToRadians(300.0))), drivetrain));
 
-                    // Only apply speed if neither trigger is pressed
-                    if (!leftTriggerPressed && !rightTriggerPressed) {
-                        // Get the speed from Shuffleboard and apply it to angleMotor
-                        double additionalSpeed = additionalAngleSpeed.getDouble(0.0);
-                        CoralVariables.angleMotor.set(additionalSpeed);
-                    }
-                }).withTimeout(0.02)) // Run periodically
-                .onFalse(Commands.run(() -> {
-                    // Stop angleMotor and apply brake mode when button is released
-                    CoralVariables.angleMotor.set(0.0);
-                    CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
-                }));
+        // align with top right coral
+        joystick2.b().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
+
+        joystick2.povDown().onTrue(new ElevatorAutoHeight(0.0, elevatorSubsystem));
+        joystick2.povLeft().onTrue(new ElevatorAutoHeight(20.0, elevatorSubsystem));
+        joystick2.povRight().onTrue(new ElevatorAutoHeight(40.0, elevatorSubsystem));
+        joystick2.povUp().onTrue(new ElevatorAutoHeight(57.0, elevatorSubsystem));
         
     }
 

@@ -37,7 +37,7 @@ public class pathOnTheFly extends Command{
 public void initialize(){
 
 VisionSubsystem visionSubsystem1 = new VisionSubsystem();
-Pose2d pose = visionSubsystem1.getLatestEstimatedPose();
+Pose2d pose = visionSubsystem1.latestEstimatedPose;
 // WORK HERE
 //Pose2d currentPose = m_drivetrain.Pose2d;
 

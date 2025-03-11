@@ -106,7 +106,7 @@ public class AlignOnTheFly extends Command {
             List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
                     currentPose, m_destinationPose);
 
-            constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for
+            constraints = new PathConstraints(0.5, 0.5, 2 * Math.PI, 4 * Math.PI); // The constraints for
                                                                                    // this
                                                                                    // path.
             // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); //
@@ -137,6 +137,7 @@ public class AlignOnTheFly extends Command {
     @Override
     public void execute() {
         if (m_path != null) {
+            System.out.println("Pose2d currentPose = " + m_drivetrain.getState().Pose);
             AutoBuilder.followPath(m_path).schedule();
         }
     }

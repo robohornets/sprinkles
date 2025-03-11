@@ -4,17 +4,15 @@
 
 package frc.robot;
 
-import static edu.wpi.first.units.Units.*;
-
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import static edu.wpi.first.units.Units.MetersPerSecond;
+import static edu.wpi.first.units.Units.RadiansPerSecond;
+import static edu.wpi.first.units.Units.RotationsPerSecond;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -53,8 +51,8 @@ public class RobotContainer {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftX() * MaxSpeed) // Drive forward with negative X (forward)
-                    .withVelocityY(joystick.getLeftY() * MaxSpeed) // Drive left with positive Y (right)
+                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative X (forward)
+                    .withVelocityY(joystick.getLeftX() * MaxSpeed) // Drive left with positive Y (right)
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
@@ -73,6 +71,8 @@ public class RobotContainer {
         joystick.x().onTrue(new AlignOnTheFly("leftReef", drivetrain));
 
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.resetPose(new Pose2d(0.0, 0.0, new Rotation2d(0.0)))));
         
         drivetrain.registerTelemetry(logger::telemeterize);
     }

@@ -1,0 +1,49 @@
+
+// NamedCommands.registerCommand("driveByTimeAlt", 
+// Commands.sequence(
+//             Commands.print("Starting wait command Alt"),
+//             drivetrain.applyRequest(
+//                 () -> {
+//                     return (SwerveRequest) drive.withVelocityX(0.0).withVelocityY(0.0);
+                    
+//                 }
+//             ).withTimeout(5),
+//             //Commands.waitSeconds(5),
+//             new RunCommand(() -> {
+//                 CommandScheduler.getInstance().cancelAll();
+//             })
+//         )
+// );
+        // canRangeTrigger.whileTrue(new RunCommand(() -> {
+        //     thing1.set(0.1);
+        //     thing2.set(-0.1);
+        // }));
+
+        // canRangeTrigger.onTrue(new RunCommand(() -> {
+        //     // When the sensor detects something, disable the controller
+        //     disableControllerIn = true;
+        //     thing1.set(0.1); // Motor action when sensor is triggered
+        //     thing2.set(-0.1);
+        // }));
+        
+        // canRangeTrigger.onFalse(new RunCommand(() -> {
+        //     // Wait for 2 seconds and then stop the motors and re-enable the controller
+        //     Commands.sequence(
+        //         new WaitCommand(2.0), // Wait for 2 seconds
+        //         new RunCommand(() -> {
+        //             thing1.set(0.0);  // Stop motor 1
+        //             thing2.set(0.0);  // Stop motor 2
+        //             disableControllerIn = false;  // Re-enable the controller inputs
+        //             CommandScheduler.getInstance().cancelAll();
+        //         })
+        //     ).schedule();
+        // }));
+
+
+        // canRangeTrigger.onFalse(new SequentialCommandGroup(() -> {
+
+        //     thing1.set(0.1);
+        //     thing2.set(-0.1);
+        // }));
+
+        

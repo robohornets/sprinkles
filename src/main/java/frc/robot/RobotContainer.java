@@ -44,11 +44,10 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
-
-
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
+                                                                                      // max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -84,223 +83,168 @@ public class RobotContainer {
 
     public static Boolean disableControllerIn = false;
 
-private GenericEntry additionalAngleSpeed = Shuffleboard.getTab("Coral")
-    .add("Additional Angle Speed", 0.1)
-    .withWidget("Number Slider")
-    .withProperties(Map.of("min", -1.0, "max", 1.0)) // adjust min and max as needed
-    .getEntry();
+    // Triggers for Button Console
+    final Trigger positionATrigger = new Trigger(
+        () -> Math.round(this.joystick2.getLeftX() * 10)/10 == 0.1 && Math.round(this.joystick2.getLeftY() * 10)/10 == 0.1
+    );
 
-
+    private GenericEntry additionalAngleSpeed = Shuffleboard.getTab("Coral")
+            .add("Additional Angle Speed", 0.1)
+            .withWidget("Number Slider")
+            .withProperties(Map.of("min", -1.0, "max", 1.0)) // adjust min and max as needed
+            .getEntry();
 
     public RobotContainer() {
         DriverStation.silenceJoystickConnectionWarning(true);
-        // NamedCommands.registerCommand("driveByTime", Aquamarine.driveByTime(drivetrain, drive));
-NamedCommands.registerCommand("driveByTime", 
-Commands.sequence(
-            Commands.print("Starting wait command"),
-            drivetrain.applyRequest(
-                () -> {
-                    return (SwerveRequest) drive.withVelocityX(0.0).withVelocityY(0.0);
-                    
-                }
-            ).withTimeout(5)
-        )
-);
-NamedCommands.registerCommand("driveByTimeAlt", 
-    new SequentialCommandGroup(
-        new PrintCommand("Starting drive command"),  // This is to make sure we see this in the log
-        drivetrain.applyRequest(() -> {
-            return drive.withVelocityX(0.0).withVelocityY(0.0);
-        }).withTimeout(5), 
-        new PrintCommand("Drive command finished"),
-        // new WaitCommand(5), // Wait for 5 seconds
-        new PrintCommand("Clearing commands")
-        // new RunCommand(() -> {
-        //                     CommandScheduler.getInstance().cancelAll();
-        //                 })
-    )
-);
+        // NamedCommands.registerCommand("driveByTime",
+        // Aquamarine.driveByTime(drivetrain, drive));
+        NamedCommands.registerCommand("driveByTime",
+                Commands.sequence(
+                        Commands.print("Starting wait command"),
+                        drivetrain.applyRequest(
+                                () -> {
+                                    return (SwerveRequest) drive.withVelocityX(0.0).withVelocityY(0.0);
 
-NamedCommands.registerCommand("driveByTimeAltAlt", 
-    new SequentialCommandGroup(
-        new PrintCommand("Starting drive command"),  // This is to make sure we see this in the log
-        drivetrain.applyRequest(() -> {
-            return drive.withVelocityX(0.0).withVelocityY(0.0);
-        }).withTimeout(2), 
-        new PrintCommand("Drive command finished"),
-        // new WaitCommand(5), // Wait for 5 seconds
-        new PrintCommand("Clearning commands")
-        // new RunCommand(() -> {
-        //                     CommandScheduler.getInstance().cancelAll();
-        //                 })
-    )
-);
+                                }).withTimeout(5)));
+        NamedCommands.registerCommand("driveByTimeAlt",
+                new SequentialCommandGroup(
+                        new PrintCommand("Starting drive command"), // This is to make sure we see this in the log
+                        drivetrain.applyRequest(() -> {
+                            return drive.withVelocityX(0.0).withVelocityY(0.0);
+                        }).withTimeout(5),
+                        new PrintCommand("Drive command finished"),
+                        // new WaitCommand(5), // Wait for 5 seconds
+                        new PrintCommand("Clearing commands")
+                // new RunCommand(() -> {
+                // CommandScheduler.getInstance().cancelAll();
+                // })
+                ));
 
-// NamedCommands.registerCommand("driveByTimeAlt", 
-// Commands.sequence(
-//             Commands.print("Starting wait command Alt"),
-//             drivetrain.applyRequest(
-//                 () -> {
-//                     return (SwerveRequest) drive.withVelocityX(0.0).withVelocityY(0.0);
-                    
-//                 }
-//             ).withTimeout(5),
-//             //Commands.waitSeconds(5),
-//             new RunCommand(() -> {
-//                 CommandScheduler.getInstance().cancelAll();
-//             })
-//         )
-// );
-        // canRangeTrigger.whileTrue(new RunCommand(() -> {
-        //     thing1.set(0.1);
-        //     thing2.set(-0.1);
-        // }));
+        NamedCommands.registerCommand("driveByTimeAltAlt",
+                new SequentialCommandGroup(
+                        new PrintCommand("Starting drive command"), // This is to make sure we see this in the log
+                        drivetrain.applyRequest(() -> {
+                            return drive.withVelocityX(0.0).withVelocityY(0.0);
+                        }).withTimeout(2),
+                        new PrintCommand("Drive command finished"),
+                        // new WaitCommand(5), // Wait for 5 seconds
+                        new PrintCommand("Clearning commands")
+                // new RunCommand(() -> {
+                // CommandScheduler.getInstance().cancelAll();
+                // })
+                ));
 
-        // canRangeTrigger.onTrue(new RunCommand(() -> {
-        //     // When the sensor detects something, disable the controller
-        //     disableControllerIn = true;
-        //     thing1.set(0.1); // Motor action when sensor is triggered
-        //     thing2.set(-0.1);
-        // }));
-        
-        // canRangeTrigger.onFalse(new RunCommand(() -> {
-        //     // Wait for 2 seconds and then stop the motors and re-enable the controller
-        //     Commands.sequence(
-        //         new WaitCommand(2.0), // Wait for 2 seconds
-        //         new RunCommand(() -> {
-        //             thing1.set(0.0);  // Stop motor 1
-        //             thing2.set(0.0);  // Stop motor 2
-        //             disableControllerIn = false;  // Re-enable the controller inputs
-        //             CommandScheduler.getInstance().cancelAll();
-        //         })
-        //     ).schedule();
-        // }));
-
-
-        // canRangeTrigger.onFalse(new SequentialCommandGroup(() -> {
-
-        //     thing1.set(0.1);
-        //     thing2.set(-0.1);
-        // }));
-
-        
-
-        // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
+        // Build auto chooser. This will find all .auto files in
+        // deploy/pathplanner/autos
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Mode", autoChooser);
-        
+
+        positionATrigger.onTrue(getAutonomousCommand());
+
         configureBindings();
     }
-    
-
 
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * 0.5) // Drive forward with negative Y (forward)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed * 0.5) // Drive left with negative X (left)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
-
+                // Drivetrain will execute this command periodically
+                drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * 0.5) // Drive
+                                                                                                         // forward with
+                                                                                                         // negative Y
+                                                                                                         // (forward)
+                        .withVelocityY(-joystick.getLeftX() * MaxSpeed * 0.5) // Drive left with negative X (left)
+                        .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with
+                                                                                    // negative X (left)
+                ));
 
         // reset the field-centric heading on left bumper press
-        //joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
+        joystick.leftBumper()
+                // .whileTrue(elevator.elevatorDown())
+                // .onFalse(elevator.stopElevator());
+                .whileTrue(elevator.elevatorDown())
+                .onFalse(Commands.run(
+                        () -> {
+                            ElevatorVariables.elevatorLeft.set(0.0);
+                            ElevatorVariables.elevatorRight.set(0.0);
+                            ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                            ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
 
-        joystick
-        .leftBumper()
-        // .whileTrue(elevator.elevatorDown())
-        // .onFalse(elevator.stopElevator());
-        .whileTrue(elevator.elevatorDown())
-        .onFalse(Commands.run(
-            () -> {
-                ElevatorVariables.elevatorLeft.set(0.0);
-                ElevatorVariables.elevatorRight.set(0.0);
-                ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
-                CommandScheduler.getInstance().cancelAll();
-            }
-        ));
+        joystick.rightBumper()
+                // .whileTrue(elevator.elevatorUp())
+                // .onFalse(elevator.stopElevator());
+                .whileTrue(elevator.elevatorUp())
+                .onFalse(Commands.run(
+                        () -> {
+                            ElevatorVariables.elevatorLeft.set(0.0);
+                            ElevatorVariables.elevatorRight.set(0.0);
+                            ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                            ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                            CommandScheduler.getInstance().cancelAll();
 
-        joystick
-        .rightBumper()
-        // .whileTrue(elevator.elevatorUp())
-        // .onFalse(elevator.stopElevator());
-        .whileTrue(elevator.elevatorUp())
-        .onFalse(Commands.run(
-            () -> {
-                ElevatorVariables.elevatorLeft.set(0.0);
-                ElevatorVariables.elevatorRight.set(0.0);
-                ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
-                CommandScheduler.getInstance().cancelAll();
-
-            }
-        ));
+                        }));
 
         joystick.a()
-        .whileTrue(coral.flywheelOut())
-        .onFalse(Commands.run(
-            () -> {
-                CoralVariables.flywheelMotor.set(0.0);
-                CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
-                CommandScheduler.getInstance().cancelAll();
-            }
-        ));
+                .whileTrue(coral.flywheelOut())
+                .onFalse(Commands.run(
+                        () -> {
+                            CoralVariables.flywheelMotor.set(0.0);
+                            CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
 
         joystick.b()
-        .whileTrue(coral.flywheelIn())
-        .onFalse(Commands.run(
-            () -> {
-                CoralVariables.flywheelMotor.set(0.0);
-                CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
-                CommandScheduler.getInstance().cancelAll();
-            }
-        ));
+                .whileTrue(coral.flywheelIn())
+                .onFalse(Commands.run(
+                        () -> {
+                            CoralVariables.flywheelMotor.set(0.0);
+                            CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
 
         joystick.leftTrigger()
-        .whileTrue(coral.angleDown())
-        .onFalse(Commands.run(
-            () -> {
-                CoralVariables.angleMotor.set(0.0);
-                CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
-                CommandScheduler.getInstance().cancelAll();
-            }
-        ));
+                .whileTrue(coral.angleDown())
+                .onFalse(Commands.run(
+                        () -> {
+                            CoralVariables.angleMotor.set(0.0);
+                            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
         joystick.rightTrigger()
-        .whileTrue(coral.angleUp())
-        .onFalse(Commands.run(
-            () -> {
-                CoralVariables.angleMotor.set(0.0);
-                CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
-                CommandScheduler.getInstance().cancelAll();
-            }
-        ));
+                .whileTrue(coral.angleUp())
+                .onFalse(Commands.run(
+                        () -> {
+                            CoralVariables.angleMotor.set(0.0);
+                            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
 
+        joystick2.a()
+                .onTrue(Commands.runOnce(() -> {
+                    System.out.println("y getPose: " + drivetrain.getState().Pose);
+                }, drivetrain));
 
-                
-        joystick2.a().onTrue(Commands.runOnce(() -> { 
-                System.out.println("y getPose: " + drivetrain.getState().Pose);
-        }, drivetrain));
-                
         // collect algae
-        joystick2.y().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
+        joystick2.y().onTrue(
+                new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(Units.degreesToRadians(125.0))), drivetrain));
 
         // align with top left coral
-        joystick2.x().onTrue(new AlignOnTheFly(new Pose2d(3.46, 5.088, new Rotation2d(Units.degreesToRadians(300.0))), drivetrain));
+        joystick2.x().onTrue(
+                new AlignOnTheFly(new Pose2d(3.46, 5.088, new Rotation2d(Units.degreesToRadians(300.0))), drivetrain));
 
         // align with top right coral
-        joystick2.b().onTrue(new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
+        joystick2.b().onTrue(
+                new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
 
         joystick2.povDown().onTrue(new ElevatorAutoHeight(0.0, elevatorSubsystem));
         joystick2.povLeft().onTrue(new ElevatorAutoHeight(20.0, elevatorSubsystem));
         joystick2.povRight().onTrue(new ElevatorAutoHeight(40.0, elevatorSubsystem));
         joystick2.povUp().onTrue(new ElevatorAutoHeight(57.0, elevatorSubsystem));
-        
+
     }
 
     public Command getAutonomousCommand() {

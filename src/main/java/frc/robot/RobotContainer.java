@@ -220,6 +220,8 @@ public class RobotContainer {
 
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
+        joystick.x().onTrue(new AlignOnTheFly("leftReef", drivetrain));
+        
         joystick.leftTrigger()
                 .whileTrue(coral.angleDown())
                 .onFalse(Commands.run(
@@ -250,6 +252,7 @@ public class RobotContainer {
         joystick2.povRight().onTrue(new ElevatorAutoHeight(37.0, elevatorSubsystem));
         joystick2.povUp().onTrue(new ElevatorAutoHeight(57.0, elevatorSubsystem));
 
+        drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {

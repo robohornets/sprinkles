@@ -49,7 +49,7 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Elevator Height", ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
     ShuffleboardUtil.put("Angle Encoder is Connected", CoralVariables.angleDCEncoder.isConnected());
     ShuffleboardUtil.put("Coral Angle", CoralVariables.angleDCEncoder.get());
-    ShuffleboardUtil.put("", RobotContainer.drivetrain.getState().Pose);
+    ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
     
     // System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
     // System.out.println(CoralVariables.angleDCEncoder.get());

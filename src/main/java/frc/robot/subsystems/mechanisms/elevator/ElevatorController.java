@@ -6,6 +6,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 
 public class ElevatorController {
 
@@ -39,7 +40,7 @@ public class ElevatorController {
     public Command elevatorTest() {
         return Commands.run(
             () -> {
-                
+                CoralVariables.flywheelMotor.set(0.2);
             }
         );
     }

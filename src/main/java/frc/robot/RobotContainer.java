@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignOnTheFly;
+import frc.robot.commands.Destinations;
 import frc.robot.generated.TunerConstants;
 import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -46,13 +47,13 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class RobotContainer {
     // MARK: Constants
-    private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
+    public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
+    public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
 
 
     // MARK: Drive System
     /* Setting up bindings for necessary control of the swerve drive platform */
-    private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
+    public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -82,12 +83,10 @@ public class RobotContainer {
 
     // MARK: Mechanisms
     private final ElevatorController elevator = new ElevatorController();
-    private final CoralController coral = new CoralController();
+    public static final CoralController coral = new CoralController();
 
     public final ElevatorVariables elevatorSubsystem = new ElevatorVariables();
-
-    public final TalonFX elevatorLeft = new TalonFX(9);
-    public final TalonFX elevatorRight = new TalonFX(10);
+    public final CoralVariables coralSubsystem = new CoralVariables();
 
 
     // MARK: Shuffleboard
@@ -158,6 +157,9 @@ public class RobotContainer {
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
+
+
+
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * 0.5)
                     .withVelocityY(-joystick.getLeftX() * MaxSpeed * 0.5)
@@ -220,7 +222,7 @@ public class RobotContainer {
 
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        joystick.x().onTrue(new AlignOnTheFly("leftReef", drivetrain));
+        joystick.x().onTrue(new AlignOnTheFly(Destinations.LEFT_REEF, drivetrain));
         
         joystick.leftTrigger()
                 .whileTrue(coral.angleDown())

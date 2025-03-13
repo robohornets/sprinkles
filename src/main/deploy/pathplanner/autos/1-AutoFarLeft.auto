@@ -26,6 +26,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Pre-game",
   "choreoAuto": false
 }

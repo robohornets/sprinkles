@@ -17,20 +17,21 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
+
 public class AlignOnTheFly extends Command {
     private final CommandSwerveDrivetrain m_drivetrain;
     private PathPlannerPath m_path;
     private PathConstraints constraints;
 
-    public AlignOnTheFly(String destination, CommandSwerveDrivetrain drivetrain) {
+    public AlignOnTheFly(Destinations destination, CommandSwerveDrivetrain drivetrain) {
         m_drivetrain = drivetrain;
-        if (destination.equals("collector")) {
-            createCollectorLookup();
-        } else if (destination.equals("rightReef")) {
-            createRightReefLookup();
-        } else if (destination.equals("leftReef")) {
-            createLeftReefLookup();
+        switch (destination) {
+            case COLLECTOR -> createCollectorLookup();
+            case RIGHT_REEF -> createRightReefLookup();
+            case LEFT_REEF -> createLeftReefLookup();
+            default -> throw new IllegalArgumentException("Unknown destination: " + destination);
         }
+        
         addRequirements(drivetrain);
     }
 

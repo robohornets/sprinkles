@@ -11,12 +11,12 @@ public class CoralController {
     public Command flywheelOut() {
         return Commands.run(
             () -> {
-        CoralVariables.flywheelMotor.set(CoralVariables.flywheelSpeed);
+        CoralVariables.flywheelMotor.set(CoralVariables.flywheelOutSpeed);
     });}
     public Command flywheelIn() {
         return Commands.run(
             () -> {
-        CoralVariables.flywheelMotor.set(-CoralVariables.flywheelSpeed);
+        CoralVariables.flywheelMotor.set(-CoralVariables.flywheelInSpeed);
     });}
     public Command flywheelStop() {
         return Commands.run(

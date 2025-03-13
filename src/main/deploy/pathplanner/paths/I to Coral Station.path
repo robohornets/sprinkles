@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 1.6558184090307202,
+        "x": 1.656,
         "y": 7.499647858183263
       },
       "prevControl": {
-        "x": 2.531471596088128,
+        "x": 2.5316531870574077,
         "y": 6.2456555431504155
       },
       "nextControl": null,
@@ -45,7 +45,7 @@
     "rotation": 126.227
   },
   "reversed": false,
-  "folder": "Auto I-J-K",
+  "folder": "To Coral Station",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -118.345

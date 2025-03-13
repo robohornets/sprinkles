@@ -3,10 +3,13 @@
   "robotLength": 0.762,
   "holonomicMode": true,
   "pathFolders": [
+    "2 Auto H-I-J",
+    "1 Auto I-J-K",
+    "3 Auto K-L-A",
     "MiddleBlueAuto",
     "MiddleRedAuto",
-    "Auto I-J-K",
-    "Pre-game"
+    "Pre-game",
+    "To Coral Station"
   ],
   "autoFolders": [
     "Pre-game"

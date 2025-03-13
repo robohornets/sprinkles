@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.656,
-        "y": 7.5
+        "x": 5.746,
+        "y": 4.472
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8744070279396188,
-        "y": 7.275247451006355
+        "x": 7.459582726430084,
+        "y": 4.952812168961865
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.770118428893008,
-        "y": 5.30575261520127
+        "x": 1.6558184090307202,
+        "y": 7.499647858183263
       },
       "prevControl": {
-        "x": 5.671302717823093,
-        "y": 6.518725172139829
+        "x": 2.781482556580091,
+        "y": 6.2854498308943345
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -118.345
+    "rotation": 126.227
   },
   "reversed": false,
-  "folder": "Auto I-J-K",
+  "folder": "To Coral Station",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.227
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

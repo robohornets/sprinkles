@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.17725,
-        "y": 5.22425
+        "x": 7.9864758507680085,
+        "y": 4.70294582560911
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.845750000000001,
-        "y": 5.5264999999999995
+        "x": 6.573192501177508,
+        "y": 4.56553533503431
       },
       "isLocked": false,
-      "linkedName": "Coral-1"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.7842500000000001,
-        "y": 7.320499999999999
+        "x": 5.745618710275424,
+        "y": 4.472348384533898
       },
       "prevControl": {
-        "x": 2.68125,
-        "y": 6.8135
+        "x": 6.672522058535868,
+        "y": 4.559353767950757
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Human-1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 127.34934904464062
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Pre-game",
+  "folder": "2 Auto H-I-J",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -121.53479190518829
+    "rotation": 179.64863270161214
   },
   "useDefaultConstraints": true
 }

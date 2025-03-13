@@ -7,7 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1 - To I"
+            "pathName": "2 - To H"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoL4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "H to Coral Station"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "eatCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2 - To I"
           }
         },
         {
@@ -31,31 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1 - To J"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoL4"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "J to Coral Station"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "eatCoral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "1 - To K"
+            "pathName": "2 - To J"
           }
         },
         {

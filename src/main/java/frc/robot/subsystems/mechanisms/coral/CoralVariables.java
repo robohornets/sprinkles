@@ -15,7 +15,8 @@ public class CoralVariables extends SubsystemBase {
     
     // Angle 12, flywheel 11
     public static Double angleSpeed = 0.1;
-    public static Double flywheelSpeed = 0.2;
+    public static Double flywheelInSpeed = 0.2;
+    public static Double flywheelOutSpeed = 0.6;
 
     public static Double angleHoldSpeed = 0.015;
 

@@ -28,7 +28,7 @@ public class CoralController {
     public Command angleUp() {
         return Commands.run(
             () -> {
-        if (true/*getCoralAngle() > 0.5*/) {
+        if (getCoralAngle() < 0.82) {
             CoralVariables.angleMotor.set(-CoralVariables.angleSpeed); }
         else {
             CoralVariables.angleMotor.set(0.0);
@@ -39,7 +39,7 @@ public class CoralController {
     public Command angleDown() {
         return Commands.run(
             () -> {
-        if (true/*getCoralAngle() < 0.3*/) {
+        if (getCoralAngle() > 0.48) {
         CoralVariables.angleMotor.set(CoralVariables.angleSpeed);} 
         else {
             CoralVariables.angleMotor.set(0.0);

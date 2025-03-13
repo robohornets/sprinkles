@@ -33,6 +33,7 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
+import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorAutoHeight;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
@@ -224,6 +225,7 @@ public class RobotContainer {
 
         joystick.x().onTrue(new AlignOnTheFly(Destinations.LEFT_REEF, drivetrain));
         
+        
         joystick.leftTrigger()
                 .whileTrue(coral.angleDown())
                 .onFalse(Commands.run(
@@ -253,6 +255,11 @@ public class RobotContainer {
         joystick2.povLeft().onTrue(new ElevatorAutoHeight(17.0, elevatorSubsystem));
         joystick2.povRight().onTrue(new ElevatorAutoHeight(37.0, elevatorSubsystem));
         joystick2.povUp().onTrue(new ElevatorAutoHeight(57.0, elevatorSubsystem));
+
+        joystick.povUp().onTrue(new CoralSubsystem(0.82, coralSubsystem));
+        joystick.povLeft().onTrue(new CoralSubsystem(0.7, coralSubsystem));
+        joystick.povRight().onTrue(new CoralSubsystem(0.6, coralSubsystem));
+        joystick.povDown().onTrue(new CoralSubsystem(0.48, coralSubsystem));
 
         drivetrain.registerTelemetry(logger::telemeterize);
     }

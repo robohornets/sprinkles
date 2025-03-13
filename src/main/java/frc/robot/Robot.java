@@ -5,11 +5,13 @@
 package frc.robot;
 
 import com.ctre.phoenix6.hardware.CANrange;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 
 
@@ -44,6 +46,7 @@ public class Robot extends TimedRobot {
     //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
 
     System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
+    // System.out.println(CoralVariables.angleDCEncoder.get());
     //double num = m_robotContainer.encoder1.get();
     //System.out.println(num);
 
@@ -64,7 +67,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+    CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Coast);
+  }
 
   @Override
   public void disabledPeriodic() {}

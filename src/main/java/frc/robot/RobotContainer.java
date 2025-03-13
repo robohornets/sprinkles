@@ -139,7 +139,9 @@ public class RobotContainer {
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Mode", autoChooser);
 
-        positionATrigger.onTrue(getAutonomousCommand());
+        // positionATrigger.onTrue(getAutonomousCommand());
+
+        positionATrigger.onTrue(new ElevatorAutoHeight(40.0, elevatorSubsystem));
 
         configureBindings();
     }
@@ -167,12 +169,13 @@ public class RobotContainer {
                 .whileTrue(elevator.elevatorDown())
                 .onFalse(Commands.run(
                         () -> {
-                            ElevatorVariables.elevatorLeft.set(0.0);
-                            ElevatorVariables.elevatorRight.set(0.0);
+                            ElevatorVariables.elevatorLeft.set(-0.015);
+                            ElevatorVariables.elevatorRight.set(0.015);
                             ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
                             ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                             CommandScheduler.getInstance().cancelAll();
                         }));
+
 
         joystick.rightBumper()
                 // .whileTrue(elevator.elevatorUp())
@@ -180,13 +183,15 @@ public class RobotContainer {
                 .whileTrue(elevator.elevatorUp())
                 .onFalse(Commands.run(
                         () -> {
-                            ElevatorVariables.elevatorLeft.set(0.0);
-                            ElevatorVariables.elevatorRight.set(0.0);
+                            ElevatorVariables.elevatorLeft.set(-0.015);
+                            ElevatorVariables.elevatorRight.set(0.015);
                             ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
                             ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                             CommandScheduler.getInstance().cancelAll();
 
                         }));
+
+                        
 
         joystick.a()
                 .whileTrue(coral.flywheelOut())
@@ -201,16 +206,21 @@ public class RobotContainer {
                 .whileTrue(coral.flywheelIn())
                 .onFalse(Commands.run(
                         () -> {
+                            // ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+                            // ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
                             CoralVariables.flywheelMotor.set(0.0);
                             CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
                             CommandScheduler.getInstance().cancelAll();
                         }));
 
+
+        joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
         joystick.leftTrigger()
                 .whileTrue(coral.angleDown())
                 .onFalse(Commands.run(
                         () -> {
-                            CoralVariables.angleMotor.set(0.0);
+                            CoralVariables.angleMotor.set(-0.015);
                             CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
                             CommandScheduler.getInstance().cancelAll();
                         }));
@@ -218,7 +228,7 @@ public class RobotContainer {
                 .whileTrue(coral.angleUp())
                 .onFalse(Commands.run(
                         () -> {
-                            CoralVariables.angleMotor.set(0.0);
+                            CoralVariables.angleMotor.set(-0.015);
                             CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
                             CommandScheduler.getInstance().cancelAll();
                         }));
@@ -241,8 +251,8 @@ public class RobotContainer {
                 new AlignOnTheFly(new Pose2d(5.142, 5.088, new Rotation2d(Units.degreesToRadians(240.0))), drivetrain));
 
         joystick2.povDown().onTrue(new ElevatorAutoHeight(0.0, elevatorSubsystem));
-        joystick2.povLeft().onTrue(new ElevatorAutoHeight(20.0, elevatorSubsystem));
-        joystick2.povRight().onTrue(new ElevatorAutoHeight(40.0, elevatorSubsystem));
+        joystick2.povLeft().onTrue(new ElevatorAutoHeight(17.0, elevatorSubsystem));
+        joystick2.povRight().onTrue(new ElevatorAutoHeight(37.0, elevatorSubsystem));
         joystick2.povUp().onTrue(new ElevatorAutoHeight(57.0, elevatorSubsystem));
 
     }

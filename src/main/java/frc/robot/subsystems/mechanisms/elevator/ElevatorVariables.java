@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 
 public class ElevatorVariables extends SubsystemBase {
-    public static final double elevatorUpDownSpeed = 0.1;
+    public static final double elevatorUpDownSpeed = 0.2;
 
     public static final TalonFX elevatorLeft = new TalonFX(10);
     public static final TalonFX elevatorRight = new TalonFX(9);

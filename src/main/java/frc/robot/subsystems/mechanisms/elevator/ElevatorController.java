@@ -20,7 +20,7 @@ public class ElevatorController {
     public Command elevatorUp() {
         return Commands.run(
             () -> {
-                if (Math.abs(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble()) <= 57.0) {
+                if (Math.abs(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble()) <= 65.0) {
                     ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
                     ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
                 } else {

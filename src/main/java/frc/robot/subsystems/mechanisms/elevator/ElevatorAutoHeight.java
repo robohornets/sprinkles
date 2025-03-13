@@ -41,12 +41,6 @@ public class ElevatorAutoHeight extends Command {
             elevatorSubsystem.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeed);
             elevatorSubsystem.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeed);
         }
-        // else {
-        //     elevatorSubsystem.elevatorLeft.set(0.0);
-        //     elevatorSubsystem.elevatorRight.set(0.0);
-
-        //     isFinishedToggle = true;
-        // }
     }
 
     @Override

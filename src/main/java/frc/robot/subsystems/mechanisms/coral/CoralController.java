@@ -26,46 +26,28 @@ public class CoralController {
 
     //Angle commands
     public Command angleUp() {
-        
         return Commands.run(
             () -> {
-        if (CoralVariables.angleMotor.getPosition().getValueAsDouble() >= -0.1) {
+        if (true/*getCoralAngle() > 0.5*/) {
             CoralVariables.angleMotor.set(-CoralVariables.angleSpeed); }
         else {
             CoralVariables.angleMotor.set(0.0);
             CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
             }
     }); }
+
     public Command angleDown() {
         return Commands.run(
             () -> {
-        if (Math.abs(CoralVariables.angleMotor.getPosition().getValueAsDouble()) <= 8.2) {
+        if (true/*getCoralAngle() < 0.3*/) {
         CoralVariables.angleMotor.set(CoralVariables.angleSpeed);} 
         else {
             CoralVariables.angleMotor.set(0.0);
             CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
             }
     }); }
-    public Command angleStop() {
-        return Commands.run(
-            () -> {
-        CoralVariables.angleMotor.set(0.0);
-    }); } 
-    public Command angleGetAngle() {
-        return Commands.run(
-            () -> {
-        CoralVariables.angleDCEncoder.get();
-    }); } 
 
-    //Enabled/Disabled for angle
-    public void enableAngle() {
-        Commands.run(
-            () -> {
-        CoralVariables.angleDisabled = false;
-    }); }
-    public void disableAngle() {
-        Commands.run(
-            () -> {
-        CoralVariables.angleDisabled = true;
-    }); }
+    public double getCoralAngle() {
+        return CoralVariables.angleDCEncoder.get();
+    }
 }

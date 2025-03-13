@@ -3,8 +3,9 @@ package frc.robot.subsystems.mechanisms.coral;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class CoralVariables {
+public class CoralVariables extends SubsystemBase {
     public static TalonFX angleMotor = new TalonFX(12);
     public static TalonFX flywheelMotor = new TalonFX(11);
     public static DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(2);
@@ -14,6 +15,8 @@ public class CoralVariables {
     
     // Angle 12, flywheel 11
     public static Double angleSpeed = 0.1;
-    public static Double flywheelSpeed = 0.9;
+    public static Double flywheelSpeed = 0.2;
+
+    public static Double angleHoldSpeed = 0.015;
 
 }

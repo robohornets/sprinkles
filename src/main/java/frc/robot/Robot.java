@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.helpers.ShuffleboardUtil;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 
@@ -45,7 +46,12 @@ public class Robot extends TimedRobot {
 
     //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
 
-    System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Elevator Height", ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Angle Encoder is Connected", CoralVariables.angleDCEncoder.isConnected());
+    ShuffleboardUtil.put("Coral Angle", CoralVariables.angleDCEncoder.get());
+    ShuffleboardUtil.put("", RobotContainer.drivetrain.getState().Pose);
+    
+    // System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
     // System.out.println(CoralVariables.angleDCEncoder.get());
     //double num = m_robotContainer.encoder1.get();
     //System.out.println(num);

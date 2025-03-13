@@ -4,14 +4,16 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.Utils;
+import com.ctre.phoenix6.hardware.CANrange;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.photonvision.VisionSubsystem;
-
-import com.ctre.phoenix6.hardware.CANrange;
+import frc.robot.helpers.ShuffleboardUtil;
+import frc.robot.subsystems.mechanisms.coral.CoralVariables;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 
 
 public class Robot extends TimedRobot {
@@ -23,15 +25,36 @@ public class Robot extends TimedRobot {
 
   private final boolean kUseLimelight = false;
 
+  private PowerDistribution pdp = new PowerDistribution();
+
+  //public static Encoder elevatorEncoder = new Encoder(0, 1);
+
   public Robot() {
     m_robotContainer = new RobotContainer();
   }
 
   @Override
+  public void robotInit() {
+    //elevatorEncoder.setDistancePerPulse(1.0/2048);
+  }
+
+  @Override
   public void robotPeriodic() {
+    pdp.clearStickyFaults();
+    
     CommandScheduler.getInstance().run();
-    double num = m_robotContainer.encoder1.get();
-    System.out.println(num);
+
+    //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
+
+    ShuffleboardUtil.put("Elevator Height", ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Angle Encoder is Connected", CoralVariables.angleDCEncoder.isConnected());
+    ShuffleboardUtil.put("Coral Angle", CoralVariables.angleDCEncoder.get());
+    ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
+    
+    // System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
+    // System.out.println(CoralVariables.angleDCEncoder.get());
+    //double num = m_robotContainer.encoder1.get();
+    //System.out.println(num);
 
     /*
      * This example of adding Limelight is very simple and may not be sufficient for on-field use.
@@ -46,11 +69,15 @@ public class Robot extends TimedRobot {
     // print(RobotContainer.disableControllerIn);
     // Test code for CANrange sensor
     // System.out.println(canRangeSensor.getDistance(true).refresh().getValueAsDouble());
-    System.out.println(VisionSubsystem.getLatestEstimatedPose());
+    // System.out.println(VisionSubsystem.getLatestEstimatedPose());
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+    CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Coast);
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -81,7 +108,11 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    //System.out.println("------");
+    //System.out.println(elevatorEncoder.get());
+    //System.out.println(elevatorEncoder.getDistance());
+  }
 
   @Override
   public void teleopExit() {}

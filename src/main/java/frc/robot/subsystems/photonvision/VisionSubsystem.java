@@ -76,7 +76,7 @@ public class VisionSubsystem extends SubsystemBase {
      * Replace this with your drivetrain's odometry retrieval.
      */
     private Pose2d getOdometryPose() {
-        // TODO: Replace with your drivetrain's odometry pose retrieval
+        
 
         return new Pose2d();
     }
@@ -114,6 +114,8 @@ public class VisionSubsystem extends SubsystemBase {
             latestEstimatedPose = estimatedPoseBL.get().estimatedPose.toPose2d();
         } else if (estimatedPoseBR.isPresent()) {
             latestEstimatedPose = estimatedPoseBR.get().estimatedPose.toPose2d();
+        }
+    }
 
 
     /**

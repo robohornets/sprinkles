@@ -3,6 +3,11 @@ package frc.robot.subsystems.photonvision;
 import java.util.List;
 import frc.robot.subsystems.photonvision.VisionSubsystem;
 
+import com.ctre.phoenix6.hardware.CANcoder;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.mechanisms.swerve.LegacySwerveDrivetrain.OdometryThread;
+import com.ctre.phoenix6.swerve.SwerveDrivetrain;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.path.GoalEndState;
 import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.path.PathPlannerPath;
@@ -10,13 +15,33 @@ import com.pathplanner.lib.path.Waypoint;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
 
-public class pathOnTheFly {
+public class pathOnTheFly extends Command{
+        private final CommandSwerveDrivetrain m_drivetrain;
+        private final Pose2d m_destinationPose;
+
+        public pathOnTheFly(Pose2d destinationPose, CommandSwerveDrivetrain drivetrain){
+                m_drivetrain = drivetrain;
+                m_destinationPose = destinationPose;
+                addRequirements(drivetrain);
+        }
+
+
     // Create a list of waypoints from poses. Each pose represents one waypoint.
 // The rotation component of the pose should be the direction of travel. Do not use holonomic rotation.
 
+@Override
+public void initialize(){
+
 VisionSubsystem visionSubsystem1 = new VisionSubsystem();
-Pose2d pose = visionSubsystem1.getLatestEstimatedPose();
+Pose2d pose = visionSubsystem1.latestEstimatedPose;
+// WORK HERE
+//Pose2d currentPose = m_drivetrain.Pose2d;
+
+// System.out.println(pose);
 
 List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
         pose,
@@ -35,6 +60,11 @@ PathPlannerPath path = new PathPlannerPath(
         null, // The ideal starting state, this is only relevant for pre-planned paths, so can be null for on-the-fly paths.
         new GoalEndState(0.0, Rotation2d.fromDegrees(-90)) // Goal end state. You can set a holonomic rotation here. If using a differential drivetrain, the rotation will have no effect.
 );
+
+path.preventFlipping = true;
+AutoBuilder.followPath(path);
+
+}
 
 // Prevent the path from being flipped if the coordinates are already correct
 //path.preventFlipping = true;

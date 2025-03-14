@@ -38,6 +38,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     //elevatorEncoder.setDistancePerPulse(1.0/2048);
     CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
   }
 
   @Override

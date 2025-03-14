@@ -1,5 +1,7 @@
 package frc.robot.subsystems.mechanisms.elevator;
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
@@ -8,8 +10,8 @@ public class ElevatorAutoHeight extends Command {
     private ElevatorVariables elevatorSubsystem;
     public ElevatorAutoHeight(double height, ElevatorVariables elevatorSubsystem) {
         this.height = height;
-        if (height > 57) {
-            this.height = 57; 
+        if (height > 65) {
+            this.height = 65; 
         }
         else if (height < 0) {
             this.height = 0;
@@ -47,8 +49,11 @@ public class ElevatorAutoHeight extends Command {
     public void execute() {
         if (Math.abs(elevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble() + height) <= 2) {
             System.out.println("Stopping");
-            elevatorSubsystem.elevatorLeft.set(0.0);
-            elevatorSubsystem.elevatorRight.set(0.0);
+            elevatorSubsystem.elevatorLeft.set(-0.015);
+            elevatorSubsystem.elevatorRight.set(0.015);
+
+            elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+            elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
 
             isFinishedToggle = true;
             System.out.println(isFinishedToggle);
@@ -60,6 +65,7 @@ public class ElevatorAutoHeight extends Command {
     @Override
     public boolean isFinished() {
         System.out.println(isFinishedToggle);
+        
         return isFinishedToggle;
     }
 }

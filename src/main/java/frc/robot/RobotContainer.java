@@ -30,6 +30,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignOnTheFly;
 import frc.robot.commands.Destinations;
 import frc.robot.generated.TunerConstants;
+import frc.robot.joysticks.DebugJoystick;
+import frc.robot.joysticks.DriverJoystick;
 import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
@@ -67,14 +69,8 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
 
-    // MARK: Inputs
-    private final CommandXboxController joystick = new CommandXboxController(0);
-    private final CommandXboxController joystick2 = new CommandXboxController(1);
-
-    public CANrange canRangeSensor = new CANrange(34);
-
-
     // MARK: Triggers
+    public CANrange canRangeSensor = new CANrange(34);
     Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
 
     // Triggers for Button Console
@@ -88,6 +84,13 @@ public class RobotContainer {
 
     public final ElevatorVariables elevatorSubsystem = new ElevatorVariables();
     public final CoralVariables coralSubsystem = new CoralVariables();
+
+    // MARK: Inputs
+    private final CommandXboxController joystick = new CommandXboxController(0);
+    private final CommandXboxController joystick2 = new CommandXboxController(1);
+
+    private final DriverJoystick driverJoystick = new DriverJoystick(joystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    private final DebugJoystick debugJoystick = new DebugJoystick(joystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
 
 
     // MARK: Shuffleboard
@@ -152,124 +155,15 @@ public class RobotContainer {
         // Trigger configuration for joysticks
         positionATrigger.onTrue(new ElevatorAutoHeight(40.0, elevatorSubsystem));
 
-        configureBindings();
+        drivetrain.registerTelemetry(logger::telemeterize);
+
+        // MARK: Configure Bindings
+        driverJoystick.configureBindings();
+        // configureBindings();
     }
 
     private void configureBindings() {
-        // Note that X is defined as forward according to WPILib convention,
-        // and Y is defined as to the left according to WPILib convention.
-
-
-
-        drivetrain.setDefaultCommand(
-            drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * 0.5)
-                    .withVelocityY(-joystick.getLeftX() * MaxSpeed * 0.5)
-                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate)
-            )
-        );
-
-        joystick.leftBumper()
-                // .whileTrue(elevator.elevatorDown())
-                // .onFalse(elevator.stopElevator());
-                .whileTrue(elevator.elevatorDown())
-                .onFalse(Commands.run(
-                        () -> {
-                            ElevatorVariables.elevatorLeft.set(-0.015);
-                            ElevatorVariables.elevatorRight.set(0.015);
-                            ElevatorVariables.elevatorLeft
-                                    .setNeutralMode(NeutralModeValue.Brake);
-                            ElevatorVariables.elevatorRight
-                                    .setNeutralMode(NeutralModeValue.Brake);
-                            CommandScheduler.getInstance().cancelAll();
-                        }));
-
-        joystick.rightBumper()
-                // .whileTrue(elevator.elevatorUp())
-                // .onFalse(elevator.stopElevator());
-                .whileTrue(elevator.elevatorUp())
-                .onFalse(Commands.run(
-                        () -> {
-                            ElevatorVariables.elevatorLeft.set(-0.015);
-                            ElevatorVariables.elevatorRight.set(0.015);
-                            ElevatorVariables.elevatorLeft
-                                    .setNeutralMode(NeutralModeValue.Brake);
-                            ElevatorVariables.elevatorRight
-                                    .setNeutralMode(NeutralModeValue.Brake);
-                            CommandScheduler.getInstance().cancelAll();
-
-                        }));
-
-        joystick.a()
-                .whileTrue(coral.flywheelOut())
-                .onFalse(Commands.run(
-                        () -> {
-                            CoralVariables.flywheelMotor.set(0.0);
-                            CoralVariables.flywheelMotor
-                                    .setNeutralMode(NeutralModeValue.Coast);
-                            CommandScheduler.getInstance().cancelAll();
-                        }));
-
-        joystick.b()
-                .whileTrue(coral.flywheelIn())
-                .onFalse(Commands.run(
-                        () -> {
-                            // ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-                            // ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
-                            CoralVariables.flywheelMotor.set(0.0);
-                            CoralVariables.flywheelMotor
-                                    .setNeutralMode(NeutralModeValue.Coast);
-                            CommandScheduler.getInstance().cancelAll();
-                        }));
-
-        joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
-        joystick.x().onTrue(new AlignOnTheFly(Destinations.LEFT_REEF, drivetrain));
         
-        
-        joystick.leftTrigger()
-                .whileTrue(coral.angleDown())
-                .onFalse(Commands.run(
-                        () -> {
-                            CoralVariables.angleMotor.set(-0.015);
-                            CoralVariables.angleMotor
-                                    .setNeutralMode(NeutralModeValue.Brake);
-                            CommandScheduler.getInstance().cancelAll();
-                        }));
-        joystick.rightTrigger()
-                .whileTrue(coral.angleUp())
-                .onFalse(Commands.run(
-                        () -> {
-                            CoralVariables.angleMotor.set(-0.015);
-                            CoralVariables.angleMotor
-                                    .setNeutralMode(NeutralModeValue.Brake);
-                            CommandScheduler.getInstance().cancelAll();
-                        }));
-
-        joystick2.a()
-                .onTrue(Commands.runOnce(() -> {
-                    System.out.println("y getPose: " + drivetrain.getState().Pose);
-                }, drivetrain));
-
-
-        // joystick2.povDown().onTrue(new ElevatorAutoHeight(0.0, elevatorSubsystem));
-        joystick2.povLeft().onTrue(new ElevatorAutoHeight(17.0, elevatorSubsystem));
-        joystick2.povRight().onTrue(new ElevatorAutoHeight(37.0, elevatorSubsystem));
-        joystick2.povUp().onTrue(new ElevatorAutoHeight(57.0, elevatorSubsystem));
-
-        joystick2.povDown().onTrue(new ElevatorAutoHeight(4.0, elevatorSubsystem));
-        
-        // For coral station - angle: 0.75, elevator: 4.0
-        // L1 - angle: , elevator: 
-        // L2 - angle: 0.56, elevator: 15
-        // L3 - angle: 0.56, elevator: 33
-        // L4 - angle: 0.52, elevator: 65
-
-        joystick.povUp().onTrue(new CoralSubsystem(0.82, coralSubsystem));
-        joystick.povLeft().onTrue(new CoralSubsystem(0.75, coralSubsystem));
-        joystick.povRight().onTrue(new CoralSubsystem(0.6, coralSubsystem));
-        joystick.povDown().onTrue(new CoralSubsystem(0.48, coralSubsystem));
-
-        drivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {

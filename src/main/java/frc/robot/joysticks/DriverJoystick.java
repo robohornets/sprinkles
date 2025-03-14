@@ -8,6 +8,7 @@ import frc.robot.RobotContainer;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorAutoHeight;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -44,37 +45,6 @@ public class DriverJoystick {
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         
-        // MARK: R Bumper
-        joystick.leftBumper()
-            .whileTrue(elevator.elevatorDown())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        ElevatorVariables.elevatorLeft.set(-0.015);
-                        ElevatorVariables.elevatorRight.set(0.015);
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
-        
-        // MARK: R Bumper
-        joystick.rightBumper()
-            .whileTrue(elevator.elevatorUp())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        ElevatorVariables.elevatorLeft.set(-0.015);
-                        ElevatorVariables.elevatorRight.set(0.015);
-                        ElevatorVariables.elevatorLeft
-                            .setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorVariables.elevatorRight
-                            .setNeutralMode(NeutralModeValue.Brake);
-                        CommandScheduler.getInstance().cancelAll();
-
-                    }
-                )
-            );
-        
         // MARK: L Trigger
         joystick.leftTrigger()
             .whileTrue(RobotContainer.coral.flywheelIn())
@@ -99,5 +69,66 @@ public class DriverJoystick {
                 )
             );
         
+
+        // MARK: D-Pad
+        joystick.povUp()
+            .whileTrue(coral.angleUp())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        CoralVariables.angleMotor.set(-0.015);
+                        CoralVariables.angleMotor
+                                .setNeutralMode(NeutralModeValue.Brake);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+        
+
+        joystick.povDown()
+            .whileTrue(coral.angleDown())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        CoralVariables.angleMotor.set(-0.015);
+                        CoralVariables.angleMotor
+                                .setNeutralMode(NeutralModeValue.Brake);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+
+        
+        joystick.povLeft()
+            .whileTrue(elevator.elevatorDown())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        ElevatorVariables.elevatorLeft.set(-0.015);
+                        ElevatorVariables.elevatorRight.set(0.015);
+
+                        ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+
+        joystick.povRight()
+            .whileTrue(elevator.elevatorUp())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        ElevatorVariables.elevatorLeft.set(-0.015);
+                        ElevatorVariables.elevatorRight.set(0.015);
+
+                        ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
     }
 }

@@ -1,0 +1,114 @@
+// Note that X is defined as forward according to WPILib convention,
+        // and Y is defined as to the left according to WPILib convention.
+
+
+
+        drivetrain.setDefaultCommand(
+            drivetrain.applyRequest(() -> drive.withVelocityX(-joystick.getLeftY() * MaxSpeed * 0.5)
+                    .withVelocityY(-joystick.getLeftX() * MaxSpeed * 0.5)
+                    .withRotationalRate(-joystick.getRightX() * MaxAngularRate)
+            )
+        );
+
+        joystick.leftBumper()
+                // .whileTrue(elevator.elevatorDown())
+                // .onFalse(elevator.stopElevator());
+                .whileTrue(elevator.elevatorDown())
+                .onFalse(Commands.run(
+                        () -> {
+                            ElevatorVariables.elevatorLeft.set(-0.015);
+                            ElevatorVariables.elevatorRight.set(0.015);
+                            ElevatorVariables.elevatorLeft
+                                    .setNeutralMode(NeutralModeValue.Brake);
+                            ElevatorVariables.elevatorRight
+                                    .setNeutralMode(NeutralModeValue.Brake);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
+
+        joystick.rightBumper()
+                // .whileTrue(elevator.elevatorUp())
+                // .onFalse(elevator.stopElevator());
+                .whileTrue(elevator.elevatorUp())
+                .onFalse(Commands.run(
+                        () -> {
+                            ElevatorVariables.elevatorLeft.set(-0.015);
+                            ElevatorVariables.elevatorRight.set(0.015);
+                            ElevatorVariables.elevatorLeft
+                                    .setNeutralMode(NeutralModeValue.Brake);
+                            ElevatorVariables.elevatorRight
+                                    .setNeutralMode(NeutralModeValue.Brake);
+                            CommandScheduler.getInstance().cancelAll();
+
+                        }));
+
+        joystick.a()
+                .whileTrue(coral.flywheelOut())
+                .onFalse(Commands.run(
+                        () -> {
+                            CoralVariables.flywheelMotor.set(0.0);
+                            CoralVariables.flywheelMotor
+                                    .setNeutralMode(NeutralModeValue.Coast);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
+
+        joystick.b()
+                .whileTrue(coral.flywheelIn())
+                .onFalse(Commands.run(
+                        () -> {
+                            // ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+                            // ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+                            CoralVariables.flywheelMotor.set(0.0);
+                            CoralVariables.flywheelMotor
+                                    .setNeutralMode(NeutralModeValue.Coast);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
+
+        joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        joystick.x().onTrue(new AlignOnTheFly(Destinations.LEFT_REEF, drivetrain));
+        
+        
+        joystick.leftTrigger()
+                .whileTrue(coral.angleDown())
+                .onFalse(Commands.run(
+                        () -> {
+                            CoralVariables.angleMotor.set(-0.015);
+                            CoralVariables.angleMotor
+                                    .setNeutralMode(NeutralModeValue.Brake);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
+        joystick.rightTrigger()
+                .whileTrue(coral.angleUp())
+                .onFalse(Commands.run(
+                        () -> {
+                            CoralVariables.angleMotor.set(-0.015);
+                            CoralVariables.angleMotor
+                                    .setNeutralMode(NeutralModeValue.Brake);
+                            CommandScheduler.getInstance().cancelAll();
+                        }));
+
+        joystick2.a()
+                .onTrue(Commands.runOnce(() -> {
+                    System.out.println("y getPose: " + drivetrain.getState().Pose);
+                }, drivetrain));
+
+
+        // joystick2.povDown().onTrue(new ElevatorAutoHeight(0.0, elevatorSubsystem));
+        joystick2.povLeft().onTrue(new ElevatorAutoHeight(17.0, elevatorSubsystem));
+        joystick2.povRight().onTrue(new ElevatorAutoHeight(37.0, elevatorSubsystem));
+        joystick2.povUp().onTrue(new ElevatorAutoHeight(57.0, elevatorSubsystem));
+
+        joystick2.povDown().onTrue(new ElevatorAutoHeight(4.0, elevatorSubsystem));
+        
+        // For coral station - angle: 0.75, elevator: 4.0
+        // L1 - angle: , elevator: 
+        // L2 - angle: 0.56, elevator: 15
+        // L3 - angle: 0.56, elevator: 33
+        // L4 - angle: 0.52, elevator: 65
+
+        joystick.povUp().onTrue(new CoralSubsystem(0.82, coralSubsystem));
+        joystick.povLeft().onTrue(new CoralSubsystem(0.75, coralSubsystem));
+        joystick.povRight().onTrue(new CoralSubsystem(0.6, coralSubsystem));
+        joystick.povDown().onTrue(new CoralSubsystem(0.48, coralSubsystem));
+
+        

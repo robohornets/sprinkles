@@ -7,6 +7,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AlignOnTheFly;
 import frc.robot.commands.Destinations;
+import frc.robot.helpers.levelmanager.Levels;
+import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
@@ -138,9 +140,13 @@ public class DebugJoystick {
             );
 
     // MARK: D-Pad
-    joystick.povDown().onTrue(new ElevatorSubsystem(0.0, elevatorSubsystem));
-    joystick.povLeft().onTrue(new ElevatorSubsystem(17.0, elevatorSubsystem));
-    joystick.povRight().onTrue(new ElevatorSubsystem(37.0, elevatorSubsystem));
-    joystick.povUp().onTrue(new ElevatorSubsystem(65.0, elevatorSubsystem));
+    // joystick.povDown().onTrue(new ElevatorSubsystem(0.0, elevatorSubsystem));
+    // joystick.povLeft().onTrue(new ElevatorSubsystem(17.0, elevatorSubsystem));
+    // joystick.povRight().onTrue(new ElevatorSubsystem(37.0, elevatorSubsystem));
+    // joystick.povUp().onTrue(new ElevatorSubsystem(65.0, elevatorSubsystem));
+        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsytem).goToPreset());
+        joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsytem).goToPreset());
+        joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
+        joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
     }
 }

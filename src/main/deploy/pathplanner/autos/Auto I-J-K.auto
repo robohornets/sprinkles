@@ -13,7 +13,13 @@
         {
           "type": "named",
           "data": {
-            "name": "autoL4"
+            "name": "autoL2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "spitCoral"
           }
         },
         {
@@ -37,7 +43,13 @@
         {
           "type": "named",
           "data": {
-            "name": "autoL4"
+            "name": "autoL2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "spitCoral"
           }
         },
         {
@@ -61,7 +73,13 @@
         {
           "type": "named",
           "data": {
-            "name": "autoL4"
+            "name": "autoL2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "spitCoral"
           }
         }
       ]

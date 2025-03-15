@@ -140,6 +140,16 @@ public class RobotContainer {
                 )
             )  
         );
+        NamedCommands.registerCommand("spitCoral",
+            Commands.sequence(
+                Commands.run(
+                    () -> {
+                        coral.flywheelOut().withTimeout(2);
+                        coralSubsystem.flywheelMotor.set(0.0);
+                    }
+                )
+            )  
+        );
 
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
         autoChooser = AutoBuilder.buildAutoChooser();

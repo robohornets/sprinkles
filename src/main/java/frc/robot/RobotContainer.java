@@ -30,6 +30,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.AlignOnTheFly;
 import frc.robot.commands.Destinations;
 import frc.robot.generated.TunerConstants;
+import frc.robot.helpers.levelmanager.LevelManager;
+import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.joysticks.DebugJoystick;
 import frc.robot.joysticks.DriverJoystick;
 import frc.robot.joysticks.MechBackup;
@@ -114,44 +116,30 @@ public class RobotContainer {
         DriverStation.silenceJoystickConnectionWarning(true);
         
         // MARK: Named Commands
-        NamedCommands.registerCommand("driveByTime",
-                Commands.sequence(
-                        Commands.print("Starting wait command"),
-                        drivetrain.applyRequest(
-                                () -> {
-                                    return (SwerveRequest) drive.withVelocityX(0.0)
-                                            .withVelocityY(0.0);
-
-                                }).withTimeout(5)));
-        NamedCommands.registerCommand("driveByTimeAlt",
-                new SequentialCommandGroup(
-                        new PrintCommand("Starting drive command"), // This is to make sure we
-                                                                    // see this in the log
-                        drivetrain.applyRequest(() -> {
-                            return drive.withVelocityX(0.0).withVelocityY(0.0);
-                        }).withTimeout(5),
-                        new PrintCommand("Drive command finished"),
-                        // new WaitCommand(5), // Wait for 5 seconds
-                        new PrintCommand("Clearing commands")
-                // new RunCommand(() -> {
-                // CommandScheduler.getInstance().cancelAll();
-                // })
-                ));
-
-        NamedCommands.registerCommand("driveByTimeAltAlt",
-                new SequentialCommandGroup(
-                        new PrintCommand("Starting drive command"), // This is to make sure we
-                                                                    // see this in the log
-                        drivetrain.applyRequest(() -> {
-                            return drive.withVelocityX(0.0).withVelocityY(0.0);
-                        }).withTimeout(2),
-                        new PrintCommand("Drive command finished"),
-                        // new WaitCommand(5), // Wait for 5 seconds
-                        new PrintCommand("Clearning commands")
-                // new RunCommand(() -> {
-                // CommandScheduler.getInstance().cancelAll();
-                // })
-                ));
+        NamedCommands.registerCommand("autoL1",
+                new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        
+        NamedCommands.registerCommand("autoL2",
+                new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("autoL3",
+                new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("autoL4",
+                new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("eatCoral",
+            Commands.sequence(
+                new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset(),
+                Commands.run(
+                    () -> {
+                        coral.flywheelIn().withTimeout(2);
+                        coralSubsystem.flywheelMotor.set(0.0);
+                    }
+                )
+            )  
+        );
 
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
         autoChooser = AutoBuilder.buildAutoChooser();

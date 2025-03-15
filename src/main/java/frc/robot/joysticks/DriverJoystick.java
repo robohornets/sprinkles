@@ -52,6 +52,7 @@ public class DriverJoystick {
                 Commands.run(
                     () -> {
                         RobotContainer.coral.flywheelStop();
+                        CoralVariables.flywheelMotor.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -64,6 +65,7 @@ public class DriverJoystick {
                 Commands.run(
                     () -> {
                         RobotContainer.coral.flywheelStop();
+                        CoralVariables.flywheelMotor.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -72,7 +74,7 @@ public class DriverJoystick {
 
         // MARK: D-Pad
         joystick.povUp()
-            .whileTrue(coral.angleUp())
+            .whileTrue(coral.angleUpSlow())
             .onFalse(
                 Commands.run(
                     () -> {
@@ -86,7 +88,7 @@ public class DriverJoystick {
         
 
         joystick.povDown()
-            .whileTrue(coral.angleDown())
+            .whileTrue(coral.angleDownSlow())
             .onFalse(
                 Commands.run(
                     () -> {
@@ -100,7 +102,7 @@ public class DriverJoystick {
 
         
         joystick.povLeft()
-            .whileTrue(elevator.elevatorDown())
+            .whileTrue(elevator.elevatorDownSlow())
             .onFalse(
                 Commands.run(
                     () -> {
@@ -116,7 +118,7 @@ public class DriverJoystick {
             );
 
         joystick.povRight()
-            .whileTrue(elevator.elevatorUp())
+            .whileTrue(elevator.elevatorUpSlow())
             .onFalse(
                 Commands.run(
                     () -> {

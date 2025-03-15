@@ -49,6 +49,38 @@ public class ElevatorController {
         );
     }
 
+    public Command elevatorUpSlow() {
+        return Commands.run(
+            () -> {
+                if (Math.abs(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble()) <= 65.0) {
+                    ElevatorVariables.elevatorLeft.set(-ElevatorVariables.elevatorUpDownSpeedSlow);
+                    ElevatorVariables.elevatorRight.set(ElevatorVariables.elevatorUpDownSpeedSlow);
+                } else {
+                    ElevatorVariables.elevatorLeft.set(0.0);
+                    ElevatorVariables.elevatorRight.set(0.0);
+                    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                }
+            }
+        );
+    }
+
+    public Command elevatorDownSlow() {
+        return Commands.run(
+            () -> {
+                if (Math.abs(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble()) >= 5.0) {
+                    ElevatorVariables.elevatorLeft.set(ElevatorVariables.elevatorUpDownSpeedSlow);
+                    ElevatorVariables.elevatorRight.set(-ElevatorVariables.elevatorUpDownSpeedSlow);
+                } else {
+                    ElevatorVariables.elevatorLeft.set(0.0);
+                    ElevatorVariables.elevatorRight.set(0.0);
+                    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                }
+            }
+        );
+    }
+
     public Command stopElevator() {
         return Commands.run(
             () -> {

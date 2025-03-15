@@ -32,6 +32,7 @@ import frc.robot.commands.Destinations;
 import frc.robot.generated.TunerConstants;
 import frc.robot.joysticks.DebugJoystick;
 import frc.robot.joysticks.DriverJoystick;
+import frc.robot.joysticks.MechBackup;
 import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
@@ -92,7 +93,7 @@ public class RobotContainer {
     private final CommandXboxController debugJoystick = new CommandXboxController(3);
 
     private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
-    private final DriverJoystick mechanismsJoystickController = new DriverJoystick(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     private final DriverJoystick buttonConsoleController = new DriverJoystick(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
 

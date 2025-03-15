@@ -47,7 +47,31 @@ public class CoralController {
             }
     }); }
 
-    public double getCoralAngle() {
+
+    public Command angleUpSlow() {
+        return Commands.run(
+            () -> {
+        if (getCoralAngle() < 0.82) {
+            CoralVariables.angleMotor.set(-0.1); }
+        else {
+            CoralVariables.angleMotor.set(0.0);
+            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
+    }); }
+
+    public Command angleDownSlow() {
+        return Commands.run(
+            () -> {
+        if (getCoralAngle() > 0.48) {
+        CoralVariables.angleMotor.set(0.1);} 
+        else {
+            CoralVariables.angleMotor.set(0.0);
+            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
+    }); }
+
+
+    public static double getCoralAngle() {
         return CoralVariables.angleDCEncoder.get();
     }
 }

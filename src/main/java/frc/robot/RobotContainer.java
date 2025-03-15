@@ -37,7 +37,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorAutoHeight;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -153,7 +153,7 @@ public class RobotContainer {
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         // Trigger configuration for joysticks
-        positionATrigger.onTrue(new ElevatorAutoHeight(40.0, elevatorSubsystem));
+        positionATrigger.onTrue(new ElevatorSubsystem(40.0, elevatorSubsystem));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

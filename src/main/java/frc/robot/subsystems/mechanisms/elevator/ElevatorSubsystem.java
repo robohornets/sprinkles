@@ -5,10 +5,10 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
-public class ElevatorAutoHeight extends Command {
+public class ElevatorSubsystem extends Command {
     private double height;
     private ElevatorVariables elevatorSubsystem;
-    public ElevatorAutoHeight(double height, ElevatorVariables elevatorSubsystem) {
+    public ElevatorSubsystem(double height, ElevatorVariables elevatorSubsystem) {
         this.height = height;
         if (height > 65) {
             this.height = 65; 

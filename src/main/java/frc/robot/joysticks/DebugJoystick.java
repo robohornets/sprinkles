@@ -34,15 +34,25 @@ public class DebugJoystick {
 
     public void configureBindings() {
         // MARK: A-Button
-        joystick.a().onTrue(new AlignOnTheFly(Destinations.LEFT_REEF, drivetrain));
+        
 
         // MARK: B-Button
-        joystick.b().onTrue(new AlignOnTheFly(Destinations.RIGHT_REEF, drivetrain));
+        
 
         // MARK: X-Button
-        joystick.x().onTrue(new AlignOnTheFly(Destinations.COLLECTOR, drivetrain));
+        // Aligns to the right side of the reef
+        joystick.x().onTrue(new AlignOnTheFly(Destinations.LEFT_REEF, drivetrain));
 
         // MARK: Y-Button
+        // Aligns to the left side of the reef
+        joystick.y().onTrue(new AlignOnTheFly(Destinations.RIGHT_REEF, drivetrain));
+
+
+        // MARK: Start
+        joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        // MARK: Back
+        joystick.back().onTrue(new AlignOnTheFly(Destinations.COLLECTOR, drivetrain));
 
 
         // MARK: Left Trigger

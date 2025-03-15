@@ -75,8 +75,8 @@ public class RobotContainer {
 
     // Triggers for Button Console
     final Trigger positionATrigger = new Trigger(
-            () -> Math.round(this.joystick2.getLeftX() * 10) / 10 == 0.1
-                    && Math.round(this.joystick2.getLeftY() * 10) / 10 == 0.1);
+            () -> Math.round(this.debugJoystick.getLeftX() * 10) / 10 == 0.1
+                    && Math.round(this.debugJoystick.getLeftY() * 10) / 10 == 0.1);
 
     // MARK: Mechanisms
     private final ElevatorController elevator = new ElevatorController();
@@ -86,11 +86,15 @@ public class RobotContainer {
     public final CoralVariables coralSubsystem = new CoralVariables();
 
     // MARK: Inputs
-    private final CommandXboxController joystick = new CommandXboxController(0);
-    private final CommandXboxController joystick2 = new CommandXboxController(1);
+    private final CommandXboxController driverJoystick = new CommandXboxController(0);
+    private final CommandXboxController mechanismsJoystick = new CommandXboxController(1);
+    private final CommandXboxController buttonConsole = new CommandXboxController(2);
+    private final CommandXboxController debugJoystick = new CommandXboxController(3);
 
-    private final DriverJoystick driverJoystick = new DriverJoystick(joystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
-    private final DebugJoystick debugJoystick = new DebugJoystick(joystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    private final DriverJoystick mechanismsJoystickController = new DriverJoystick(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    private final DriverJoystick buttonConsoleController = new DriverJoystick(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
 
 
     // MARK: Shuffleboard
@@ -158,8 +162,10 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         // MARK: Configure Bindings
-        driverJoystick.configureBindings();
-        // configureBindings();
+        driverJoystickController.configureBindings();
+        mechanismsJoystickController.configureBindings();
+        buttonConsoleController.configureBindings();
+        debugJoystickController.configureBindings();
     }
 
     private void configureBindings() {

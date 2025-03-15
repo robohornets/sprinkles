@@ -11,6 +11,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralVariables;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
 
 public class DebugJoystick {
@@ -34,9 +35,30 @@ public class DebugJoystick {
 
     public void configureBindings() {
         // MARK: A-Button
-        
+        joystick.a()
+            .whileTrue(coral.flywheelOut())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        CoralVariables.flywheelMotor.set(0.0);
+                        CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
 
         // MARK: B-Button
+        joystick.b()
+            .whileTrue(coral.flywheelIn())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        CoralVariables.flywheelMotor.set(0.0);
+                        CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
         
 
         // MARK: X-Button
@@ -114,5 +136,11 @@ public class DebugJoystick {
                     }
                 )
             );
+
+    // MARK: D-Pad
+    joystick.povDown().onTrue(new ElevatorSubsystem(0.0, elevatorSubsystem));
+    joystick.povLeft().onTrue(new ElevatorSubsystem(17.0, elevatorSubsystem));
+    joystick.povRight().onTrue(new ElevatorSubsystem(37.0, elevatorSubsystem));
+    joystick.povUp().onTrue(new ElevatorSubsystem(65.0, elevatorSubsystem));
     }
 }

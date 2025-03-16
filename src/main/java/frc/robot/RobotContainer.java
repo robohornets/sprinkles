@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AlignOnTheFly;
+import frc.robot.commands.AlignOnTheFlyClosest;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
@@ -50,25 +51,30 @@ public class RobotContainer {
     private void configureBindings() {
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
+
+            // NOTE:  This is set to work well onscreen not on a real bot
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-joystick.getLeftY() * MaxSpeed) // Drive forward with negative X (forward)
-                    .withVelocityY(joystick.getLeftX() * MaxSpeed) // Drive left with positive Y (right)
+                drive.withVelocityX(-joystick.getLeftX() * MaxSpeed) // Drive forward with negative X (forward)
+                    .withVelocityY(joystick.getLeftY() * MaxSpeed) // Drive left with positive Y (right)
                     .withRotationalRate(-joystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
-        joystick.a().onTrue(Commands.runOnce(() -> { 
-                System.out.println("getPose: " + drivetrain.getState().Pose);
-        }, drivetrain));
-                
-        // collect algae from closest station
-        joystick.y().onTrue(new AlignOnTheFly("collector", drivetrain));
+        // joystick.a().onTrue(Commands.runOnce(() -> { 
+        //         System.out.println("getPose: " + drivetrain.getState().Pose);
+        // }, drivetrain));
+        
+        // collect top algae by passing in Pose2d location
+        joystick.a().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(216.0)), drivetrain));
 
+        // collect algae from closest station
+        joystick.y().onTrue(new AlignOnTheFlyClosest("collector", drivetrain));
+        
         // align right side of closest reef
-        joystick.b().onTrue(new AlignOnTheFly("rightReef", drivetrain));
+        joystick.b().onTrue(new AlignOnTheFlyClosest("rightReef", drivetrain));
         
         // align with left side of closed reef
-        joystick.x().onTrue(new AlignOnTheFly("leftReef", drivetrain));
+        joystick.x().onTrue(new AlignOnTheFlyClosest("leftReef", drivetrain));
 
         joystick.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 

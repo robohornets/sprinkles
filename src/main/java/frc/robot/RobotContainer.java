@@ -38,11 +38,11 @@ import frc.robot.joysticks.MechBackup;
 import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
+import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.coral.CoralVariables;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -85,8 +85,8 @@ public class RobotContainer {
     private final ElevatorController elevator = new ElevatorController();
     public static final CoralController coral = new CoralController();
 
-    public final ElevatorVariables elevatorSubsystem = new ElevatorVariables();
-    public final CoralVariables coralSubsystem = new CoralVariables();
+    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    public final CoralSubsystem coralSubsystem = new CoralSubsystem();
 
     // MARK: Inputs
     private final CommandXboxController driverJoystick = new CommandXboxController(0);
@@ -119,7 +119,6 @@ public class RobotContainer {
         NamedCommands.registerCommand("autoL1",
                 new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset()
         );
-        
         NamedCommands.registerCommand("autoL2",
                 new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset()
         );
@@ -129,34 +128,41 @@ public class RobotContainer {
         NamedCommands.registerCommand("autoL4",
                 new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset()
         );
+        NamedCommands.registerCommand("coralLevel",
+                new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("defaultPosition",
+                new LevelManager(Levels.DEFAULT_POSITION, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
         NamedCommands.registerCommand("eatCoral",
             Commands.sequence(
-                new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset(),
-                Commands.run(
-                    () -> {
-                        coral.flywheelIn().withTimeout(2);
-                        coralSubsystem.flywheelMotor.set(0.0);
-                    }
-                )
-            )  
+                coral.flywheelIn().withTimeout(2),
+                
+                Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
+            )
+        );
+        NamedCommands.registerCommand("stopCoral",
+            Commands.run(
+                () -> {
+                    coralSubsystem.flywheelMotor.set(0.0);
+                }
+            ) 
         );
         NamedCommands.registerCommand("spitCoral",
             Commands.sequence(
-                Commands.run(
-                    () -> {
-                        coral.flywheelOut().withTimeout(2);
-                        coralSubsystem.flywheelMotor.set(0.0);
-                    }
-                )
-            )  
+                coral.flywheelOut().withTimeout(2),
+                
+                Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
+            )
         );
+
 
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Mode", autoChooser);
 
         // Trigger configuration for joysticks
-        positionATrigger.onTrue(new ElevatorSubsystem(40.0, elevatorSubsystem));
+        positionATrigger.onTrue(new ElevatorHeightManager(40.0, elevatorSubsystem));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -165,10 +171,16 @@ public class RobotContainer {
         mechanismsJoystickController.configureBindings();
         buttonConsoleController.configureBindings();
         debugJoystickController.configureBindings();
+        configureBindings();
     }
 
     private void configureBindings() {
-        
+        drivetrain.setDefaultCommand(
+            drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)
+                .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * 0.5)
+                .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
+            )
+        );
     }
 
     public Command getAutonomousCommand() {

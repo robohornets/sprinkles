@@ -4,7 +4,7 @@ import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class ClimberController {
     public final TalonFX climberLeft = new TalonFX(11);
@@ -17,8 +17,8 @@ public class ClimberController {
     );
 
     public void elevatorUp() {
-        climberLeft.set(ElevatorVariables.elevatorUpDownSpeed);
-        climberRight.set(-ElevatorVariables.elevatorUpDownSpeed);
+        climberLeft.set(ElevatorSubsystem.elevatorUpDownSpeed);
+        climberRight.set(-ElevatorSubsystem.elevatorUpDownSpeed);
     }
 
     public void elevatorDown() {

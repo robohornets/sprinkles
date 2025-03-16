@@ -12,9 +12,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.helpers.ShuffleboardUtil;
+import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.coral.CoralVariables;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 
 public class Robot extends TimedRobot {
@@ -37,9 +37,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     //elevatorEncoder.setDistancePerPulse(1.0/2048);
-    CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
-    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+    CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+    ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
   }
 
   @Override
@@ -50,11 +50,11 @@ public class Robot extends TimedRobot {
 
     //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
 
-    ShuffleboardUtil.put("Elevator Height", ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
-    ShuffleboardUtil.put("Angle Encoder is Connected", CoralVariables.angleDCEncoder.isConnected());
-    ShuffleboardUtil.put("Coral Angle", CoralVariables.angleDCEncoder.get());
+    ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Angle Encoder is Connected", CoralSubsystem.angleDCEncoder.isConnected());
+    ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
-    ShuffleboardUtil.put("Angle Motor Position", Math.round(CoralVariables.angleDCEncoder.get() * 10)/10);
+    ShuffleboardUtil.put("Angle Motor Position", Math.round(CoralSubsystem.angleDCEncoder.get() * 10)/10);
     
     // System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
     // System.out.println(CoralVariables.angleDCEncoder.get());
@@ -79,9 +79,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-    ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
-    CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Coast);
+    ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+    CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
   @Override

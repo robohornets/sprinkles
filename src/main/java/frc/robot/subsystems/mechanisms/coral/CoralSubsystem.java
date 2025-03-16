@@ -1,83 +1,24 @@
 package frc.robot.subsystems.mechanisms.coral;
 
+import com.ctre.phoenix6.hardware.TalonFX;
+
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class CoralSubsystem extends Command {
-    private double angle;
-    private CoralVariables coralSubsystem;
-    private boolean isFinishedToggle = false;
-    private double oopsieThreshold = 0.01;
+public class CoralSubsystem extends SubsystemBase {
+    public static TalonFX angleMotor = new TalonFX(12);
+    public static TalonFX flywheelMotor = new TalonFX(11);
+    public static DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(2);
 
-    public double angleUpperLimit = 0.82;
-    public double angleLowerLimit = 0.48;
+    public static Boolean angleDisabled = false;
+    public static Boolean flywheelDisabled = false;
+    
+    // Angle 12, flywheel 11
+    public static Double angleSpeed = 0.1;
+    public static Double flywheelInSpeed = 0.2;
+    public static Double flywheelOutSpeed = 0.6;
 
-    public CoralSubsystem(double angle, CoralVariables coralSubsystem) {
-        this.angle = Math.max(angleLowerLimit, Math.min(angleUpperLimit, angle));
-        this.coralSubsystem = coralSubsystem;
-        addRequirements(this.coralSubsystem);
-    }
+    public static Double angleHoldSpeed = 0.015;
 
-    @Override
-    public void initialize() {
-        isFinishedToggle = false;
-        updateMotorSpeed();
-    }
-
-    @Override
-    public void execute() {
-        updateMotorSpeed();
-    }
-
-    private void updateMotorSpeed() {
-        double currentAngle = getCoralAngle();
-
-        if (Math.abs(currentAngle - angle) <= oopsieThreshold) {
-            System.out.println("Stopping at target");
-            coralSubsystem.angleMotor.set(-0.015);
-            isFinishedToggle = true;
-        } 
-        else if (currentAngle >= angleUpperLimit) {
-            if (angle < currentAngle) {
-                System.out.println("Above upper limit, moving down");
-                coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
-            } else {
-                System.out.println("Above upper limit, stopping");
-                coralSubsystem.angleMotor.set(-0.015);
-                isFinishedToggle = true;
-            }
-        } 
-        else if (currentAngle <= angleLowerLimit) {
-            if (angle > currentAngle) {
-                System.out.println("Below lower limit, moving up");
-                coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
-            } else {
-                System.out.println("Below lower limit, stopping");
-                coralSubsystem.angleMotor.set(-0.015);
-                isFinishedToggle = true;
-            }
-        } 
-        else if (currentAngle > angle) {
-            System.out.println("Moving Down");
-            coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
-        } 
-        else if (currentAngle < angle) {
-            System.out.println("Moving Up");
-            coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
-        }
-    }
-
-    @Override
-    public boolean isFinished() {
-        return isFinishedToggle;
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        coralSubsystem.angleMotor.set(-0.015);
-        System.out.println("Command Ended. Motor Stopped.");
-    }
-
-    public static double getCoralAngle() {
-        return CoralVariables.angleDCEncoder.get();
-    }
 }

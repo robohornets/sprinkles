@@ -12,22 +12,22 @@ import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
-import frc.robot.subsystems.mechanisms.coral.CoralVariables;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class MechBackup {
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
     private final ElevatorController elevator;
-    private final ElevatorVariables elevatorSubsystem;
+    private final ElevatorSubsystem elevatorSubsystem;
     private final CoralController coral;
-    private final CoralVariables coralSubsytem;
+    private final CoralSubsystem coralSubsytem;
     
     public MechBackup(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorVariables elevatorSubsystem, CoralController coral, CoralVariables coralSubsystem) {
+        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem) {
 
         this.joystick = joystick;
         this.drivetrain = drivetrain;
@@ -51,8 +51,8 @@ public class MechBackup {
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralVariables.flywheelMotor.set(0.0);
-                        CoralVariables.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                        CoralSubsystem.flywheelMotor.set(0.0);
+                        CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -73,7 +73,7 @@ public class MechBackup {
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralVariables.angleMotor.set(-0.015);
+                        CoralSubsystem.angleMotor.set(-0.015);
                         
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -86,7 +86,7 @@ public class MechBackup {
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralVariables.angleMotor.set(-0.015);
+                        CoralSubsystem.angleMotor.set(-0.015);
                         
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -99,11 +99,11 @@ public class MechBackup {
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorVariables.elevatorLeft.set(-0.015);
-                        ElevatorVariables.elevatorRight.set(0.015);
+                        ElevatorSubsystem.elevatorLeft.set(-0.015);
+                        ElevatorSubsystem.elevatorRight.set(0.015);
 
-                        ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -116,11 +116,11 @@ public class MechBackup {
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorVariables.elevatorLeft.set(-0.015);
-                        ElevatorVariables.elevatorRight.set(0.015);
+                        ElevatorSubsystem.elevatorLeft.set(-0.015);
+                        ElevatorSubsystem.elevatorRight.set(0.015);
 
-                        ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
 
                         CommandScheduler.getInstance().cancelAll();
                     }

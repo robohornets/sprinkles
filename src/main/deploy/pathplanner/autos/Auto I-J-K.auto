@@ -13,12 +13,6 @@
         {
           "type": "named",
           "data": {
-            "name": "autoL2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "spitCoral"
           }
         },
@@ -43,12 +37,6 @@
         {
           "type": "named",
           "data": {
-            "name": "autoL2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "spitCoral"
           }
         },
@@ -68,12 +56,6 @@
           "type": "path",
           "data": {
             "pathName": "1 - To K"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoL2"
           }
         },
         {

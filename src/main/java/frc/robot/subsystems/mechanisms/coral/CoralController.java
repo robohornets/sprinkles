@@ -11,17 +11,17 @@ public class CoralController {
     public Command flywheelOut() {
         return Commands.run(
             () -> {
-        CoralVariables.flywheelMotor.set(CoralVariables.flywheelOutSpeed);
+        CoralSubsystem.flywheelMotor.set(CoralSubsystem.flywheelOutSpeed);
     });}
     public Command flywheelIn() {
         return Commands.run(
             () -> {
-        CoralVariables.flywheelMotor.set(-CoralVariables.flywheelInSpeed);
+        CoralSubsystem.flywheelMotor.set(-CoralSubsystem.flywheelInSpeed);
     });}
     public Command flywheelStop() {
         return Commands.run(
             () -> {
-        CoralVariables.flywheelMotor.set(0.0);
+        CoralSubsystem.flywheelMotor.set(0.0);
     }); }
 
     //Angle commands
@@ -29,10 +29,10 @@ public class CoralController {
         return Commands.run(
             () -> {
         if (getCoralAngle() < 0.82) {
-            CoralVariables.angleMotor.set(-CoralVariables.angleSpeed); }
+            CoralSubsystem.angleMotor.set(-CoralSubsystem.angleSpeed); }
         else {
-            CoralVariables.angleMotor.set(0.0);
-            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            CoralSubsystem.angleMotor.set(0.0);
+            CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
             }
     }); }
 
@@ -40,10 +40,10 @@ public class CoralController {
         return Commands.run(
             () -> {
         if (getCoralAngle() > 0.48) {
-        CoralVariables.angleMotor.set(CoralVariables.angleSpeed);} 
+        CoralSubsystem.angleMotor.set(CoralSubsystem.angleSpeed);} 
         else {
-            CoralVariables.angleMotor.set(0.0);
-            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            CoralSubsystem.angleMotor.set(0.0);
+            CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
             }
     }); }
 
@@ -52,10 +52,10 @@ public class CoralController {
         return Commands.run(
             () -> {
         if (getCoralAngle() < 0.82) {
-            CoralVariables.angleMotor.set(-0.1); }
+            CoralSubsystem.angleMotor.set(-0.1); }
         else {
-            CoralVariables.angleMotor.set(0.0);
-            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            CoralSubsystem.angleMotor.set(0.0);
+            CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
             }
     }); }
 
@@ -63,15 +63,15 @@ public class CoralController {
         return Commands.run(
             () -> {
         if (getCoralAngle() > 0.48) {
-        CoralVariables.angleMotor.set(0.1);} 
+        CoralSubsystem.angleMotor.set(0.1);} 
         else {
-            CoralVariables.angleMotor.set(0.0);
-            CoralVariables.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            CoralSubsystem.angleMotor.set(0.0);
+            CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
             }
     }); }
 
 
     public static double getCoralAngle() {
-        return CoralVariables.angleDCEncoder.get();
+        return CoralSubsystem.angleDCEncoder.get();
     }
 }

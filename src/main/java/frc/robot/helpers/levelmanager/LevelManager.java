@@ -4,19 +4,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
-import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
-import frc.robot.subsystems.mechanisms.coral.CoralVariables;
+import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 
 public class LevelManager {
     private final Levels selectedLevel;
-    private final ElevatorVariables elevatorSubsystem;
-    private final CoralVariables coralSubsystem;
+    private final ElevatorSubsystem elevatorSubsystem;
+    private final CoralSubsystem coralSubsystem;
 
-    public LevelManager(Levels selectedLevel, ElevatorVariables elevatorSubsystem, CoralVariables coralSubsystem) {
+    public LevelManager(Levels selectedLevel, ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem) {
         this.selectedLevel = selectedLevel;
         this.elevatorSubsystem = elevatorSubsystem;
         this.coralSubsystem = coralSubsystem;
@@ -57,8 +57,8 @@ public class LevelManager {
                 break;
 
             case CORAL_STATION:
-                targetHeight = 5.0;
-                targetAngle = 0.56;
+                targetHeight = 4.0;
+                targetAngle = 0.75;
                 break;
 
             default:
@@ -67,8 +67,8 @@ public class LevelManager {
 
         // Run both the coral angle and elevator height commands
         return Commands.parallel(
-            new CoralSubsystem(targetAngle, coralSubsystem),
-            new ElevatorSubsystem(targetHeight, elevatorSubsystem)
+            new CoralAngleManager(targetAngle, coralSubsystem),
+            new ElevatorHeightManager(targetHeight, elevatorSubsystem)
         );
     }
 }

@@ -7,22 +7,22 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotContainer;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
-import frc.robot.subsystems.mechanisms.coral.CoralVariables;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorVariables;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class DriverJoystick {
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
     private final ElevatorController elevator;
-    private final ElevatorVariables elevatorSubsystem;
+    private final ElevatorSubsystem elevatorSubsystem;
     private final CoralController coral;
-    private final CoralVariables coralSubsytem;
+    private final CoralSubsystem coralSubsytem;
     
     public DriverJoystick(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorVariables elevatorSubsystem, CoralController coral, CoralVariables coralSubsystem) {
+        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem) {
 
         this.joystick = joystick;
         this.drivetrain = drivetrain;
@@ -33,12 +33,7 @@ public class DriverJoystick {
     }
 
     public void configureBindings() {
-        drivetrain.setDefaultCommand(
-            drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-joystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)
-                .withVelocityY(-joystick.getLeftX() * RobotContainer.MaxSpeed * 0.5)
-                .withRotationalRate(-joystick.getRightX() * RobotContainer.MaxAngularRate)
-            )
-        );
+        
 
         // MARK: Y-Button
         // Reset field centric heading
@@ -52,7 +47,7 @@ public class DriverJoystick {
                 Commands.run(
                     () -> {
                         RobotContainer.coral.flywheelStop();
-                        CoralVariables.flywheelMotor.set(0.0);
+                        CoralSubsystem.flywheelMotor.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -65,7 +60,7 @@ public class DriverJoystick {
                 Commands.run(
                     () -> {
                         RobotContainer.coral.flywheelStop();
-                        CoralVariables.flywheelMotor.set(0.0);
+                        CoralSubsystem.flywheelMotor.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -78,8 +73,8 @@ public class DriverJoystick {
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralVariables.angleMotor.set(-0.015);
-                        CoralVariables.angleMotor
+                        CoralSubsystem.angleMotor.set(-0.015);
+                        CoralSubsystem.angleMotor
                                 .setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -92,8 +87,8 @@ public class DriverJoystick {
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralVariables.angleMotor.set(-0.015);
-                        CoralVariables.angleMotor
+                        CoralSubsystem.angleMotor.set(-0.015);
+                        CoralSubsystem.angleMotor
                                 .setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -106,11 +101,11 @@ public class DriverJoystick {
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorVariables.elevatorLeft.set(-0.015);
-                        ElevatorVariables.elevatorRight.set(0.015);
+                        ElevatorSubsystem.elevatorLeft.set(-0.015);
+                        ElevatorSubsystem.elevatorRight.set(0.015);
 
-                        ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -122,11 +117,11 @@ public class DriverJoystick {
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorVariables.elevatorLeft.set(-0.015);
-                        ElevatorVariables.elevatorRight.set(0.015);
+                        ElevatorSubsystem.elevatorLeft.set(-0.015);
+                        ElevatorSubsystem.elevatorRight.set(0.015);
 
-                        ElevatorVariables.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorVariables.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
 
                         CommandScheduler.getInstance().cancelAll();
                     }

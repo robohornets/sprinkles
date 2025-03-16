@@ -18,12 +18,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
-public class AlignOnTheFly extends Command {
+public class AlignOnTheFlyClosest extends Command {
     private final CommandSwerveDrivetrain m_drivetrain;
     private PathPlannerPath m_path;
     private PathConstraints constraints;
 
-    public AlignOnTheFly(Destinations destination, CommandSwerveDrivetrain drivetrain) {
+    public AlignOnTheFlyClosest(Destinations destination, CommandSwerveDrivetrain drivetrain) {
         m_drivetrain = drivetrain;
         switch (destination) {
             case COLLECTOR -> createCollectorLookup();

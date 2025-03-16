@@ -15,7 +15,7 @@ public class ElevatorHeightManager extends Command {
     private static final double minHeight = 0.0;
     private static final double maxHeight = 65.0;
 
-    // How close we have to be to “done”
+    // How close we have to be to "done"
     private static final double threshold = 2.0;
     
     public ElevatorHeightManager(double desiredHeight, ElevatorSubsystem elevatorSubsystem) {

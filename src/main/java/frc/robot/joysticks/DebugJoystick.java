@@ -2,10 +2,13 @@ package frc.robot.joysticks;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.AlignOnTheFly;
+import frc.robot.commands.AlignOnTheFlyByPose;
+import frc.robot.commands.AlignOnTheFlyClosest;
 import frc.robot.commands.Destinations;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.helpers.levelmanager.LevelManager;
@@ -63,20 +66,23 @@ public class DebugJoystick {
             );
         
 
+        // collect top algae by passing in Pose2d location
+        joystick.y().onTrue(new AlignOnTheFlyByPose(new Pose2d(1.05, 6.4, new Rotation2d(216.0)), drivetrain));
+
         // MARK: X-Button
         // Aligns to the right side of the reef
-        joystick.x().onTrue(new AlignOnTheFly(Destinations.LEFT_REEF, drivetrain));
+        joystick.x().onTrue(new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain));
 
         // MARK: Y-Button
         // Aligns to the left side of the reef
-        joystick.y().onTrue(new AlignOnTheFly(Destinations.RIGHT_REEF, drivetrain));
+    //    joystick.y().onTrue(new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain));
 
 
         // MARK: Start
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
         // MARK: Back
-        joystick.back().onTrue(new AlignOnTheFly(Destinations.COLLECTOR, drivetrain));
+        joystick.back().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
 
 
         // MARK: Left Trigger

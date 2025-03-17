@@ -40,47 +40,47 @@ public class AlignOnTheFlyClosest extends Command {
     private void createCollectorLookup() {
         poseLookupList = new ArrayList<Pose2d>();
         // blue collectors
-        poseLookupList.add(new Pose2d(1.12, 1.05, new Rotation2d(Units.degreesToRadians(234.72))));
-        poseLookupList.add(new Pose2d(1.13, 6.46, new Rotation2d(Units.degreesToRadians(125.83))));
+        poseLookupList.add(new Pose2d(1.12, 1.05, new Rotation2d(Units.degreesToRadians(234)))); // angle changed
+        poseLookupList.add(new Pose2d(1.656, 7.500, new Rotation2d(Units.degreesToRadians(126)))); //changed
         // red collectors
-        poseLookupList.add(new Pose2d(15.48, 6.55, new Rotation2d(Units.degreesToRadians(53.18))));
-        poseLookupList.add(new Pose2d(15.48, 1.00, new Rotation2d(Units.degreesToRadians(306.42))));
+        poseLookupList.add(new Pose2d(15.48, 6.55, new Rotation2d(Units.degreesToRadians(54)))); // angle changed
+        poseLookupList.add(new Pose2d(15.48, 1.00, new Rotation2d(Units.degreesToRadians(306)))); // angle changed
     }
 
     private void createRightReefLookup() {
         poseLookupList = new ArrayList<Pose2d>();
         // blue right reefs
-        poseLookupList.add(new Pose2d(3.84, 2.14, new Rotation2d(Units.degreesToRadians(61.29))));
-        poseLookupList.add(new Pose2d(5.42, 2.53, new Rotation2d(Units.degreesToRadians(118.28))));
-        poseLookupList.add(new Pose2d(5.88, 4.12, new Rotation2d(Units.degreesToRadians(181.65))));
-        poseLookupList.add(new Pose2d(4.78, 5.32, new Rotation2d(Units.degreesToRadians(238.28))));
-        poseLookupList.add(new Pose2d(3.06, 4.90, new Rotation2d(Units.degreesToRadians(301.07))));
-        poseLookupList.add(new Pose2d(2.67, 3.31, new Rotation2d(Units.degreesToRadians(358.94))));
+        poseLookupList.add(new Pose2d(4.138, 2.714, new Rotation2d(Units.degreesToRadians(60)))); 
+        poseLookupList.add(new Pose2d(5.474, 3.083, new Rotation2d(Units.degreesToRadians(120)))); 
+        poseLookupList.add(new Pose2d(5.782, 4.360, new Rotation2d(Units.degreesToRadians(180)))); 
+        poseLookupList.add(new Pose2d(4.788, 5.318, new Rotation2d(Units.degreesToRadians(240))));
+        poseLookupList.add(new Pose2d(3.532, 4.964, new Rotation2d(Units.degreesToRadians(300)))); 
+        poseLookupList.add(new Pose2d(3.201, 3.661, new Rotation2d(Units.degreesToRadians(360))));
         // red right reefs
-        poseLookupList.add(new Pose2d(10.77, 3.36, new Rotation2d(Units.degreesToRadians(0.88))));
-        poseLookupList.add(new Pose2d(11.91, 2.22, new Rotation2d(Units.degreesToRadians(60.15))));
-        poseLookupList.add(new Pose2d(13.48, 2.58, new Rotation2d(Units.degreesToRadians(121.71))));
-        poseLookupList.add(new Pose2d(13.95, 4.09, new Rotation2d(Units.degreesToRadians(179.51))));
-        poseLookupList.add(new Pose2d(12.83, 5.31, new Rotation2d(Units.degreesToRadians(238.33))));
-        poseLookupList.add(new Pose2d(11.23, 4.92, new Rotation2d(Units.degreesToRadians(300.18))));
+        poseLookupList.add(new Pose2d(11.799, 3.695, new Rotation2d(Units.degreesToRadians(0)))); 
+        poseLookupList.add(new Pose2d(12.728, 2.725, new Rotation2d(Units.degreesToRadians(60)))); 
+        poseLookupList.add(new Pose2d(13.997, 3.086, new Rotation2d(Units.degreesToRadians(120)))); 
+        poseLookupList.add(new Pose2d(14.338, 4.366, new Rotation2d(Units.degreesToRadians(180)))); 
+        poseLookupList.add(new Pose2d(13.430, 5.294, new Rotation2d(Units.degreesToRadians(240)))); 
+        poseLookupList.add(new Pose2d(12.119, 4.964, new Rotation2d(Units.degreesToRadians(300))));
     }
 
     private void createLeftReefLookup() {
         poseLookupList = new ArrayList<Pose2d>();
         // blue left reefs
-        poseLookupList.add(new Pose2d(3.15, 2.55, new Rotation2d(Units.degreesToRadians(61.41))));
-        poseLookupList.add(new Pose2d(4.73, 2.14, new Rotation2d(Units.degreesToRadians(120.50))));
-        poseLookupList.add(new Pose2d(5.89, 3.35, new Rotation2d(Units.degreesToRadians(178.90))));
-        poseLookupList.add(new Pose2d(5.46, 4.93, new Rotation2d(Units.degreesToRadians(235.16))));
-        poseLookupList.add(new Pose2d(3.80, 5.30, new Rotation2d(Units.degreesToRadians(299.47))));
-        poseLookupList.add(new Pose2d(2.66, 4.16, new Rotation2d(Units.degreesToRadians(359.83))));
+        poseLookupList.add(new Pose2d(1.635, 3.392, new Rotation2d(Units.degreesToRadians(60)))); 
+        poseLookupList.add(new Pose2d(5.155, 2.883, new Rotation2d(Units.degreesToRadians(120)))); 
+        poseLookupList.add(new Pose2d(5.803, 4.060, new Rotation2d(Units.degreesToRadians(180)))); 
+        poseLookupList.add(new Pose2d(5.056, 5.154, new Rotation2d(Units.degreesToRadians(240)))); 
+        poseLookupList.add(new Pose2d(3.869, 5.167, new Rotation2d(Units.degreesToRadians(300)))); 
+        poseLookupList.add(new Pose2d(3.202, 4.004, new Rotation2d(Units.degreesToRadians(360)))); 
         // red left reefs
-        poseLookupList.add(new Pose2d(11.26, 2.58, new Rotation2d(Units.degreesToRadians(61.56))));
-        poseLookupList.add(new Pose2d(12.79, 2.21, new Rotation2d(Units.degreesToRadians(120.97))));
-        poseLookupList.add(new Pose2d(13.96, 3.39, new Rotation2d(Units.degreesToRadians(181.12))));
-        poseLookupList.add(new Pose2d(13.57, 4.88, new Rotation2d(Units.degreesToRadians(238.06))));
-        poseLookupList.add(new Pose2d(11.92, 5.32, new Rotation2d(Units.degreesToRadians(302.34))));
-        poseLookupList.add(new Pose2d(10.76, 4.13, new Rotation2d(Units.degreesToRadians(0.54))));
+        poseLookupList.add(new Pose2d(12.428, 2.931, new Rotation2d(Units.degreesToRadians(60)))); 
+        poseLookupList.add(new Pose2d(13.708, 2.910, new Rotation2d(Units.degreesToRadians(120)))); 
+        poseLookupList.add(new Pose2d(14.348, 4.035, new Rotation2d(Units.degreesToRadians(180)))); 
+        poseLookupList.add(new Pose2d(13.708, 5.129, new Rotation2d(Units.degreesToRadians(240))));
+        poseLookupList.add(new Pose2d(12.449, 5.140, new Rotation2d(Units.degreesToRadians(300))));
+        poseLookupList.add(new Pose2d(11.799, 4.025, new Rotation2d(Units.degreesToRadians(0))));
     }
 
     @Override

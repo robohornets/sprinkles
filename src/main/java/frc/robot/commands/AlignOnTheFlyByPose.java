@@ -33,7 +33,7 @@ package frc.robot.commands;
          List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
                  currentPose, m_destinationPose);
  
-         constraints = new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI); // The constraints for
+         constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI); // The constraints for
                                                                                                 // this
                                                                                                 // path.
          // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); //

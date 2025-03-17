@@ -18,12 +18,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 
-public class AlignOnTheFly extends Command {
+public class AlignOnTheFlyClosest extends Command {
     private final CommandSwerveDrivetrain m_drivetrain;
     private PathPlannerPath m_path;
     private PathConstraints constraints;
 
-    public AlignOnTheFly(Destinations destination, CommandSwerveDrivetrain drivetrain) {
+    public AlignOnTheFlyClosest(Destinations destination, CommandSwerveDrivetrain drivetrain) {
         m_drivetrain = drivetrain;
         switch (destination) {
             case COLLECTOR -> createCollectorLookup();
@@ -107,7 +107,7 @@ public class AlignOnTheFly extends Command {
             List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
                     currentPose, m_destinationPose);
 
-            constraints = new PathConstraints(0.5, 0.5, 2 * Math.PI, 4 * Math.PI); // The constraints for
+            constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI); // The constraints for
                                                                                    // this
                                                                                    // path.
             // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); //

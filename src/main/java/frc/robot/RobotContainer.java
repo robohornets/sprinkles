@@ -77,10 +77,6 @@ public class RobotContainer {
     public CANrange canRangeSensor = new CANrange(34);
     Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
 
-    // Triggers for Button Console
-    final Trigger positionATrigger = new Trigger(
-            () -> Math.round(this.debugJoystick.getLeftX() * 10) / 10 == 0.1
-                    && Math.round(this.debugJoystick.getLeftY() * 10) / 10 == 0.1);
 
     // MARK: Mechanisms
     private final ElevatorController elevator = new ElevatorController();
@@ -137,7 +133,7 @@ public class RobotContainer {
         );
         NamedCommands.registerCommand("eatCoral",
             Commands.sequence(
-                coral.flywheelIn().withTimeout(2),
+                coral.flywheelIn().withTimeout(1),
                 
                 Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
             )
@@ -151,7 +147,7 @@ public class RobotContainer {
         );
         NamedCommands.registerCommand("spitCoral",
             Commands.sequence(
-                coral.flywheelOut().withTimeout(2),
+                coral.flywheelOut().withTimeout(1),
                 
                 Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
             )
@@ -160,10 +156,7 @@ public class RobotContainer {
 
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
         autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Mode", autoChooser);
-
-        // Trigger configuration for joysticks
-        positionATrigger.onTrue(new ElevatorHeightManager(40.0, elevatorSubsystem));
+        SmartDashboard.putData("Auto Mode", autoChooser);  
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

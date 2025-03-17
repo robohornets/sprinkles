@@ -107,7 +107,7 @@ public class AlignOnTheFlyClosest extends Command {
             List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(
                     currentPose, m_destinationPose);
 
-            constraints = new PathConstraints(0.5, 0.5, 2 * Math.PI, 4 * Math.PI); // The constraints for
+            constraints = new PathConstraints(1.0, 1.0, 2 * Math.PI, 4 * Math.PI); // The constraints for
                                                                                    // this
                                                                                    // path.
             // PathConstraints constraints = PathConstraints.unlimitedConstraints(12.0); //

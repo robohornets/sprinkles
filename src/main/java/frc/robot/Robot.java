@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -95,6 +96,7 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
+      m_robotContainer.drivetrain.resetPose(new PathPlannerAuto(m_autonomousCommand.getName()).getStartingPose());
       m_autonomousCommand.schedule();
     }
   }

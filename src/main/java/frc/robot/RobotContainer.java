@@ -77,10 +77,6 @@ public class RobotContainer {
     public CANrange canRangeSensor = new CANrange(34);
     Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
 
-    // Triggers for Button Console
-    final Trigger positionATrigger = new Trigger(
-            () -> Math.round(this.debugJoystick.getLeftX() * 10) / 10 == 0.1
-                    && Math.round(this.debugJoystick.getLeftY() * 10) / 10 == 0.1);
 
     // MARK: Mechanisms
     private final ElevatorController elevator = new ElevatorController();
@@ -160,10 +156,7 @@ public class RobotContainer {
 
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
         autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Mode", autoChooser);
-
-        // Trigger configuration for joysticks
-        positionATrigger.onTrue(new ElevatorHeightManager(40.0, elevatorSubsystem));
+        SmartDashboard.putData("Auto Mode", autoChooser);  
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

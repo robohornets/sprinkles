@@ -5,6 +5,8 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.RobotContainer;
+import frc.robot.helpers.levelmanager.LevelManager;
+import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
@@ -65,6 +67,12 @@ public class DriverJoystick {
                     }
                 )
             );
+        
+        // MARK: Left Bumper
+        joystick.leftBumper().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsytem).goToPreset());
+
+        // MARK: Right Bumper
+        joystick.rightBumper().onTrue(new LevelManager(Levels.DEFAULT_POSITION, elevatorSubsystem, coralSubsytem).goToPreset());
         
 
         // MARK: D-Pad

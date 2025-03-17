@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.127,
-        "y": 5.099749652409957
+        "x": 5.2,
+        "y": 5.1
       },
       "prevControl": {
-        "x": 6.15247159090909,
-        "y": 6.622599431818181
+        "x": 6.22547159090909,
+        "y": 6.622849779408224
       },
       "nextControl": null,
       "isLocked": false,
@@ -71,7 +71,7 @@
     "rotation": -118.345
   },
   "reversed": false,
-  "folder": "1 Auto I-J-K",
+  "folder": "L2 Auto I-J-K",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -179.21331045516135

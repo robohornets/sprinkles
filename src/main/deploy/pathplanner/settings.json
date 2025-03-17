@@ -3,8 +3,8 @@
   "robotLength": 0.838,
   "holonomicMode": true,
   "pathFolders": [
+    "L2 Auto I-J-K",
     "2 Auto H-I-J",
-    "1 Auto I-J-K",
     "3 Auto K-L-A",
     "MiddleBlueAuto",
     "MiddleRedAuto",

@@ -136,7 +136,7 @@ public class RobotContainer {
         );
         NamedCommands.registerCommand("eatCoral",
             Commands.sequence(
-                coral.flywheelIn().withTimeout(2),
+                coral.flywheelIn().withTimeout(1),
                 
                 Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
             )
@@ -150,7 +150,7 @@ public class RobotContainer {
         );
         NamedCommands.registerCommand("spitCoral",
             Commands.sequence(
-                coral.flywheelOut().withTimeout(2),
+                coral.flywheelOut().withTimeout(1),
                 
                 Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
             )

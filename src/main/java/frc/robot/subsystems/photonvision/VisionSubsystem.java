@@ -45,21 +45,22 @@ public class VisionSubsystem extends SubsystemBase {
         
         // Define the transform from robot center to each camera.
         Transform3d robotTocamFaceFront = new Transform3d(
-                new Translation3d(0.5, 0.0, 0.3),
+                new Translation3d(0.35, -0.22, 0.9),
                 new Rotation3d(0.0, 0.0, 0.0));
+                
         // camFaceBack: 0.5m to rear, facing backward (rotate 180 degrees around yaw)
         Transform3d robotTocamFaceBack = new Transform3d(
-                new Translation3d(-0.5, 0.0, 0.3),
-                new Rotation3d(0.0, 0.0, Math.PI));
+                new Translation3d(-0.35, 0.27, 0.9),
+                new Rotation3d(0.0, 0.0, Math.toRadians(180)));
 
         Transform3d robotTocamFaceRight = new Transform3d(
-            new Translation3d(-0.5, 0.0, 0.3),
-            new Rotation3d(0.0, 0.0, Math.PI)
+            new Translation3d(-0.23, -0.35, 0.9),
+            new Rotation3d(0.0, 0.0, Math.toRadians(270))
         );
 
         Transform3d robotTocamFaceLeft = new Transform3d(
-            new Translation3d(-0.5, 0.0, 0.3),
-            new Rotation3d(0.0, 0.0, Math.PI)
+            new Translation3d(-0.2, 0.35, 0.9),
+            new Rotation3d(0.0, 0.0, Math.toRadians(90))
         );
         
         // Create PhotonPoseEstimator for each camera, using a strategy to combine tag data

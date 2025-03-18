@@ -1,5 +1,6 @@
 package frc.robot.joysticks;
 
+import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -38,15 +39,25 @@ public class DebugJoystick {
         this.coralSubsytem = coralSubsystem;
     }
 
+    public static TalonFX climberMotor = new TalonFX(13);
+
     public void configureBindings() {
         // MARK: A-Button
         joystick.a()
-            .whileTrue(coral.flywheelOut())
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        climberMotor.set(0.2);
+                        CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            )
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralSubsystem.flywheelMotor.set(0.0);
-                        CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                        climberMotor.set(0.0);
+                        CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -54,16 +65,24 @@ public class DebugJoystick {
 
         // MARK: B-Button
         joystick.b()
-            .whileTrue(coral.flywheelIn())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        CoralSubsystem.flywheelMotor.set(0.0);
-                        CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
+        .whileTrue(
+            Commands.run(
+                () -> {
+                    climberMotor.set(-0.2);
+                    CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
+                    CommandScheduler.getInstance().cancelAll();
+                }
+            )
+        )
+        .onFalse(
+            Commands.run(
+                () -> {
+                    climberMotor.set(0.0);
+                    CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
+                    CommandScheduler.getInstance().cancelAll();
+                }
+            )
+        );
         
 
         // collect top algae by passing in Pose2d location

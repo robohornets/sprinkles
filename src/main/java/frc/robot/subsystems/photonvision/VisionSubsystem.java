@@ -1,133 +1,166 @@
+// VisionSubsystem.java – handles AprilTag data from PhotonVision
 package frc.robot.subsystems.photonvision;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.RobotContainer;
-
-import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.math.geometry.Translation3d;
+import org.photonvision.targeting.PhotonTrackedTarget;
+import org.photonvision.EstimatedRobotPose;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 import java.util.Optional;
 
 public class VisionSubsystem extends SubsystemBase {
-
-    RobotContainer robotContainer = new RobotContainer();
+    // PhotonVision camera and pose estimator
+    private final PhotonCamera camFaceFront;
+    private final PhotonCamera camFaceBack;
+    private final PhotonCamera camFaceRight;
+    private final PhotonCamera camFaceLeft;
+    // (Add additional cameras as needed: left/right, etc.)
+    private final PhotonPoseEstimator poseEstimatorFront;
+    private final PhotonPoseEstimator poseEstimatorBack;
+    private final PhotonPoseEstimator poseEstimatorRight;
+    private final PhotonPoseEstimator poseEstimatorLeft;
     
-    // Instantiate PhotonCameras for each of the four cameras
-    private final PhotonCamera cameraFrontLeft  = new PhotonCamera("FrontLeft");
-    private final PhotonCamera cameraFrontRight = new PhotonCamera("FrontRight");
-    private final PhotonCamera cameraBackLeft   = new PhotonCamera("BackLeft");
-    private final PhotonCamera cameraBackRight  = new PhotonCamera("BackRight");
-
-    // Define the transform from the robot's reference point to each camera
-    private final Transform3d robotToCamFrontLeft  = new Transform3d(
-        new Translation3d(0.3, 0.2, 0.5), 
-        new Rotation3d(0.0, Math.toRadians(15), 0.0)
-    );
-    private final Transform3d robotToCamFrontRight = new Transform3d(
-        new Translation3d(0.3, 0.2, 0.5), 
-        new Rotation3d(0.0, Math.toRadians(15), 0.0)
-    );
-    private final Transform3d robotToCamBackLeft   = new Transform3d(
-        new Translation3d(0.3, 0.2, 0.5), 
-        new Rotation3d(0.0, Math.toRadians(15), 0.0)
-    );
-    private final Transform3d robotToCamBackRight  = new Transform3d(
-        new Translation3d(0.3, 0.2, 0.5), 
-        new Rotation3d(0.0, Math.toRadians(15), 0.0)
-    );
-
-    // Load the AprilTagFieldLayout for the 2025 game
-    private final AprilTagFieldLayout fieldLayout = loadAprilTagFieldLayout();
+    // Field layout for AprilTags (use correct game field layout)
+    private final AprilTagFieldLayout aprilTagLayout;
     
-
-    // Create PhotonPoseEstimators for each camera
-    private final PhotonPoseEstimator estimatorFrontLeft  = 
-        new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamFrontLeft);
-    private final PhotonPoseEstimator estimatorFrontRight = 
-        new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamFrontRight);
-    private final PhotonPoseEstimator estimatorBackLeft   = 
-        new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamBackLeft);
-    private final PhotonPoseEstimator estimatorBackRight  = 
-        new PhotonPoseEstimator(fieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotToCamBackRight);
-
-    // Hold the latest estimated robot pose
-    public Pose2d latestEstimatedPose = new Pose2d();
-
     public VisionSubsystem() {
-        // Additional initialization if needed
-    }
-
-    @Override
-    public void periodic() {
-        // Update the pose estimate periodically
-        updatePose();
-    }
-
-    /**
-     * Retrieves the current odometry-based pose.
-     * Replace this with your drivetrain's odometry retrieval.
-     */
-    private Pose2d getOdometryPose() {
+        aprilTagLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
         
+        // Instantiate PhotonCamera for each camera (names must match PhotonVision config)
+        camFaceFront = new PhotonCamera("CamFaceFront");
+        camFaceBack  = new PhotonCamera("CamFaceBack");
+        camFaceRight = new PhotonCamera("CamFaceRight");
+        camFaceLeft = new PhotonCamera("CamFaceLeft");
+        
+        // Define the transform from robot center to each camera.
+        Transform3d robotTocamFaceFront = new Transform3d(
+                new Translation3d(0.5, 0.0, 0.3),
+                new Rotation3d(0.0, 0.0, 0.0));
+        // camFaceBack: 0.5m to rear, facing backward (rotate 180 degrees around yaw)
+        Transform3d robotTocamFaceBack = new Transform3d(
+                new Translation3d(-0.5, 0.0, 0.3),
+                new Rotation3d(0.0, 0.0, Math.PI));
 
-        return new Pose2d();
+        Transform3d robotTocamFaceRight = new Transform3d(
+            new Translation3d(-0.5, 0.0, 0.3),
+            new Rotation3d(0.0, 0.0, Math.PI)
+        );
+
+        Transform3d robotTocamFaceLeft = new Transform3d(
+            new Translation3d(-0.5, 0.0, 0.3),
+            new Rotation3d(0.0, 0.0, Math.PI)
+        );
+        
+        // Create PhotonPoseEstimator for each camera, using a strategy to combine tag data
+        poseEstimatorFront = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceFront);
+
+        poseEstimatorBack = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceBack);
+
+        poseEstimatorRight = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceRight);
+
+        poseEstimatorLeft = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceLeft);
+
+        // You can use MULTI_TAG_PNP_ON_COPROCESSOR for highest accuracy if PhotonVision is set up for it.
+        // LOWEST_AMBIGUITY will choose the best pose if tags have ambiguous solutions.
     }
-
+    
     /**
-     * Updates the robot's pose estimate using PhotonVision data from all cameras.
+     * Estimate the robot's field pose from camera data.
+     * @param prevEstimatedRobotPose The current pose estimate (from odometry) to use as a reference.
+     * @return An Optional containing the estimated global pose and timestamp if vision data is available.
      */
-    public void updatePose() {
-        // Get the current odometry pose to provide a reference
-        Pose2d currentOdometryPose = getOdometryPose();
+    public Optional<EstimatedRobotPose> getEstimatedGlobalPose(edu.wpi.first.math.geometry.Pose2d prevEstimatedRobotPose) {
+        // Use the latest targets from the front camera
+        Optional<EstimatedRobotPose> frontResult = Optional.empty();
+        if (camFaceFront.getLatestResult().hasTargets()) {
+            // Set reference pose to help PhotonPoseEstimator (for strategies like CLOSEST_TO_REFERENCE_POSE)
+            poseEstimatorFront.setReferencePose(prevEstimatedRobotPose);
 
-        // Set the reference pose for each estimator
-        estimatorFrontLeft.setReferencePose(currentOdometryPose);
-        estimatorFrontRight.setReferencePose(currentOdometryPose);
-        estimatorBackLeft.setReferencePose(currentOdometryPose);
-        estimatorBackRight.setReferencePose(currentOdometryPose);
+            PhotonPipelineResult frontResultData = camFaceFront.getLatestResult();
+            if (frontResultData.hasTargets()) {
+                poseEstimatorFront.setReferencePose(prevEstimatedRobotPose);
+                frontResult = poseEstimatorFront.update(frontResultData);
+            }
 
-        // Get the latest pipeline results from each camera
-        Optional<EstimatedRobotPose> estimatedPoseFL = 
-            estimatorFrontLeft.update(cameraFrontLeft.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseFR = 
-            estimatorFrontRight.update(cameraFrontRight.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseBL = 
-            estimatorBackLeft.update(cameraBackLeft.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseBR = 
-            estimatorBackRight.update(cameraBackRight.getLatestResult());
-
-        // Combine the pose estimates as needed
-        // For simplicity, this example uses the first available estimate
-        if (estimatedPoseFL.isPresent()) {
-            latestEstimatedPose = estimatedPoseFL.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseFR.isPresent()) {
-            latestEstimatedPose = estimatedPoseFR.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseBL.isPresent()) {
-            latestEstimatedPose = estimatedPoseBL.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseBR.isPresent()) {
-            latestEstimatedPose = estimatedPoseBR.get().estimatedPose.toPose2d();
         }
-    }
-
-
-    /**
-     * Loads the AprilTagFieldLayout for the 2025 game.
-     */
-    private AprilTagFieldLayout loadAprilTagFieldLayout() {
-        try {
-            // Load the field layout for the 2025 game
-            return AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+        Optional<EstimatedRobotPose> backResult = Optional.empty();
+        if (camFaceBack.getLatestResult().hasTargets()) {
+            poseEstimatorBack.setReferencePose(prevEstimatedRobotPose);
+            PhotonPipelineResult backResultData = camFaceBack.getLatestResult();
+            if (backResultData.hasTargets()) {
+                poseEstimatorBack.setReferencePose(prevEstimatedRobotPose);
+                backResult = poseEstimatorBack.update(backResultData);
+            }
         }
+
+        Optional<EstimatedRobotPose> rightResult = Optional.empty();
+        if (camFaceRight.getLatestResult().hasTargets()) {
+            poseEstimatorRight.setReferencePose(prevEstimatedRobotPose);
+            PhotonPipelineResult rightResultData = camFaceRight.getLatestResult();
+            if (rightResultData.hasTargets()) {
+                poseEstimatorRight.setReferencePose(prevEstimatedRobotPose);
+                rightResult = poseEstimatorRight.update(rightResultData);
+            }
+        }
+        Optional<EstimatedRobotPose> leftResult = Optional.empty();
+        if (camFaceLeft.getLatestResult().hasTargets()) {
+            poseEstimatorLeft.setReferencePose(prevEstimatedRobotPose);
+            PhotonPipelineResult leftResultData = camFaceLeft.getLatestResult();
+            if (leftResultData.hasTargets()) {
+                poseEstimatorLeft.setReferencePose(prevEstimatedRobotPose);
+                leftResult = poseEstimatorLeft.update(leftResultData);
+            }
+        }
+        
+        // Choose the best result among all cameras based on pose ambiguity
+        Optional<EstimatedRobotPose> bestResult = Optional.empty();
+        double bestAmbiguity = Double.MAX_VALUE;
+
+        // Check Front Camera
+        if (frontResult.isPresent()) {
+            double frontAmb = camFaceFront.getLatestResult().getBestTarget().getPoseAmbiguity();
+            bestAmbiguity = frontAmb;
+            bestResult = frontResult;
+        }
+
+        // Check Back Camera
+        if (backResult.isPresent()) {
+            double backAmb = camFaceBack.getLatestResult().getBestTarget().getPoseAmbiguity();
+            if (backAmb < bestAmbiguity) {
+                bestAmbiguity = backAmb;
+                bestResult = backResult;
+            }
+        }
+
+        // Check Right Camera
+        if (rightResult.isPresent()) {
+            double rightAmb = camFaceRight.getLatestResult().getBestTarget().getPoseAmbiguity();
+            if (rightAmb < bestAmbiguity) {
+                bestAmbiguity = rightAmb;
+                bestResult = rightResult;
+            }
+        }
+
+        // Check Left Camera
+        if (leftResult.isPresent()) {
+            double leftAmb = camFaceLeft.getLatestResult().getBestTarget().getPoseAmbiguity();
+            if (leftAmb < bestAmbiguity) {
+                bestAmbiguity = leftAmb;
+                bestResult = leftResult;
+            }
+        }
+
+        return bestResult;
+
     }
 }

@@ -2,6 +2,8 @@ package frc.robot.joysticks;
 
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.helpers.levelmanager.LevelManager;
+import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
@@ -114,9 +116,10 @@ public class ButtonConsole {
         positionLTrigger.onTrue(null);
 
         // MARK: DPAD Bindings
-        joystick.povDown().onTrue(null);
-        joystick.povLeft().onTrue(null);
-        joystick.povRight().onTrue(null);
-        joystick.povUp().onTrue(null);
+// MARK: D-Pad
+        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset());
     }    
 }

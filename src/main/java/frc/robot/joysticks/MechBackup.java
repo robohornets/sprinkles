@@ -24,7 +24,7 @@ public class MechBackup {
     private final ElevatorController elevator;
     private final ElevatorSubsystem elevatorSubsystem;
     private final CoralController coral;
-    private final CoralSubsystem coralSubsytem;
+    private final CoralSubsystem coralSubsystem;
     
     public MechBackup(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
         ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem) {
@@ -34,7 +34,7 @@ public class MechBackup {
         this.elevator = elevator;
         this.elevatorSubsystem = elevatorSubsystem;
         this.coral = coral;
-        this.coralSubsytem = coralSubsystem;
+        this.coralSubsystem = coralSubsystem;
     }
 
     public void configureBindings() {
@@ -128,9 +128,9 @@ public class MechBackup {
             );
         
         // MARK: D-Pad
-        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsytem).goToPreset());
-        joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsytem).goToPreset());
-        joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
-        joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
+        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset());
     }
 }

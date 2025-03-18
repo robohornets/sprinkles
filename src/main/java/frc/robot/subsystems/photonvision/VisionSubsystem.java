@@ -11,6 +11,7 @@ import org.photonvision.EstimatedRobotPose;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Timer;
@@ -162,5 +163,14 @@ public class VisionSubsystem extends SubsystemBase {
 
         return bestResult;
 
+    }
+
+    public Pose2d getLatestEstimatedPose(Pose2d fallbackPose) {
+        Optional<EstimatedRobotPose> visionPoseOpt = getEstimatedGlobalPose(fallbackPose);
+        if (visionPoseOpt.isPresent()) {
+            // Convert the 3D pose to a 2D pose (assumes Z is not used)
+            return visionPoseOpt.get().estimatedPose.toPose2d();
+        }
+        return fallbackPose;
     }
 }

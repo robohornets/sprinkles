@@ -1,5 +1,6 @@
 package frc.robot.joysticks;
 
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.helpers.levelmanager.LevelManager;
@@ -36,84 +37,84 @@ public class ButtonConsole {
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.1 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.1
         );
-        positionATrigger.onTrue(null);
+        positionATrigger.onTrue(Commands.none());
 
         // MARK: Button B
         Trigger positionBTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.2 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.2
         );
-        positionBTrigger.onTrue(null);
+        positionBTrigger.onTrue(Commands.none());
 
         // MARK: Button C
         Trigger positionCTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.3 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.3
         );
-        positionCTrigger.onTrue(null);
+        positionCTrigger.onTrue(Commands.none());
 
         // MARK: Button D
         Trigger positionDTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.4 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.4
         );
-        positionDTrigger.onTrue(null);
+        positionDTrigger.onTrue(Commands.none());
 
         // MARK: Button E
         Trigger positionETrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.5 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.5
         );
-        positionETrigger.onTrue(null);
+        positionETrigger.onTrue(Commands.none());
 
         // MARK: Button F
         Trigger positionFTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.6 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.6
         );
-        positionFTrigger.onTrue(null);
+        positionFTrigger.onTrue(Commands.none());
 
         // MARK: Button G
         Trigger positionGTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.7 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.7
         );
-        positionGTrigger.onTrue(null);
+        positionGTrigger.onTrue(Commands.none());
 
         // MARK: Button H
         Trigger positionHTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.8 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.8
         );
-        positionHTrigger.onTrue(null);
+        positionHTrigger.onTrue(Commands.none());
 
         // MARK: Button I
         Trigger positionITrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.9 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.9
         );
-        positionITrigger.onTrue(null);
+        positionITrigger.onTrue(Commands.none());
 
         // MARK: Button J
         Trigger positionJTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == -0.1 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == -0.9
         );
-        positionJTrigger.onTrue(null);
+        positionJTrigger.onTrue(Commands.none());
 
         // MARK: Button K
         Trigger positionKTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == -0.2 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == -0.8
         );
-        positionKTrigger.onTrue(null);
+        positionKTrigger.onTrue(Commands.none());
 
         // MARK: Button L
         Trigger positionLTrigger = new Trigger(() ->
             Math.round(joystick.getLeftX() * 10) / 10.0 == -0.3 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == -0.7
         );
-        positionLTrigger.onTrue(null);
+        positionLTrigger.onTrue(Commands.none());
 
         // MARK: DPAD Bindings
         joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());

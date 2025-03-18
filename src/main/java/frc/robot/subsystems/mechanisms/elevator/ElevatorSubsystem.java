@@ -5,11 +5,22 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 
 public class ElevatorSubsystem extends SubsystemBase {
+    public ElevatorSubsystem() {
+        setDefaultCommand(Commands.run(
+            () -> {
+                elevatorLeft.set(-0.015);
+                elevatorRight.set(0.015);
+            }
+        ));
+    }
+
+
     public static final double elevatorUpDownSpeed = 0.2;
     public static final double elevatorUpDownSpeedSlow = 0.1;
 

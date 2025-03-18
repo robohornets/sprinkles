@@ -98,9 +98,9 @@ public class RobotContainer {
 
     private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
-    // private final ButtonConsole buttonConsoleController = new ButtonConsole(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    //private final ButtonConsole buttonConsoleController = new ButtonConsole(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
-
+    private final ButtonConsole buttonConsoleController = new ButtonConsole(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
 
     // MARK: Shuffleboard
     /* Path follower */
@@ -168,7 +168,7 @@ public class RobotContainer {
         // MARK: Configure Bindings
         driverJoystickController.configureBindings();
         mechanismsJoystickController.configureBindings();
-        // buttonConsoleController.configureBindings();
+        buttonConsoleController.configureBindings();
         debugJoystickController.configureBindings();
         configureBindings();
     }
@@ -179,6 +179,16 @@ public class RobotContainer {
                 .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * 0.5)
                 .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
             )
+        );
+    }
+
+    public Command applyHoldCurrent() {
+        return Commands.run(
+            () -> {
+                coralSubsystem.angleMotor.set(-0.015);
+                elevatorSubsystem.elevatorLeft.set(-0.015);
+                elevatorSubsystem.elevatorRight.set(0.015); 
+            }
         );
     }
 

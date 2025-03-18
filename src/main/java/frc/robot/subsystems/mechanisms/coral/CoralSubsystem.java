@@ -4,9 +4,18 @@ import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralSubsystem extends SubsystemBase {
+    public CoralSubsystem() {
+        setDefaultCommand(Commands.run(
+            () -> {
+                angleMotor.set(-0.015);
+            }
+        ));
+    }
+
     public static TalonFX angleMotor = new TalonFX(12);
     public static TalonFX flywheelMotor = new TalonFX(11);
     public static DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(2);

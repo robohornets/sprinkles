@@ -33,6 +33,7 @@ import frc.robot.commands.Destinations;
 import frc.robot.generated.TunerConstants;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
+import frc.robot.joysticks.ButtonConsole;
 import frc.robot.joysticks.DebugJoystick;
 import frc.robot.joysticks.DriverJoystick;
 import frc.robot.joysticks.MechBackup;
@@ -97,7 +98,7 @@ public class RobotContainer {
 
     private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
-    private final DriverJoystick buttonConsoleController = new DriverJoystick(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    // private final ButtonConsole buttonConsoleController = new ButtonConsole(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
 
 
@@ -167,7 +168,7 @@ public class RobotContainer {
         // MARK: Configure Bindings
         driverJoystickController.configureBindings();
         mechanismsJoystickController.configureBindings();
-        buttonConsoleController.configureBindings();
+        // buttonConsoleController.configureBindings();
         debugJoystickController.configureBindings();
         configureBindings();
     }

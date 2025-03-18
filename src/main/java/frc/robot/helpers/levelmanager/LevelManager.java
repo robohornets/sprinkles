@@ -21,13 +21,15 @@ public class LevelManager {
         this.elevatorSubsystem = elevatorSubsystem;
         this.coralSubsystem = coralSubsystem;
     }
-
+// get coral limits -> get heights
     /**
      * Executes the correct preset height and angle based on the selected level.
      */
     public Command goToPreset() {
         double targetHeight = 0.0;
         double targetAngle = 0.0;
+        // max Coral: 0.693
+        // min coral: 0.262
 
         // Assign values based on the selected level
         switch (selectedLevel) {

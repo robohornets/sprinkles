@@ -2,6 +2,7 @@ package frc.robot.subsystems.mechanisms.algae;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 
 public class AlgaeAngleManager extends Command{
     private double angle;
@@ -9,8 +10,8 @@ public class AlgaeAngleManager extends Command{
     private boolean isFinishedToggle = false;
     private double oopsieThreshold = 0.01;
 
-    public double angleAlgaeUpperLimit = 0.82;
-    public double angleAlgaeLowerLimit = 0.48;
+    public double angleAlgaeUpperLimit = 0.99;
+    public double angleAlgaeLowerLimit = 0.1;
 
     public AlgaeAngleManager(double angle, AlgaeSubsystem algaeSubsystem) {
         this.angle = Math.max(angleAlgaeLowerLimit, Math.min(angleAlgaeUpperLimit, angle));
@@ -34,7 +35,7 @@ public class AlgaeAngleManager extends Command{
 
         if (Math.abs(currentAlgaeAngle - angle) <= oopsieThreshold) {
             System.out.println("Stopping at target");
-            algaeSubsystem.angleAlgaeMotor.set(-0.015);
+            algaeSubsystem.angleAlgaeMotor.set(0.015);
             isFinishedToggle = true;
         } 
         else if (currentAlgaeAngle >= angleAlgaeUpperLimit) {
@@ -43,7 +44,7 @@ public class AlgaeAngleManager extends Command{
                 algaeSubsystem.angleAlgaeMotor.set(algaeSubsystem.angleAlgaeSpeed);
             } else {
                 System.out.println("Above upper limit, stopping");
-                algaeSubsystem.angleAlgaeMotor.set(-0.015);
+                algaeSubsystem.angleAlgaeMotor.set(0.015);
                 isFinishedToggle = true;
             }
         } 
@@ -53,7 +54,7 @@ public class AlgaeAngleManager extends Command{
                 algaeSubsystem.angleAlgaeMotor.set(-algaeSubsystem.angleAlgaeSpeed);
             } else {
                 System.out.println("Below lower limit, stopping");
-                algaeSubsystem.angleAlgaeMotor.set(-0.015);
+                algaeSubsystem.angleAlgaeMotor.set(0.015);
                 isFinishedToggle = true;
             }
         } 

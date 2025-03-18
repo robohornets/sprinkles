@@ -28,7 +28,7 @@ public class AlgaeController {
     public Command angleAlgaeUp() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() < 0.82) {
+        if (getAlgaeAngle() < 0.99) {
             AlgaeSubsystem.angleAlgaeMotor.set(-AlgaeSubsystem.angleAlgaeSpeed); }
         else {
             AlgaeSubsystem.angleAlgaeMotor.set(0.0);
@@ -39,7 +39,7 @@ public class AlgaeController {
     public Command angleAlgaeDown() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() > 0.48) {
+        if (getAlgaeAngle() > 0.1) {
         AlgaeSubsystem.angleAlgaeMotor.set(AlgaeSubsystem.angleAlgaeSpeed);} 
         else {
             AlgaeSubsystem.angleAlgaeMotor.set(0.0);
@@ -51,7 +51,7 @@ public class AlgaeController {
     public Command angleAlgaeUpSlow() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() < 0.82) {
+        if (getAlgaeAngle() < 0.99) {
             AlgaeSubsystem.angleAlgaeMotor.set(-0.1); }
         else {
             AlgaeSubsystem.angleAlgaeMotor.set(0.0);
@@ -62,7 +62,7 @@ public class AlgaeController {
     public Command angleAlgaeDownSlow() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() > 0.48) {
+        if (getAlgaeAngle() > 0.1) {
         AlgaeSubsystem.angleAlgaeMotor.set(0.1);} 
         else {
             AlgaeSubsystem.angleAlgaeMotor.set(0.0);

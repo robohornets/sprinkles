@@ -59,6 +59,7 @@ public class DebugJoystick {
             );
 
         // MARK: B-Button
+        
         joystick.b()
             .whileTrue(coral.flywheelIn())
             .onFalse(
@@ -185,23 +186,23 @@ public class DebugJoystick {
         // joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsytem).goToPreset());
         // joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
         // joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
-        joystick.povDown()
+        joystick.povUp()
         .whileTrue(algae.angleAlgaeDown())
         .onFalse(
             Commands.run(
                 () -> {
-                    AlgaeSubsystem.angleAlgaeMotor.set(-0.015);
+                    AlgaeSubsystem.angleAlgaeMotor.set(0.015);
                     AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
                     CommandScheduler.getInstance().cancelAll();
                 }
             )
         );
-        joystick.povUp()
+        joystick.povDown()
         .whileTrue(algae.angleAlgaeUp())
         .onFalse(
             Commands.run(
                 () -> {
-                    AlgaeSubsystem.angleAlgaeMotor.set(-0.015);
+                    AlgaeSubsystem.angleAlgaeMotor.set(0.015);
                     AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
                     CommandScheduler.getInstance().cancelAll();
                 }

@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.helpers.ShuffleboardUtil;
+import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
@@ -56,6 +57,8 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
     ShuffleboardUtil.put("Angle Motor Position", Math.round(CoralSubsystem.angleDCEncoder.get() * 10)/10);
+
+    ShuffleboardUtil.put("Algae Angle", AlgaeSubsystem.angleAlgaeDCEncoder.get());
     
     // System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
     // System.out.println(CoralVariables.angleDCEncoder.get());

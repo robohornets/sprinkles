@@ -14,9 +14,9 @@ public class AlgaeSubsystem extends SubsystemBase {
     public static Boolean flywheelAlgaeDisabled = false;
     
     // Angle 12, flywheel 11
-    public static Double angleAlgaeSpeed = 0.1;
-    public static Double flywheelAlgaeInSpeed = 0.2;
-    public static Double flywheelAlgaeOutSpeed = 0.6;
+    public static Double angleAlgaeSpeed = 0.2;
+    public static Double flywheelAlgaeInSpeed = 0.3;
+    public static Double flywheelAlgaeOutSpeed = 1.0;
 
     public static Double angleAlgaeHoldSpeed = 0.015;
 }

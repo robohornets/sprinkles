@@ -39,6 +39,8 @@ import frc.robot.joysticks.MechBackup;
 import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
+import frc.robot.subsystems.mechanisms.algae.AlgaeController;
+import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
@@ -81,9 +83,11 @@ public class RobotContainer {
     // MARK: Mechanisms
     private final ElevatorController elevator = new ElevatorController();
     public static final CoralController coral = new CoralController();
+    public static final AlgaeController algae = new AlgaeController();
 
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     public final CoralSubsystem coralSubsystem = new CoralSubsystem();
+    public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
 
     // MARK: Inputs
     private final CommandXboxController driverJoystick = new CommandXboxController(0);
@@ -94,7 +98,7 @@ public class RobotContainer {
     private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     private final DriverJoystick buttonConsoleController = new DriverJoystick(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
-    private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+    private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
 
 
     // MARK: Shuffleboard

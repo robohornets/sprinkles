@@ -189,10 +189,10 @@ public class RobotContainer {
         // }
 
         private void configureDefaults() {
-            coralSubsystem.setDefaultCommand(Commands.run(() -> {
-                coralSubsystem.angleMotor.set(-coralSubsystem.angleHoldSpeed);
-            }));
-            
+            coralSubsystem.setDefaultCommand(
+            Commands.run(() -> coralSubsystem.angleMotor.set(-CoralSubsystem.angleHoldSpeed), coralSubsystem)
+        );
+
         }
     
         private void configureBindings() {

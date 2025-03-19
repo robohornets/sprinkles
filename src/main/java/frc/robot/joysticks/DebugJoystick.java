@@ -191,7 +191,7 @@ public class DebugJoystick {
         .onFalse(
             Commands.run(
                 () -> {
-                    AlgaeSubsystem.angleAlgaeMotor.set(0.015);
+                    //AlgaeSubsystem.angleAlgaeMotor.set(0.015);
                     AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
                     CommandScheduler.getInstance().cancelAll();
                 }
@@ -202,7 +202,7 @@ public class DebugJoystick {
         .onFalse(
             Commands.run(
                 () -> {
-                    AlgaeSubsystem.angleAlgaeMotor.set(0.015);
+                    //AlgaeSubsystem.angleAlgaeMotor.set(0.015);
                     AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
                     CommandScheduler.getInstance().cancelAll();
                 }

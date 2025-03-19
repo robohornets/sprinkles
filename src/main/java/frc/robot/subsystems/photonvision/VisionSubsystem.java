@@ -89,32 +89,32 @@ public class VisionSubsystem extends SubsystemBase {
         Pose2d currentOdometryPose = getOdometryPose();
 
         // Set the reference pose for each estimator
-        estimatorFrontLeft.setReferencePose(currentOdometryPose);
-        estimatorFrontRight.setReferencePose(currentOdometryPose);
-        estimatorBackLeft.setReferencePose(currentOdometryPose);
-        estimatorBackRight.setReferencePose(currentOdometryPose);
+        // estimatorFrontLeft.setReferencePose(currentOdometryPose);
+        // estimatorFrontRight.setReferencePose(currentOdometryPose);
+        // estimatorBackLeft.setReferencePose(currentOdometryPose);
+        // estimatorBackRight.setReferencePose(currentOdometryPose);
 
-        // Get the latest pipeline results from each camera
-        Optional<EstimatedRobotPose> estimatedPoseFL = 
-            estimatorFrontLeft.update(cameraFrontLeft.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseFR = 
-            estimatorFrontRight.update(cameraFrontRight.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseBL = 
-            estimatorBackLeft.update(cameraBackLeft.getLatestResult());
-        Optional<EstimatedRobotPose> estimatedPoseBR = 
-            estimatorBackRight.update(cameraBackRight.getLatestResult());
+        // // Get the latest pipeline results from each camera
+        // Optional<EstimatedRobotPose> estimatedPoseFL = 
+        //     estimatorFrontLeft.update(cameraFrontLeft.getLatestResult());
+        // Optional<EstimatedRobotPose> estimatedPoseFR = 
+        //     estimatorFrontRight.update(cameraFrontRight.getLatestResult());
+        // Optional<EstimatedRobotPose> estimatedPoseBL = 
+        //     estimatorBackLeft.update(cameraBackLeft.getLatestResult());
+        // Optional<EstimatedRobotPose> estimatedPoseBR = 
+        //     estimatorBackRight.update(cameraBackRight.getLatestResult());
 
-        // Combine the pose estimates as needed
-        // For simplicity, this example uses the first available estimate
-        if (estimatedPoseFL.isPresent()) {
-            latestEstimatedPose = estimatedPoseFL.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseFR.isPresent()) {
-            latestEstimatedPose = estimatedPoseFR.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseBL.isPresent()) {
-            latestEstimatedPose = estimatedPoseBL.get().estimatedPose.toPose2d();
-        } else if (estimatedPoseBR.isPresent()) {
-            latestEstimatedPose = estimatedPoseBR.get().estimatedPose.toPose2d();
-        }
+        // // Combine the pose estimates as needed
+        // // For simplicity, this example uses the first available estimate
+        // if (estimatedPoseFL.isPresent()) {
+        //     latestEstimatedPose = estimatedPoseFL.get().estimatedPose.toPose2d();
+        // } else if (estimatedPoseFR.isPresent()) {
+        //     latestEstimatedPose = estimatedPoseFR.get().estimatedPose.toPose2d();
+        // } else if (estimatedPoseBL.isPresent()) {
+        //     latestEstimatedPose = estimatedPoseBL.get().estimatedPose.toPose2d();
+        // } else if (estimatedPoseBR.isPresent()) {
+        //     latestEstimatedPose = estimatedPoseBR.get().estimatedPose.toPose2d();
+        // }
     }
 
 

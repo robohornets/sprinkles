@@ -4,6 +4,7 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
@@ -14,6 +15,8 @@ import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.RobotContainer;
+
 
 public class DriverJoystick {
     private final CommandXboxController joystick;
@@ -40,7 +43,8 @@ public class DriverJoystick {
         // MARK: Y-Button
         // Reset field centric heading
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
+        joystick.x().onTrue(new InstantCommand(() -> RobotContainer.setUseFieldCentric(false)));
+       
         
         // MARK: L Trigger
         joystick.leftTrigger()
@@ -104,36 +108,44 @@ public class DriverJoystick {
             );
 
         
-        joystick.povLeft()
-            .whileTrue(elevator.elevatorDownSlow())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        ElevatorSubsystem.elevatorLeft.set(-0.015);
-                        ElevatorSubsystem.elevatorRight.set(0.015);
+        // joystick.povLeft()
+        //     .whileTrue(elevator.elevatorDownSlow())
+        //     .onFalse(
+        //         Commands.run(
+        //             () -> {
+        //                 ElevatorSubsystem.elevatorLeft.set(-0.015);
+        //                 ElevatorSubsystem.elevatorRight.set(0.015);
 
-                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+        //                 ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+        //                 ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
+        //                 CommandScheduler.getInstance().cancelAll();
+        //             }
+        //         )
+        //     );
 
+        // joystick.povRight()
+        //     .whileTrue(elevator.elevatorUpSlow())
+        //     .onFalse(
+        //         Commands.run(
+        //             () -> {
+        //                 ElevatorSubsystem.elevatorLeft.set(-0.015);
+        //                 ElevatorSubsystem.elevatorRight.set(0.015);
+
+        //                 ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+        //                 ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+
+        //                 CommandScheduler.getInstance().cancelAll();
+        //             }
+        //         )
+        //     );
+
+        joystick.povLeft()
+            .whileTrue(drivetrain.applyRequest(
+                () -> RobotContainer.drive.withVelocityX(-joystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)));
+        
         joystick.povRight()
-            .whileTrue(elevator.elevatorUpSlow())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        ElevatorSubsystem.elevatorLeft.set(-0.015);
-                        ElevatorSubsystem.elevatorRight.set(0.015);
-
-                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
-
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
+            .whileTrue(drivetrain.applyRequest(
+                () -> RobotContainer.drive.withVelocityX(joystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)));
     }
 }

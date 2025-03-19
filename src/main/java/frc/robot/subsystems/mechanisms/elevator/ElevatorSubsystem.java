@@ -11,14 +11,14 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Robot;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    public ElevatorSubsystem() {
-        setDefaultCommand(Commands.run(
-            () -> {
-                elevatorLeft.set(-0.015);
-                elevatorRight.set(0.015);
-            }
-        ));
-    }
+    // public ElevatorSubsystem() {
+    //     setDefaultCommand(Commands.run(
+    //         () -> {
+    //             elevatorLeft.set(-0.015);
+    //             elevatorRight.set(0.015);
+    //         }
+    //     ));
+    // }
 
 
     public static final double elevatorUpDownSpeed = 0.2;

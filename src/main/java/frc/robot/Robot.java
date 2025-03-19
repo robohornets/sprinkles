@@ -74,27 +74,6 @@ public class Robot extends TimedRobot {
     // Test code for CANrange sensor
     // System.out.println(canRangeSensor.getDistance(true).refresh().getValueAsDouble());
     // System.out.println(VisionSubsystem.getLatestEstimatedPose());
-
-    // Get current time in seconds
-    double currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
-
-    if (currentTime - lastPrintTime >= 2.0) { 
-        lastPrintTime = currentTime;  // Reset timer
-
-        // Print the current odometry pose
-        System.out.println("[Odometry] Current Pose: " + RobotContainer.drivetrain.getState().Pose);
-
-        // Check for vision estimate
-        var visionEst = vision.getEstimatedGlobalPose();
-        visionEst.ifPresent(est -> {
-            Pose2d estimatedPose = est.estimatedPose.toPose2d();
-            var estStdDevs = vision.getEstimationStdDevs();
-            System.out.println("[Vision] Estimated Pose: " + estimatedPose);
-            ShuffleboardUtil.put("Vision Estimated Pose", estimatedPose);
-            m_robotContainer.drivetrain.resetPose(estimatedPose);
-            //m_robotContainer.drivetrain.addVisionMeasurement(estimatedPose, currentTime, estStdDevs);
-        });
-    }
   }
 
   @Override
@@ -139,6 +118,35 @@ public class Robot extends TimedRobot {
     //System.out.println("------");
     //System.out.println(elevatorEncoder.get());
     //System.out.println(elevatorEncoder.getDistance());
+
+    // Get current time in seconds
+    double currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
+
+    if (currentTime - lastPrintTime >= 2.0) { 
+        lastPrintTime = currentTime;  // Reset timer
+
+        // Print the current odometry pose
+        System.out.println("[Odometry] Current Pose: " + RobotContainer.drivetrain.getState().Pose);
+
+        // Check for vision estimate
+        var visionEst = vision.getEstimatedGlobalPose();
+        visionEst.ifPresent(est -> {
+            Pose2d estimatedPose = est.estimatedPose.toPose2d();
+
+            Pose2d currentPose = RobotContainer.drivetrain.getState().Pose;
+
+            Pose2d newPose = new Pose2d(
+              estimatedPose.getTranslation(),
+              currentPose.getRotation()
+            );
+
+            var estStdDevs = vision.getEstimationStdDevs();
+            System.out.println("[Vision] Estimated Pose: " + newPose);
+            ShuffleboardUtil.put("Vision Estimated Pose", newPose);
+            m_robotContainer.drivetrain.resetPose(newPose);
+            //m_robotContainer.drivetrain.addVisionMeasurement(estimatedPose, currentTime, estStdDevs);
+        });
+    }
   }
 
   @Override

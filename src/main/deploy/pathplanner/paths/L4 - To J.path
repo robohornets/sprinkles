@@ -12,7 +12,7 @@
         "y": 7.275247451006355
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "J Start"
     },
     {
       "anchor": {
@@ -25,7 +25,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "J End"
     }
   ],
   "rotationTargets": [],

@@ -18,18 +18,19 @@ public class VisionConstants {
         public static final String kCameraNameF = "Camera Face Front";
         // Cam mounted facing forward, half a meter forward of center, half a meter up from center.
         public static final Transform3d kRobotToCam =
-                new Transform3d(new Translation3d(0.3, 0.2, 0.5), new Rotation3d(0.0, Math.toRadians(15), 0.0));
-        public static final Transform3d robotToCamFrontRight = new Transform3d(
-            new Translation3d(0.3, 0.2, 0.5), 
-            new Rotation3d(0.0, Math.toRadians(15), 0.0)
+                new Transform3d(new Translation3d(-0.2, 0.35, 0.9), 
+                new Rotation3d(0.0, 0.0, Math.toRadians(90)));
+        public static final Transform3d kRobotToCamR = new Transform3d(
+            new Translation3d(-0.23, 0.35, 0.9), 
+            new Rotation3d(0.0, 0.0, Math.toRadians(270))
         );
-        public static final Transform3d robotToCamBackLeft   = new Transform3d(
-            new Translation3d(0.3, 0.2, 0.5), 
-            new Rotation3d(0.0, Math.toRadians(15), 0.0)
+        public static final Transform3d kRobotToCamB   = new Transform3d(
+            new Translation3d(-0.35, 0.27, 0.9), 
+            new Rotation3d(0.0, 0.0, Math.toRadians(180))
         );
-        public static final Transform3d robotToCamBackRight  = new Transform3d(
-            new Translation3d(0.3, 0.2, 0.5), 
-            new Rotation3d(0.0, Math.toRadians(15), 0.0)
+        public static final Transform3d kRobotToCamF  = new Transform3d(
+            new Translation3d(0.35, -0.22, 0.9), 
+            new Rotation3d(0.0, 0.0, Math.toRadians(0))
         );
 
         // The layout of the AprilTags on the field

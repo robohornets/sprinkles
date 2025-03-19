@@ -45,15 +45,15 @@ public class Vision {
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
         photonEstimatorR =
-                new PhotonPoseEstimator(VisionConstants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, VisionConstants.Vision.robotToCamBackRight);
+                new PhotonPoseEstimator(VisionConstants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, VisionConstants.Vision.kRobotToCamR);
         photonEstimatorR.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
         photonEstimatorF =
-                new PhotonPoseEstimator(VisionConstants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, VisionConstants.Vision.robotToCamFrontRight);
+                new PhotonPoseEstimator(VisionConstants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, VisionConstants.Vision.kRobotToCamF);
         photonEstimatorF.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
         photonEstimatorB =
-                new PhotonPoseEstimator(VisionConstants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, VisionConstants.Vision.robotToCamBackLeft);
+                new PhotonPoseEstimator(VisionConstants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, VisionConstants.Vision.kRobotToCamB);
         photonEstimatorB.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 

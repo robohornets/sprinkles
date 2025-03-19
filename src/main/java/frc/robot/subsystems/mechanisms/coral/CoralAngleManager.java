@@ -8,11 +8,11 @@ public class CoralAngleManager extends Command {
     private boolean isFinishedToggle = false;
     private double oopsieThreshold = 0.01;
 
-    public double angleUpperLimit = .668; // Update: 0.668
-    public double angleLowerLimit = 0.255; // Update: 0.255
+    // public double angleUpperLimit = 0.668; // Update: 0.668
+    // public double angleLowerLimit = 0.255; // Update: 0.255
 
     public CoralAngleManager(double angle, CoralSubsystem coralSubsystem) {
-        this.angle = Math.max(angleLowerLimit, Math.min(angleUpperLimit, angle));
+        this.angle = Math.max(coralSubsystem.angleLowerLimit, Math.min(coralSubsystem.angleUpperLimit, angle));
         this.coralSubsystem = coralSubsystem;
         addRequirements(this.coralSubsystem);
     }
@@ -33,26 +33,26 @@ public class CoralAngleManager extends Command {
 
         if (Math.abs(currentAngle - angle) <= oopsieThreshold) {
             System.out.println("Stopping at target");
-            coralSubsystem.angleMotor.set(-0.015);
+            //coralSubsystem.angleMotor.set(-0.015);
             isFinishedToggle = true;
         } 
-        else if (currentAngle >= angleUpperLimit) {
+        else if (currentAngle >= coralSubsystem.angleUpperLimit) {
             if (angle < currentAngle) {
                 System.out.println("Above upper limit, moving down");
                 coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
             } else {
                 System.out.println("Above upper limit, stopping");
-                coralSubsystem.angleMotor.set(-0.015);
+                // coralSubsystem.angleMotor.set(-0.015);
                 isFinishedToggle = true;
             }
         } 
-        else if (currentAngle <= angleLowerLimit) {
+        else if (currentAngle <= coralSubsystem.angleLowerLimit) {
             if (angle > currentAngle) {
                 System.out.println("Below lower limit, moving up");
                 coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
             } else {
                 System.out.println("Below lower limit, stopping");
-                coralSubsystem.angleMotor.set(-0.015);
+                // coralSubsystem.angleMotor.set(-0.015);
                 isFinishedToggle = true;
             }
         } 

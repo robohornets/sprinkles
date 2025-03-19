@@ -9,6 +9,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralSubsystem extends SubsystemBase {
 
+    public static double angleUpperLimit = 0.668;
+    public static double angleLowerLimit = 0.3;
+
     public static TalonFX angleMotor = new TalonFX(12);
     public static TalonFX flywheelMotor = new TalonFX(11);
     public static DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(2);

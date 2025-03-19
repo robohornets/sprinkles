@@ -85,7 +85,7 @@ public class DriverJoystick {
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralSubsystem.angleMotor.set(-0.015);
+                        // CoralSubsystem.angleMotor.set(-0.015);
                         CoralSubsystem.angleMotor
                                 .setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
@@ -99,7 +99,7 @@ public class DriverJoystick {
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralSubsystem.angleMotor.set(-0.015);
+                        // CoralSubsystem.angleMotor.set(-0.015);
                         CoralSubsystem.angleMotor
                                 .setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();

@@ -28,7 +28,7 @@ public class CoralController {
     public Command angleUp() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() < 0.82) {
+        if (getCoralAngle() < CoralSubsystem.angleUpperLimit) {
             CoralSubsystem.angleMotor.set(-CoralSubsystem.angleSpeed); }
         else {
             CoralSubsystem.angleMotor.set(0.0);
@@ -39,8 +39,8 @@ public class CoralController {
     public Command angleDown() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() > 0.48) {
-        CoralSubsystem.angleMotor.set(CoralSubsystem.angleSpeed);} 
+        if (getCoralAngle() > CoralSubsystem.angleLowerLimit) {
+            CoralSubsystem.angleMotor.set(CoralSubsystem.angleSpeed);} 
         else {
             CoralSubsystem.angleMotor.set(0.0);
             CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
@@ -51,7 +51,7 @@ public class CoralController {
     public Command angleUpSlow() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() < 0.82) {
+        if (getCoralAngle() < CoralSubsystem.angleUpperLimit) {
             CoralSubsystem.angleMotor.set(-0.1); }
         else {
             CoralSubsystem.angleMotor.set(0.0);
@@ -62,7 +62,7 @@ public class CoralController {
     public Command angleDownSlow() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() > 0.48) {
+        if (getCoralAngle() > CoralSubsystem.angleLowerLimit) {
         CoralSubsystem.angleMotor.set(0.1);} 
         else {
             CoralSubsystem.angleMotor.set(0.0);

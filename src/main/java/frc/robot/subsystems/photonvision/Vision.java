@@ -32,7 +32,16 @@ public class Vision {
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         Optional<EstimatedRobotPose> visionEst = Optional.empty();
+
         for (var change : camera.getAllUnreadResults()) {
+            // Print detected AprilTag IDs
+            System.out.print("[Vision] Detected Tags: ");
+            for (var target : change.getTargets()) {
+                System.out.print(target.getFiducialId() + " "); // Print each tag ID
+            }
+            System.out.println(); // New line after printing tags
+    
+            // Process vision estimation
             visionEst = photonEstimator.update(change);
             updateEstimationStdDevs(visionEst, change.getTargets());
         }

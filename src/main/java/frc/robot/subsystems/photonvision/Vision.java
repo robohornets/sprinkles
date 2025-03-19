@@ -57,41 +57,40 @@ public class Vision {
         photonEstimatorB.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
-        // Collect results from all cameras
-        List<PhotonTrackedTarget> allTargets = new ArrayList<>();
-        Map<PhotonTrackedTarget, Double> targetDistanceMap = new HashMap<>();
+ public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+    // Collect results from all cameras
+    List<PhotonTrackedTarget> allTargets = new ArrayList<>();
+    Map<PhotonTrackedTarget, Double> targetDistanceMap = new HashMap<>();
 
-        // Iterate over each camera and collect targets
-        for (PhotonCamera camera : List.of(this.camera, this.cameraR, this.cameraF, this.cameraB)) {
-            var latestResult = camera.getLatestResult();
-            if (latestResult.hasTargets()) {
-                for (var target : latestResult.getTargets()) {
-                    allTargets.add(target);
-                    targetDistanceMap.put(target, target.getBestCameraToTarget().getTranslation().getNorm());
-                }
+    // Iterate over each camera and collect targets
+    for (PhotonCamera camera : List.of(this.camera, this.cameraR, this.cameraF, this.cameraB)) {
+        var latestResult = camera.getLatestResult();
+        if (latestResult.hasTargets()) {
+            for (var target : latestResult.getTargets()) {
+                allTargets.add(target);
+                targetDistanceMap.put(target, target.getBestCameraToTarget().getTranslation().getNorm());
             }
         }
-
-        // Select the best target based on number of targets and minimum distance
-        Optional<PhotonTrackedTarget> bestTarget = allTargets.stream()
-            .min(Comparator.comparingDouble(targetDistanceMap::get));
-
-        // If a best target is found, get the estimated pose for that target
-        if (bestTarget.isPresent()) {
-            PhotonTrackedTarget target = bestTarget.get();
-            for (PhotonCamera camera : List.of(this.camera, this.cameraR, this.cameraF, this.cameraB)) {
-                var result = camera.getLatestResult();
-                if (result.getTargets().contains(target)) {
-                    return photonEstimator.update(result);
-                }
-            }
-        }
-
-        return Optional.empty();
     }
 
-    
+    // Select the best target based on number of targets and minimum distance
+    Optional<PhotonTrackedTarget> bestTarget = allTargets.stream()
+        .min(Comparator.comparingDouble(targetDistanceMap::get));
+
+    // If a best target is found, get the estimated pose for that target
+    if (bestTarget.isPresent()) {
+        PhotonTrackedTarget target = bestTarget.get();
+        for (PhotonCamera camera : List.of(this.camera, this.cameraR, this.cameraF, this.cameraB)) {
+            var result = camera.getLatestResult();
+            if (result.getTargets().contains(target)) {
+                return photonEstimator.update(result);
+            }
+        }
+    }
+
+    return Optional.empty();
+}
+
     private void updateEstimationStdDevs(
             Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
         if (estimatedPose.isEmpty()) {

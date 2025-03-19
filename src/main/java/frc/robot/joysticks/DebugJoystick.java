@@ -182,31 +182,31 @@ public class DebugJoystick {
     // joystick.povLeft().onTrue(new ElevatorSubsystem(17.0, elevatorSubsystem));
     // joystick.povRight().onTrue(new ElevatorSubsystem(37.0, elevatorSubsystem));
     // joystick.povUp().onTrue(new ElevatorSubsystem(65.0, elevatorSubsystem));
-        // joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsytem).goToPreset());
-        // joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsytem).goToPreset());
-        // joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
-        // joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
-        joystick.povUp()
-        .whileTrue(algae.angleAlgaeDown())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    //AlgaeSubsystem.angleAlgaeMotor.set(0.015);
-                    AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-                    CommandScheduler.getInstance().cancelAll();
-                }
-            )
-        );
-        joystick.povDown()
-        .whileTrue(algae.angleAlgaeUp())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    //AlgaeSubsystem.angleAlgaeMotor.set(0.015);
-                    AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-                    CommandScheduler.getInstance().cancelAll();
-                }
-            )
-        );
+        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsytem).goToPreset());
+        joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsytem).goToPreset());
+        joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
+        joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
+        //joystick.povUp()
+        // .whileTrue(algae.angleAlgaeDown())
+        // .onFalse(
+        //     Commands.run(
+        //         () -> {
+        //             //AlgaeSubsystem.angleAlgaeMotor.set(0.015);
+        //             AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+        //             CommandScheduler.getInstance().cancelAll();
+        //         }
+        //     )
+        // );
+        // joystick.povDown()
+        // .whileTrue(algae.angleAlgaeUp())
+        // .onFalse(
+        //     Commands.run(
+        //         () -> {
+        //             //AlgaeSubsystem.angleAlgaeMotor.set(0.015);
+        //             AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+        //             CommandScheduler.getInstance().cancelAll();
+        //         }
+        //     )
+        // );
     }
 }

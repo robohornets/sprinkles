@@ -1,8 +1,15 @@
 package frc.robot.joysticks;
 
+import java.util.Optional;
+
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AlignOnTheFlyByPose;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -19,6 +26,7 @@ public class ButtonConsole {
     private final ElevatorSubsystem elevatorSubsystem;
     private final CoralController coral;
     private final CoralSubsystem coralSubsystem;
+    Optional<Alliance> ally = DriverStation.getAlliance();
     
     public ButtonConsole(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
         ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem) {
@@ -37,7 +45,14 @@ public class ButtonConsole {
             Math.round(joystick.getLeftX() * 10) / 10.0 == 0.1 &&
             Math.round(joystick.getLeftY() * 10) / 10.0 == 0.1
         );
-        positionATrigger.onTrue(Commands.none());
+        if(ally.isPresent()){
+            if(ally.get() == Alliance.Red){
+                positionATrigger.onTrue(new AlignOnTheFlyByPose(new Pose2d(1.05, 6.4, new Rotation2d(216.0)), drivetrain));
+            }
+            if(ally.get() == Alliance.Blue){
+                positionATrigger.onTrue(new AlignOnTheFlyByPose(new Pose2d(1.05, 6.4, new Rotation2d(216.0)), drivetrain));
+            }
+        }
 
         // MARK: Button B
         Trigger positionBTrigger = new Trigger(() ->

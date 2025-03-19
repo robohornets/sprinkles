@@ -43,7 +43,7 @@ public class DriverJoystick {
         // MARK: Y-Button
         // Reset field centric heading
         joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        joystick.x().onTrue(new InstantCommand(() -> RobotContainer.setUseFieldCentric(false)));
+        // joystick.x().onTrue(new InstantCommand(() -> RobotContainer.setUseFieldCentric(false)));
        
         
         // MARK: L Trigger
@@ -142,10 +142,10 @@ public class DriverJoystick {
 
         joystick.povLeft()
             .whileTrue(drivetrain.applyRequest(
-                () -> RobotContainer.drive.withVelocityX(-joystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)));
+                () -> RobotContainer.driveRobotCentric.withVelocityY(RobotContainer.MaxSpeed * 0.2)));
         
         joystick.povRight()
             .whileTrue(drivetrain.applyRequest(
-                () -> RobotContainer.drive.withVelocityX(joystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)));
+                () -> RobotContainer.driveRobotCentric.withVelocityY(-RobotContainer.MaxSpeed * 0.2)));
     }
 }

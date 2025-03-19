@@ -30,13 +30,13 @@ public class AlgaeLevelManager {
         // Assign values based on the selected level
         switch (selectedAlgaeLevel) {
             case A_LEVEL_1:
-                targetHeight = 5.0;
-                targetAngle = 0.56;
+                targetHeight = 5.0; // Update: 
+                targetAngle = 0.56; // Update: 
                 break;
 
             case A_LEVEL_2:
-                targetHeight = 15.0;
-                targetAngle = 0.56;
+                targetHeight = 15.0; // Update: 
+                targetAngle = 0.56; // Update: 
                 break;
 
             case A_LEVEL_3:

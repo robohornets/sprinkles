@@ -8,8 +8,8 @@ public class CoralAngleManager extends Command {
     private boolean isFinishedToggle = false;
     private double oopsieThreshold = 0.01;
 
-    public double angleUpperLimit = 0.82;
-    public double angleLowerLimit = 0.48;
+    public double angleUpperLimit = .668; // Update: 0.668
+    public double angleLowerLimit = 0.255; // Update: 0.255
 
     public CoralAngleManager(double angle, CoralSubsystem coralSubsystem) {
         this.angle = Math.max(angleLowerLimit, Math.min(angleUpperLimit, angle));

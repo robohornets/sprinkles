@@ -34,23 +34,23 @@ public class LevelManager {
         // Assign values based on the selected level
         switch (selectedLevel) {
             case LEVEL_1:
-                targetHeight = 5.0;
-                targetAngle = 0.56;
+                targetHeight = 5.0; // NOT CHANGED
+                targetAngle = 0.56; // NOT CHANGED
                 break;
 
             case LEVEL_2:
-                targetHeight = 15.0;
-                targetAngle = 0.56;
+                targetHeight = 15.17; // Update: -15.17
+                targetAngle = 0.363; // Update: 0.363
                 break;
 
             case LEVEL_3:
-                targetHeight = 33.0;
-                targetAngle = 0.56;
+                targetHeight = 33.690; // Update: -33.690
+                targetAngle = 0.359; // Update: 0.359
                 break;
 
             case LEVEL_4:
-                targetHeight = 65.0;
-                targetAngle = 0.52;
+                targetHeight = 65.049; // Update: -65.049
+                targetAngle = 0.341; // Update: 0.341
                 break;
 
             case DEFAULT_POSITION:

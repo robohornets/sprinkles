@@ -38,10 +38,10 @@ public class VisionSubsystem extends SubsystemBase {
         aprilTagLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
         
         // Instantiate PhotonCamera for each camera (names must match PhotonVision config)
-        camFaceFront = new PhotonCamera("CamFaceFront");
-        camFaceBack  = new PhotonCamera("CamFaceBack");
-        camFaceRight = new PhotonCamera("CamFaceRight");
-        camFaceLeft = new PhotonCamera("CamFaceLeft");
+        camFaceFront = new PhotonCamera("Camera Face Front");
+        camFaceBack  = new PhotonCamera("Camera Face Back");
+        camFaceRight = new PhotonCamera("Camera Face Right");
+        camFaceLeft = new PhotonCamera("Camera Face Left");
         
         // Define the transform from robot center to each camera.
         Transform3d robotTocamFaceFront = new Transform3d(
@@ -64,13 +64,13 @@ public class VisionSubsystem extends SubsystemBase {
         );
         
         // Create PhotonPoseEstimator for each camera, using a strategy to combine tag data
-        poseEstimatorFront = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceFront);
+        poseEstimatorFront = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, robotTocamFaceFront);
 
-        poseEstimatorBack = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceBack);
+        poseEstimatorBack = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, robotTocamFaceBack);
 
-        poseEstimatorRight = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceRight);
+        poseEstimatorRight = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, robotTocamFaceRight);
 
-        poseEstimatorLeft = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceLeft);
+        poseEstimatorLeft = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, robotTocamFaceLeft);
 
         // You can use MULTI_TAG_PNP_ON_COPROCESSOR for highest accuracy if PhotonVision is set up for it.
         // LOWEST_AMBIGUITY will choose the best pose if tags have ambiguous solutions.

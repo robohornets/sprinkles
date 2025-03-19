@@ -1,6 +1,10 @@
 package frc.robot.subsystems.photonvision;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.photonvision.EstimatedRobotPose;
@@ -53,31 +57,40 @@ public class Vision {
         photonEstimatorB.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
-        Optional<EstimatedRobotPose> visionEst = Optional.empty();
-        Optional<EstimatedRobotPose> visionEstR = Optional.empty();
-        Optional<EstimatedRobotPose> visionEstF = Optional.empty();
-        Optional<EstimatedRobotPose> visionEstB = Optional.empty();
-        // Need to use poseestimator for multi tag estimations. Add get module positions method to make it work
-        //SwerveDrivePoseEstimator swervePoseEstimator = new SwerveDrivePoseEstimator(RobotContainer.drivetrain.getKinematics(), RobotContainer.drivetrain.getPigeon2().getRotation2d(), RobotContainer.drivetrain., null);
-        SwerveDrivePoseEstimator swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(null, null, null, null);
+ public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+    // Collect results from all cameras
+    List<PhotonTrackedTarget> allTargets = new ArrayList<>();
+    Map<PhotonTrackedTarget, Double> targetDistanceMap = new HashMap<>();
 
-        for (var change : camera.getAllUnreadResults()) {
-            // Print detected AprilTag IDs
-            System.out.print("[Vision] Detected Tags: ");
-            for (var target : change.getTargets()) {
-                System.out.print(target.getFiducialId() + " "); // Print each tag ID
+    // Iterate over each camera and collect targets
+    for (PhotonCamera camera : List.of(this.camera, this.cameraR, this.cameraF, this.cameraB)) {
+        var latestResult = camera.getLatestResult();
+        if (latestResult.hasTargets()) {
+            for (var target : latestResult.getTargets()) {
+                allTargets.add(target);
+                targetDistanceMap.put(target, target.getBestCameraToTarget().getTranslation().getNorm());
             }
-            System.out.println(); // New line after printing tags
-    
-            // Process vision estimation
-            visionEst = photonEstimator.update(change);
-            //swervePoseEstimator.addVisionMeasurement(visionEst);
-            updateEstimationStdDevs(visionEst, change.getTargets());
         }
-        return visionEst;
     }
-    
+
+    // Select the best target based on number of targets and minimum distance
+    Optional<PhotonTrackedTarget> bestTarget = allTargets.stream()
+        .min(Comparator.comparingDouble(targetDistanceMap::get));
+
+    // If a best target is found, get the estimated pose for that target
+    if (bestTarget.isPresent()) {
+        PhotonTrackedTarget target = bestTarget.get();
+        for (PhotonCamera camera : List.of(this.camera, this.cameraR, this.cameraF, this.cameraB)) {
+            var result = camera.getLatestResult();
+            if (result.getTargets().contains(target)) {
+                return photonEstimator.update(result);
+            }
+        }
+    }
+
+    return Optional.empty();
+}
+
     private void updateEstimationStdDevs(
             Optional<EstimatedRobotPose> estimatedPose, List<PhotonTrackedTarget> targets) {
         if (estimatedPose.isEmpty()) {

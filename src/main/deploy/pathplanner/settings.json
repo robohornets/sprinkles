@@ -3,18 +3,14 @@
   "robotLength": 0.838,
   "holonomicMode": true,
   "pathFolders": [
-    "L2 Auto I-J-K",
     "2 Auto H-I-J",
     "3 Auto K-L-A",
-    "MiddleBlueAuto",
-    "MiddleRedAuto",
-    "Pre-game",
+    "L2 Auto I-J-K",
+    "L4 Auto I-J-K",
     "To Coral Station"
   ],
-  "autoFolders": [
-    "Pre-game"
-  ],
-  "defaultMaxVel": 2.0,
+  "autoFolders": [],
+  "defaultMaxVel": 4.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,

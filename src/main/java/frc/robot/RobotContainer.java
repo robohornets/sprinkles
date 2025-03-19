@@ -176,6 +176,7 @@ public class RobotContainer {
             buttonConsoleController.configureBindings();
             debugJoystickController.configureBindings();
             configureBindings();
+            configureDefaults();
         }
     
         // private void configureBindings() {
@@ -186,6 +187,13 @@ public class RobotContainer {
         //         )
         //     );
         // }
+
+        private void configureDefaults() {
+            coralSubsystem.setDefaultCommand(Commands.run(() -> {
+                coralSubsystem.angleMotor.set(-coralSubsystem.angleHoldSpeed);
+            }));
+            
+        }
     
         private void configureBindings() {
             //if(useFieldCentric){

@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,12 +18,15 @@ import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.photonvision.Vision;
+import frc.robot.subsystems.photonvision.VisionSubsystem;
 
 
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
 
   private final RobotContainer m_robotContainer;
+  private Vision vision;
 
   public CANrange canRangeSensor = new CANrange(34);
 
@@ -38,6 +42,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    vision = new Vision();
     AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
     AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
 
@@ -48,6 +53,7 @@ public class Robot extends TimedRobot {
     ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
   }
 
+  private double lastPrintTime = 0;
   @Override
   public void robotPeriodic() {
     pdp.clearStickyFaults();
@@ -63,21 +69,23 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Angle Motor Position", Math.round(CoralSubsystem.angleDCEncoder.get() * 10)/10);
 
     ShuffleboardUtil.put("Algae Angle", AlgaeSubsystem.angleAlgaeDCEncoder.get());
-    
-    // System.out.println(ElevatorVariables.elevatorLeft.getPosition().getValueAsDouble());
-    // System.out.println(CoralVariables.angleDCEncoder.get());
-    //double num = m_robotContainer.encoder1.get();
-    //System.out.println(num);
 
-    /*
-     * This example of adding Limelight is very simple and may not be sufficient for on-field use.
-     * Users typically need to provide a standard deviation that scales with the distance to target
-     * and changes with number of tags available.
-     *
-     * This example is sufficient to show that vision integration is possible, though exact implementation
-     * of how to use vision should be tuned per-robot and to the team's specification.
-     */
-    
+    // Get current time in seconds
+    double currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
+
+    if (currentTime - lastPrintTime >= 2.0) { 
+        lastPrintTime = currentTime;  // Reset timer
+
+        // Print the current odometry pose
+        System.out.println("[Odometry] Current Pose: " + RobotContainer.drivetrain.getState().Pose);
+
+        // Check for vision estimate
+        var visionEst = vision.getEstimatedGlobalPose();
+        visionEst.ifPresent(est -> {
+            Pose2d estimatedPose = est.estimatedPose.toPose2d();
+            System.out.println("[Vision] Estimated Pose: " + estimatedPose);
+        });
+    }
 
     // print(RobotContainer.disableControllerIn);
     // Test code for CANrange sensor

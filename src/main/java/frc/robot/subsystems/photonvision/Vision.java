@@ -60,7 +60,7 @@ public class Vision {
         Optional<EstimatedRobotPose> visionEstB = Optional.empty();
         // Need to use poseestimator for multi tag estimations. Add get module positions method to make it work
         //SwerveDrivePoseEstimator swervePoseEstimator = new SwerveDrivePoseEstimator(RobotContainer.drivetrain.getKinematics(), RobotContainer.drivetrain.getPigeon2().getRotation2d(), RobotContainer.drivetrain., null);
-        SwerveDrivePoseEstimator swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(null, null, null, null)
+        SwerveDrivePoseEstimator swerveDrivePoseEstimator = new SwerveDrivePoseEstimator(null, null, null, null);
 
         for (var change : camera.getAllUnreadResults()) {
             // Print detected AprilTag IDs

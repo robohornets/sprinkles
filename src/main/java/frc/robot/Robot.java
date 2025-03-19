@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
     
     CommandScheduler.getInstance().run();
 
+    m_robotContainer.updateVisionOdometry();
+
     //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
 
     ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble());

@@ -64,13 +64,13 @@ public class VisionSubsystem extends SubsystemBase {
         );
         
         // Create PhotonPoseEstimator for each camera, using a strategy to combine tag data
-        poseEstimatorFront = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, robotTocamFaceFront);
+        poseEstimatorFront = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceFront);
 
-        poseEstimatorBack = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, robotTocamFaceBack);
+        poseEstimatorBack = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceBack);
 
-        poseEstimatorRight = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, robotTocamFaceRight);
+        poseEstimatorRight = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceRight);
 
-        poseEstimatorLeft = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_RIO, robotTocamFaceLeft);
+        poseEstimatorLeft = new PhotonPoseEstimator(aprilTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, robotTocamFaceLeft);
 
         // You can use MULTI_TAG_PNP_ON_COPROCESSOR for highest accuracy if PhotonVision is set up for it.
         // LOWEST_AMBIGUITY will choose the best pose if tags have ambiguous solutions.
@@ -82,89 +82,131 @@ public class VisionSubsystem extends SubsystemBase {
      * @return An Optional containing the estimated global pose and timestamp if vision data is available.
      */
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose(edu.wpi.first.math.geometry.Pose2d prevEstimatedRobotPose) {
-        // Use the latest targets from the front camera
+        // Debug: Print the previous estimated pose
+        System.out.println("Previous Estimated Pose: " + prevEstimatedRobotPose);
+    
         Optional<EstimatedRobotPose> frontResult = Optional.empty();
         if (camFaceFront.getLatestResult().hasTargets()) {
-            // Set reference pose to help PhotonPoseEstimator (for strategies like CLOSEST_TO_REFERENCE_POSE)
+            System.out.println("[Front] Detected " + camFaceFront.getLatestResult().getTargets().size() + " targets.");
+            
             poseEstimatorFront.setReferencePose(prevEstimatedRobotPose);
-
             PhotonPipelineResult frontResultData = camFaceFront.getLatestResult();
-            if (frontResultData.hasTargets()) {
-                poseEstimatorFront.setReferencePose(prevEstimatedRobotPose);
-                frontResult = poseEstimatorFront.update(frontResultData);
+            frontResult = poseEstimatorFront.update(frontResultData);
+    
+            if (frontResult.isPresent()) {
+                System.out.println("[Front] Estimated Pose: " + frontResult.get().estimatedPose);
+            } else {
+                System.out.println("[Front] No pose estimate.");
             }
-
+        } else {
+            System.out.println("[Front] No targets detected.");
         }
+    
         Optional<EstimatedRobotPose> backResult = Optional.empty();
         if (camFaceBack.getLatestResult().hasTargets()) {
+            System.out.println("[Back] Detected " + camFaceBack.getLatestResult().getTargets().size() + " targets.");
+    
             poseEstimatorBack.setReferencePose(prevEstimatedRobotPose);
             PhotonPipelineResult backResultData = camFaceBack.getLatestResult();
-            if (backResultData.hasTargets()) {
-                poseEstimatorBack.setReferencePose(prevEstimatedRobotPose);
-                backResult = poseEstimatorBack.update(backResultData);
+            backResult = poseEstimatorBack.update(backResultData);
+    
+            if (backResult.isPresent()) {
+                System.out.println("[Back] Estimated Pose: " + backResult.get().estimatedPose);
+            } else {
+                System.out.println("[Back] No pose estimate.");
             }
+        } else {
+            System.out.println("[Back] No targets detected.");
         }
-
+    
         Optional<EstimatedRobotPose> rightResult = Optional.empty();
         if (camFaceRight.getLatestResult().hasTargets()) {
+            System.out.println("[Right] Detected " + camFaceRight.getLatestResult().getTargets().size() + " targets.");
+    
             poseEstimatorRight.setReferencePose(prevEstimatedRobotPose);
             PhotonPipelineResult rightResultData = camFaceRight.getLatestResult();
-            if (rightResultData.hasTargets()) {
-                poseEstimatorRight.setReferencePose(prevEstimatedRobotPose);
-                rightResult = poseEstimatorRight.update(rightResultData);
+            rightResult = poseEstimatorRight.update(rightResultData);
+    
+            if (rightResult.isPresent()) {
+                System.out.println("[Right] Estimated Pose: " + rightResult.get().estimatedPose);
+            } else {
+                System.out.println("[Right] No pose estimate.");
             }
+        } else {
+            System.out.println("[Right] No targets detected.");
         }
+    
         Optional<EstimatedRobotPose> leftResult = Optional.empty();
         if (camFaceLeft.getLatestResult().hasTargets()) {
+            System.out.println("[Left] Detected " + camFaceLeft.getLatestResult().getTargets().size() + " targets.");
+    
             poseEstimatorLeft.setReferencePose(prevEstimatedRobotPose);
             PhotonPipelineResult leftResultData = camFaceLeft.getLatestResult();
-            if (leftResultData.hasTargets()) {
-                poseEstimatorLeft.setReferencePose(prevEstimatedRobotPose);
-                leftResult = poseEstimatorLeft.update(leftResultData);
+            leftResult = poseEstimatorLeft.update(leftResultData);
+    
+            if (leftResult.isPresent()) {
+                System.out.println("[Left] Estimated Pose: " + leftResult.get().estimatedPose);
+            } else {
+                System.out.println("[Left] No pose estimate.");
             }
+        } else {
+            System.out.println("[Left] No targets detected.");
         }
-        
+    
         // Choose the best result among all cameras based on pose ambiguity
         Optional<EstimatedRobotPose> bestResult = Optional.empty();
         double bestAmbiguity = Double.MAX_VALUE;
-
+    
         // Check Front Camera
         if (frontResult.isPresent()) {
             double frontAmb = camFaceFront.getLatestResult().getBestTarget().getPoseAmbiguity();
-            bestAmbiguity = frontAmb;
-            bestResult = frontResult;
+            System.out.println("[Front] Pose Ambiguity: " + frontAmb);
+            if (!Double.isNaN(frontAmb) && frontAmb >= 0 && frontAmb < bestAmbiguity) {
+                bestAmbiguity = frontAmb;
+                bestResult = frontResult;
+            }
         }
-
+    
         // Check Back Camera
         if (backResult.isPresent()) {
             double backAmb = camFaceBack.getLatestResult().getBestTarget().getPoseAmbiguity();
-            if (backAmb < bestAmbiguity) {
+            System.out.println("[Back] Pose Ambiguity: " + backAmb);
+            if (!Double.isNaN(backAmb) && backAmb >= 0 && backAmb < bestAmbiguity) {
                 bestAmbiguity = backAmb;
                 bestResult = backResult;
             }
         }
-
+    
         // Check Right Camera
         if (rightResult.isPresent()) {
             double rightAmb = camFaceRight.getLatestResult().getBestTarget().getPoseAmbiguity();
-            if (rightAmb < bestAmbiguity) {
+            System.out.println("[Right] Pose Ambiguity: " + rightAmb);
+            if (!Double.isNaN(rightAmb) && rightAmb >= 0 && rightAmb < bestAmbiguity) {
                 bestAmbiguity = rightAmb;
                 bestResult = rightResult;
             }
         }
-
+    
         // Check Left Camera
         if (leftResult.isPresent()) {
             double leftAmb = camFaceLeft.getLatestResult().getBestTarget().getPoseAmbiguity();
-            if (leftAmb < bestAmbiguity) {
+            System.out.println("[Left] Pose Ambiguity: " + leftAmb);
+            if (!Double.isNaN(leftAmb) && leftAmb >= 0 && leftAmb < bestAmbiguity) {
                 bestAmbiguity = leftAmb;
                 bestResult = leftResult;
             }
         }
-
+    
+        // Debug: Print the final best estimated pose
+        if (bestResult.isPresent()) {
+            System.out.println("Best Estimated Pose Selected: " + bestResult.get().estimatedPose);
+        } else {
+            System.out.println("No best estimated pose found.");
+        }
+    
         return bestResult;
-
     }
+    
 
     public Pose2d getLatestEstimatedPose(Pose2d fallbackPose) {
         Optional<EstimatedRobotPose> visionPoseOpt = getEstimatedGlobalPose(fallbackPose);

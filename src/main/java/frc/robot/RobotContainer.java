@@ -31,6 +31,7 @@ import frc.robot.commands.AlignOnTheFlyClosest;
 import frc.robot.commands.AlignOnTheFlyByPose;
 import frc.robot.commands.Destinations;
 import frc.robot.generated.TunerConstants;
+import frc.robot.helpers.ShuffleboardUtil;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.joysticks.DebugJoystick;
@@ -44,6 +45,7 @@ import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
+import frc.robot.subsystems.photonvision.VisionSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
@@ -84,6 +86,8 @@ public class RobotContainer {
 
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     public final CoralSubsystem coralSubsystem = new CoralSubsystem();
+
+    public final VisionSubsystem visionSubsystem = new VisionSubsystem();
 
     // MARK: Inputs
     private final CommandXboxController driverJoystick = new CommandXboxController(0);
@@ -176,6 +180,16 @@ public class RobotContainer {
             )
         );
     }
+
+    public void updateVisionOdometry() {
+        Pose2d estimatedPose = visionSubsystem.getLatestEstimatedPose(drivetrain.getPose2d());
+        ShuffleboardUtil.put("Estimated Pose Vision", estimatedPose);
+        // Optionally filter unreliable vision data before updating odometry
+        //if (!estimatedPose.equals(drivetrain.getPose2d())) {
+            drivetrain.updateOdometryWithVision(estimatedPose);
+        //}
+    }
+    
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */

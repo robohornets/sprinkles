@@ -15,10 +15,12 @@ import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,6 +32,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 
 import frc.robot.generated.TunerConstants.TunerSwerveDrivetrain;
+import frc.robot.generated.TunerConstants;
 
 /**
  * Class that extends the Phoenix 6 SwerveDrivetrain class and implements
@@ -56,7 +59,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     private final SwerveRequest.SysIdSwerveSteerGains m_steerCharacterization = new SwerveRequest.SysIdSwerveSteerGains();
     private final SwerveRequest.SysIdSwerveRotation m_rotationCharacterization = new SwerveRequest.SysIdSwerveRotation();
 
-
     /* SysId routine for characterizing translation. This is used to find PID gains for the drive motors. */
     private final SysIdRoutine m_sysIdRoutineTranslation = new SysIdRoutine(
         new SysIdRoutine.Config(
@@ -72,7 +74,6 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             this
         )
     );
-
 
     /* SysId routine for characterizing steer. This is used to find PID gains for the steer motors. */
     private final SysIdRoutine m_sysIdRoutineSteer = new SysIdRoutine(
@@ -139,23 +140,14 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
-    }
-
-    public Pose2d getPose2d(){
-        return m_odometry.getPoseMeters();
+        initOdometry();
     }
 
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
-     * <p>
-     * This constructs the underlying hardware devices, so users should not construct
-     * the devices themselves. If they need the devices, they can access them through
-     * getters in the classes.
      *
      * @param drivetrainConstants        Drivetrain-wide constants for the swerve drive
-     * @param odometryUpdateFrequency    The frequency to run the odometry loop. If
-     *                                   unspecified or set to 0 Hz, this is 250 Hz on
-     *                                   CAN FD, and 100 Hz on CAN 2.0.
+     * @param odometryUpdateFrequency    The frequency to run the odometry loop.
      * @param modules                    Constants for each specific module
      */
     public CommandSwerveDrivetrain(
@@ -168,25 +160,16 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
+        initOdometry();
     }
 
     /**
      * Constructs a CTRE SwerveDrivetrain using the specified constants.
-     * <p>
-     * This constructs the underlying hardware devices, so users should not construct
-     * the devices themselves. If they need the devices, they can access them through
-     * getters in the classes.
      *
      * @param drivetrainConstants        Drivetrain-wide constants for the swerve drive
-     * @param odometryUpdateFrequency    The frequency to run the odometry loop. If
-     *                                   unspecified or set to 0 Hz, this is 250 Hz on
-     *                                   CAN FD, and 100 Hz on CAN 2.0.
+     * @param odometryUpdateFrequency    The frequency to run the odometry loop.
      * @param odometryStandardDeviation  The standard deviation for odometry calculation
-     *                                  in the form [x, y, theta]ᵀ, with units in meters
-     *                                  and radians
-     * @param visionStandardDeviation   The standard deviation for vision calculation
-     *                                  in the form [x, y, theta]ᵀ, with units in meters
-     *                                  and radians
+     * @param visionStandardDeviation    The standard deviation for vision calculation
      * @param modules                    Constants for each specific module
      */
     public CommandSwerveDrivetrain(
@@ -201,7 +184,66 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             startSimThread();
         }
         configureAutoBuilder();
+        initOdometry();
+    }
+
+    // Initializes the odometry using current drivetrain state.
+    private void initOdometry() {
+        m_odometry = new SwerveDriveOdometry(
+            getKinematics(),
+            getState().Pose.getRotation(),
+            getModulePositions(),
+            new Pose2d() // initial pose—modify if needed
+        );
+    }
+
+    public Pose2d getPose2d() {
+        return m_odometry.getPoseMeters();
+    }
+
+    // Returns an array of SwerveModulePosition objects.
+    private SwerveModulePosition[] getModulePositions() {
+        SwerveModulePosition frontLeft = new SwerveModulePosition(getFrontLeftDriveDistance(), getFrontLeftAngle());
+        SwerveModulePosition frontRight = new SwerveModulePosition(getFrontRightDriveDistance(), getFrontRightAngle());
+        SwerveModulePosition rearLeft = new SwerveModulePosition(getRearLeftDriveDistance(), getRearLeftAngle());
+        SwerveModulePosition rearRight = new SwerveModulePosition(getRearRightDriveDistance(), getRearRightAngle());
+        return new SwerveModulePosition[] { frontLeft, frontRight, rearLeft, rearRight };
+    }
+
+    // Stub methods – replace these with your actual sensor reading methods!
+    private double getFrontLeftDriveDistance() {
+        // Return the front-left module drive distance in meters.
         
+        return 0.0;
+    }
+
+    private Rotation2d getFrontLeftAngle() {
+        // Return the front-left module angle.
+        return Rotation2d.fromDegrees(0);
+    }
+
+    private double getFrontRightDriveDistance() {
+        return 0.0;
+    }
+
+    private Rotation2d getFrontRightAngle() {
+        return Rotation2d.fromDegrees(0);
+    }
+
+    private double getRearLeftDriveDistance() {
+        return 0.0;
+    }
+
+    private Rotation2d getRearLeftAngle() {
+        return Rotation2d.fromDegrees(0);
+    }
+
+    private double getRearRightDriveDistance() {
+        return 0.0;
+    }
+
+    private Rotation2d getRearRightAngle() {
+        return Rotation2d.fromDegrees(0);
     }
 
     private void configureAutoBuilder() {
@@ -211,22 +253,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
                 () -> getState().Pose,   // Supplier of current robot pose
                 this::resetPose,         // Consumer for seeding pose against auto
                 () -> getState().Speeds, // Supplier of current robot speeds
-                // Consumer of ChassisSpeeds and feedforwards to drive the robot
+                // Consumer to apply chassis speeds and feedforwards.
                 (speeds, feedforwards) -> setControl(
                     m_pathApplyRobotSpeeds.withSpeeds(speeds)
                         .withWheelForceFeedforwardsX(feedforwards.robotRelativeForcesXNewtons())
                         .withWheelForceFeedforwardsY(feedforwards.robotRelativeForcesYNewtons())
                 ),
                 new PPHolonomicDriveController(
-                    // PID constants for translation
-                    new PIDConstants(10, 0, 0),
-                    // PID constants for rotation
-                    new PIDConstants(7, 0, 0)
+                    new PIDConstants(10, 0, 0), // Translation PID
+                    new PIDConstants(7, 0, 0)   // Rotation PID
                 ),
                 config,
-                // Assume the path needs to be flipped for Red vs Blue, this is normally the case
+                // Flip path for Red vs Blue if needed.
                 () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
-                this // Subsystem for requirements
+                this // Subsystem requirements.
             );
         } catch (Exception ex) {
             DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder", ex.getStackTrace());
@@ -244,22 +284,20 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
     }
 
     /**
-     * Runs the SysId Quasistatic test in the given direction for the routine
-     * specified by {@link #m_sysIdRoutineToApply}.
+     * Runs the SysId Quasistatic test in the given direction.
      *
-     * @param direction Direction of the SysId Quasistatic test
-     * @return Command to run
+     * @param direction Direction for the SysId test.
+     * @return Command to run.
      */
     public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.quasistatic(direction);
     }
 
     /**
-     * Runs the SysId Dynamic test in the given direction for the routine
-     * specified by {@link #m_sysIdRoutineToApply}.
+     * Runs the SysId Dynamic test in the given direction.
      *
-     * @param direction Direction of the SysId Dynamic test
-     * @return Command to run
+     * @param direction Direction for the SysId test.
+     * @return Command to run.
      */
     public Command sysIdDynamic(SysIdRoutine.Direction direction) {
         return m_sysIdRoutineToApply.dynamic(direction);
@@ -267,13 +305,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
 
     @Override
     public void periodic() {
-        /*
-         * Periodically try to apply the operator perspective.
-         * If we haven't applied the operator perspective before, then we should apply it regardless of DS state.
-         * This allows us to correct the perspective in case the robot code restarts mid-match.
-         * Otherwise, only check and apply the operator perspective if the DS is disabled.
-         * This ensures driving behavior doesn't change until an explicit disable event occurs during testing.
-         */
+        // Apply operator perspective if needed.
         if (!m_hasAppliedOperatorPerspective || DriverStation.isDisabled()) {
             DriverStation.getAlliance().ifPresent(allianceColor -> {
                 setOperatorPerspectiveForward(
@@ -286,6 +318,22 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
         }
     }
 
+    /**
+     * Updates the odometry using a vision-based pose estimate.
+     *
+     * @param visionPose The vision-corrected global pose.
+     */
+    public void updateOdometryWithVision(Pose2d visionPose) {
+        if (visionPose != null) {
+            System.out.println("[Swerve] Updating odometry with vision pose: " + visionPose);
+            m_odometry.resetPosition(
+                getState().Pose.getRotation(),  // current heading
+                getModulePositions(),           // current module positions
+                visionPose                      // vision-corrected pose
+            );
+        }
+    }
+
     private void startSimThread() {
         m_lastSimTime = Utils.getCurrentTimeSeconds();
 
@@ -295,7 +343,7 @@ public class CommandSwerveDrivetrain extends TunerSwerveDrivetrain implements Su
             double deltaTime = currentTime - m_lastSimTime;
             m_lastSimTime = currentTime;
 
-            /* use the measured time delta, get battery voltage from WPILib */
+            /* Use the measured time delta and WPILib battery voltage */
             updateSimState(deltaTime, RobotController.getBatteryVoltage());
         });
         m_simNotifier.startPeriodic(kSimLoopPeriod);

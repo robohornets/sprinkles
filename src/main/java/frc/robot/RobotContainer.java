@@ -88,7 +88,7 @@ public class RobotContainer {
 
         public boolean slowRobotSpeed = false;
 
-        public double robotSpeedLimiter = 0.95;
+        public double robotSpeedLimiter = 0.80;
     
         // MARK: Mechanisms
         private final ElevatorController elevator = new ElevatorController();

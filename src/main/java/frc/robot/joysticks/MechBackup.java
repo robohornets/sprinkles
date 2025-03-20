@@ -63,7 +63,7 @@ public class MechBackup {
 
 
         // MARK: Coral Intake
-        joystick.rightTrigger()
+        joystick.leftTrigger()
             .whileTrue(coral.flywheelIn())
             .onFalse(
                 Commands.run(
@@ -76,7 +76,7 @@ public class MechBackup {
             );
 
         // MARK: Algae Intake
-        joystick.leftTrigger()
+        joystick.rightTrigger()
         .whileTrue(algae.flywheelAlgaeIn())
         .onFalse(
             Commands.run(

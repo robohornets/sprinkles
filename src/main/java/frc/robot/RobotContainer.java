@@ -88,7 +88,7 @@ public class RobotContainer {
 
         public boolean slowRobotSpeed = false;
 
-        public double robotSpeedLimiter = 0.5;
+        public double robotSpeedLimiter = 0.95;
     
         // MARK: Mechanisms
         private final ElevatorController elevator = new ElevatorController();
@@ -206,8 +206,8 @@ public class RobotContainer {
         private void configureBindings() {
             //if(useFieldCentric){
             drivetrain.setDefaultCommand(
-                drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.1: robotSpeedLimiter))
-                    .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.1: robotSpeedLimiter))
+                drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.7: robotSpeedLimiter))
+                    .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.7: robotSpeedLimiter))
                     .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
                 )
             );//}

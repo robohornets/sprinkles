@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5875,
-        "y": 7.3914
+        "x": 1.656,
+        "y": 7.5
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4656916663457933,
-        "y": 5.948844029892245
+        "x": 2.5341792163533183,
+        "y": 6.057436450724684
       },
       "isLocked": false,
       "linkedName": "K Start"
     },
     {
       "anchor": {
-        "x": 3.9878,
-        "y": 5.1816
+        "x": 3.9,
+        "y": 5.2
       },
       "prevControl": {
-        "x": 3.5366160594325535,
-        "y": 6.226041964201217
+        "x": 3.4488160594325534,
+        "y": 6.244441964201217
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,6 +47,28 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "autoL2",
+      "waypointRelativePos": 0.16277258566978287,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoL2"
+        }
+      }
+    },
+    {
+      "name": "autoL3",
+      "waypointRelativePos": 0.464953271028039,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoL3"
+        }
+      }
+    },
+    {
       "name": "autoL4",
       "waypointRelativePos": 0.7056037884767172,
       "endWaypointRelativePos": null,
@@ -59,7 +81,7 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
+    "maxVelocity": 4.73,
     "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
@@ -68,13 +90,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": -61.75736450291355
   },
   "reversed": false,
   "folder": "L4 Auto I-J-K",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.0
+    "rotation": 126.227
   },
   "useDefaultConstraints": true
 }

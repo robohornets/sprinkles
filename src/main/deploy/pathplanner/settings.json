@@ -10,7 +10,7 @@
     "To Coral Station"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 4.0,
+  "defaultMaxVel": 4.73,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
@@ -18,9 +18,9 @@
   "robotMass": 52.0,
   "robotMOI": 6.883,
   "robotTrackwidth": 0.5588,
-  "driveWheelRadius": 0.025,
+  "driveWheelRadius": 0.0254,
   "driveGearing": 6.75,
-  "maxDriveSpeed": 4.7,
+  "maxDriveSpeed": 4.73,
   "driveMotorType": "krakenX60FOC",
   "driveCurrentLimit": 24.0,
   "wheelCOF": 1.7,
@@ -35,6 +35,6 @@
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
   "robotFeatures": [
-    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.4,\"y\":0.1905},\"size\":{\"width\":0.1,\"length\":0.15},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":false}}"
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.4,\"y\":0.21},\"size\":{\"width\":0.15,\"length\":0.1},\"borderRadius\":0.05,\"strokeWidth\":0.02,\"filled\":false}}"
   ]
 }

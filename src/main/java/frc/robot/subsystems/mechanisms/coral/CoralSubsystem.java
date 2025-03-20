@@ -20,7 +20,7 @@ public class CoralSubsystem extends SubsystemBase {
     public static Boolean flywheelDisabled = false;
     
     public static Double angleSpeed = 0.1;
-    public static Double flywheelInSpeed = 0.2;
+    public static Double flywheelInSpeed = 0.4;
     public static Double flywheelOutSpeed = 0.6;
     
     public static Double angleHoldSpeed = 0.015;

@@ -160,7 +160,7 @@ public class RobotContainer {
             );
             NamedCommands.registerCommand("spitCoral",
                 Commands.sequence(
-                    coral.flywheelOut().withTimeout(1),
+                    coral.flywheelOut().withTimeout(0.5),
                     
                     Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
                 )
@@ -195,12 +195,27 @@ public class RobotContainer {
             coralSubsystem.setDefaultCommand(
                 Commands.run(
                     () -> {
-                        coralSubsystem.flywheelMotor.set(-0.02);
+                        coralSubsystem.flywheelMotor.set(-0.06);
                         coralSubsystem.angleMotor.set(-CoralSubsystem.angleHoldSpeed);
                     },
                     coralSubsystem
                 )
             );
+
+            // algaeSubsystem.setDefaultCommand(
+            //     Commands.run(
+            //         () -> {
+            //             if (algaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble() < -8.0) {
+            //                 algaeSubsystem.flywheelAlgaeMotor.set(-0.2);
+            //             }
+            //             else {
+            //                 algaeSubsystem.flywheelAlgaeMotor.set(0.0);
+            //             }
+            //             CommandScheduler.getInstance().cancelAll();
+            //         },
+            //         algaeSubsystem
+            //     )
+            // );
         }
     
         private void configureBindings() {

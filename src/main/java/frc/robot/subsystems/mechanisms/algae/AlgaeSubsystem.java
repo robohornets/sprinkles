@@ -16,6 +16,9 @@ public class AlgaeSubsystem extends SubsystemBase {
     //     ));
     // }
 
+    public static double angleAlgaeUpperLimit = 0.0;
+    public static double angleAlgaeLowerLimit = -15.0;
+
     public static TalonFX angleAlgaeMotor = new TalonFX(15);
     public static TalonFX flywheelAlgaeMotor = new TalonFX(14);
     public static DutyCycleEncoder angleAlgaeDCEncoder = new DutyCycleEncoder(3);

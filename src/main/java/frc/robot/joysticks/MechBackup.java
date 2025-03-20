@@ -69,7 +69,6 @@ public class MechBackup {
                 Commands.run(
                     () -> {
                         CoralSubsystem.flywheelMotor.set(0.0);
-                        CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -78,11 +77,18 @@ public class MechBackup {
         // MARK: Algae Intake
         joystick.rightTrigger()
         .whileTrue(algae.flywheelAlgaeIn())
+        .onTrue(
+            Commands.run(
+                () -> {
+                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                }
+            )
+        )
         .onFalse(
             Commands.run(
                 () -> {
                     AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Coast);
+                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
                     CommandScheduler.getInstance().cancelAll();
                 }
             )

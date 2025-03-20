@@ -59,7 +59,7 @@ public class DriverJoystick {
             Commands.run(
                 () -> {
                     AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Coast);
+                    
                     CommandScheduler.getInstance().cancelAll();
                 }
             )

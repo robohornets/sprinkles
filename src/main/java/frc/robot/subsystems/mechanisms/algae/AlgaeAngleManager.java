@@ -10,8 +10,8 @@ public class AlgaeAngleManager extends Command{
     private boolean isFinishedToggle = false;
     private double oopsieThreshold = 0.01;
 
-    public double angleAlgaeUpperLimit = 0.99; // Update: 0.99 (It goes over, but 0.99 works. It's in the frame and it's vertical)
-    public double angleAlgaeLowerLimit = 0.1; // Update: 0.163
+    public double angleAlgaeUpperLimit = 0.0;
+    public double angleAlgaeLowerLimit = -15.0;
 
     public AlgaeAngleManager(double angle, AlgaeSubsystem algaeSubsystem) {
         this.angle = Math.max(angleAlgaeLowerLimit, Math.min(angleAlgaeUpperLimit, angle));
@@ -80,7 +80,7 @@ public class AlgaeAngleManager extends Command{
     }
 
     public static double getAlgaeAngle() {
-        return AlgaeSubsystem.angleAlgaeDCEncoder.get();
+        return AlgaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble();
     }
 }
 

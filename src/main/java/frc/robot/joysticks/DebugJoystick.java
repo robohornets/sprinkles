@@ -52,7 +52,6 @@ public class DebugJoystick {
                 Commands.run(
                     () -> {
                         CoralSubsystem.flywheelMotor.set(0.0);
-                        CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -66,7 +65,7 @@ public class DebugJoystick {
                 Commands.run(
                     () -> {
                         CoralSubsystem.flywheelMotor.set(0.0);
-                        CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                        
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -98,7 +97,7 @@ public class DebugJoystick {
             Commands.run(
                 () -> {
                     AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Coast);
+                    
                     CommandScheduler.getInstance().cancelAll();
                 }
             )
@@ -111,7 +110,7 @@ public class DebugJoystick {
             Commands.run(
                 () -> {
                     AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Coast);
+                    
                     CommandScheduler.getInstance().cancelAll();
                 }
             )

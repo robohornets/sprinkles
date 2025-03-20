@@ -85,6 +85,7 @@ public class RobotContainer {
         public CANrange canRangeSensor = new CANrange(34);
         Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
     
+        public boolean camerasEnabled = true;
     
         // MARK: Mechanisms
         private final ElevatorController elevator = new ElevatorController();
@@ -105,7 +106,7 @@ public class RobotContainer {
         private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
         //private final ButtonConsole buttonConsoleController = new ButtonConsole(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
         private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
-        private final ButtonConsole buttonConsoleController = new ButtonConsole(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+        private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
     
         // MARK: Shuffleboard
         /* Path follower */

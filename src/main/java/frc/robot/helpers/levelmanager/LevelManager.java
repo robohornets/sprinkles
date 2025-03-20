@@ -39,18 +39,18 @@ public class LevelManager {
                 break;
 
             case LEVEL_2:
-                targetHeight = 15.17; // Update: -15.17
-                targetAngle = 0.363; // Update: 0.363
+                targetHeight = 15.17;
+                targetAngle = 0.372;
                 break;
 
             case LEVEL_3:
-                targetHeight = 33.690; // Update: -33.690
-                targetAngle = 0.359; // Update: 0.359
+                targetHeight = 33.690;
+                targetAngle = 0.372;
                 break;
 
             case LEVEL_4:
-                targetHeight = 65.049; // Update: -65.049
-                targetAngle = 0.341; // Update: 0.341
+                targetHeight = 65.049;
+                targetAngle = 0.368;
                 break;
 
             case DEFAULT_POSITION:

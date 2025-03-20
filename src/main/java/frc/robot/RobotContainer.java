@@ -78,7 +78,6 @@ public class RobotContainer {
     public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    private static boolean useFieldCentric = true;
     
     
         // MARK: Triggers
@@ -104,7 +103,6 @@ public class RobotContainer {
     
         private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
         private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
-        //private final ButtonConsole buttonConsoleController = new ButtonConsole(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
         private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
         private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
     
@@ -191,7 +189,13 @@ public class RobotContainer {
 
         private void configureDefaults() {
             coralSubsystem.setDefaultCommand(
-                Commands.run(() -> coralSubsystem.angleMotor.set(-CoralSubsystem.angleHoldSpeed), coralSubsystem)
+                Commands.run(
+                    () -> {
+                        coralSubsystem.flywheelMotor.set(-0.02);
+                        coralSubsystem.angleMotor.set(-CoralSubsystem.angleHoldSpeed);
+                    },
+                    coralSubsystem
+                )
             );
         }
     

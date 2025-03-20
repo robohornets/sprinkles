@@ -46,10 +46,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     UsbCamera zane1 = CameraServer.startAutomaticCapture(0);
     UsbCamera zane2 = CameraServer.startAutomaticCapture(1);
-    zane1.setResolution(640, 360);
-    zane1.setFPS(20);
+    zane1.setResolution(320, 180);
+    zane1.setFPS(60);
     zane2.setResolution(640, 360);
-    zane2.setFPS(20);
+    zane2.setFPS(30);
 
 
     vision = new Vision();

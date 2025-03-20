@@ -80,7 +80,7 @@ public class DriverJoystick {
 
         // MARK: Left Bumper
         joystick.leftBumper()
-            .whileTrue(coral.angleDown())
+            .whileTrue(coral.angleDownSlow())
             .onFalse(
                 Commands.run(
                     () -> {
@@ -94,7 +94,7 @@ public class DriverJoystick {
         
         // MARK: Right Bumper
         joystick.rightBumper()
-            .whileTrue(coral.angleUp())
+            .whileTrue(coral.angleUpSlow())
             .onFalse(
                 Commands.run(
                     () -> {
@@ -109,18 +109,30 @@ public class DriverJoystick {
         // MARK: D-Pad
         joystick.povLeft()
             .whileTrue(drivetrain.applyRequest(
-                () -> RobotContainer.driveRobotCentric.withVelocityY(RobotContainer.MaxSpeed * 0.2)));
-        
+                () -> RobotContainer.driveRobotCentric
+                    .withVelocityX(0)
+                    .withVelocityY(RobotContainer.MaxSpeed * 0.2)
+            ));
+
         joystick.povRight()
             .whileTrue(drivetrain.applyRequest(
-                () -> RobotContainer.driveRobotCentric.withVelocityY(-RobotContainer.MaxSpeed * 0.2)));
+                () -> RobotContainer.driveRobotCentric
+                    .withVelocityX(0)
+                    .withVelocityY(-RobotContainer.MaxSpeed * 0.2)
+            ));
 
         joystick.povDown()
             .whileTrue(drivetrain.applyRequest(
-                () -> RobotContainer.driveRobotCentric.withVelocityX(RobotContainer.MaxSpeed * 0.2)));
+                () -> RobotContainer.driveRobotCentric
+                    .withVelocityX(RobotContainer.MaxSpeed * 0.2)
+                    .withVelocityY(0)
+            ));
 
         joystick.povUp()
             .whileTrue(drivetrain.applyRequest(
-                () -> RobotContainer.driveRobotCentric.withVelocityX(-RobotContainer.MaxSpeed * 0.2)));
+                () -> RobotContainer.driveRobotCentric
+                    .withVelocityX(-RobotContainer.MaxSpeed * 0.2)
+                    .withVelocityY(0)
+            ));
     }
 }

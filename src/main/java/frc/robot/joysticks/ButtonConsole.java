@@ -58,13 +58,14 @@ public class ButtonConsole {
         joystick.leftTrigger().whileTrue(
             Commands.run(
                 () -> {
-                    ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
+                    //ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
                     ClimberVariables.alexHonnold.set(-1.0);
                 }
             )
         ).onFalse(
             Commands.run(
                 () -> {
+                    ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
                     ClimberVariables.alexHonnold.set(0.0);
                 }
             )
@@ -74,13 +75,14 @@ public class ButtonConsole {
             .whileTrue(
                 Commands.run(
                     () -> {
-                        ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
+                        //ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
                         ClimberVariables.alexHonnold.set(1.0);
                     }
                 )
             ).onFalse(
                 Commands.run(
                     () -> {
+                        ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
                         ClimberVariables.alexHonnold.set(0.0);
                     }
                 )

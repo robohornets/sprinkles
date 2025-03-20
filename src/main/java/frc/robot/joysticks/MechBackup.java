@@ -54,7 +54,13 @@ public class MechBackup {
             )
         );
 
-        // MARK: Y-Button
+        // MARK: AutoAlign
+        joystick.leftBumper().onTrue(new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain));
+        joystick.rightBumper().onTrue(new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain));        
+        joystick.a().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
+
+
+        // MARK: Coral Intake
         joystick.rightTrigger()
             .whileTrue(coral.flywheelIn())
             .onFalse(
@@ -67,25 +73,20 @@ public class MechBackup {
                 )
             );
 
-        joystick.leftBumper().onTrue(new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain));
-        joystick.rightBumper().onTrue(new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain));
-        
-        //MARK: A-Button
-        joystick.a().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
-          
+        // MARK: Algae Intake
         joystick.leftTrigger()
-            .whileTrue(algae.flywheelAlgaeIn())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                        AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Coast);
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
+        .whileTrue(algae.flywheelAlgaeIn())
+        .onFalse(
+            Commands.run(
+                () -> {
+                    AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
+                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Coast);
+                    CommandScheduler.getInstance().cancelAll();
+                }
+            )
+        );
         
-        // MARK: D-Pad
+        // MARK: Elevator U/D
         joystick.povDown()
             .whileTrue(elevator.elevatorDown())
             .onFalse(
@@ -118,13 +119,13 @@ public class MechBackup {
                 )
             );
         
-        // MARK: D-Pad
+        
         // joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsytem).goToPreset());
         // joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsytem).goToPreset());
         // joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
         // joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
 
-                // // MARK: L Trigger
+                // 
                 // joystick.povDown()
                 // .whileTrue(coral.angleDown())
                 // .onFalse(
@@ -137,7 +138,6 @@ public class MechBackup {
                 //     )
                 // );
             
-            // MARK: R Trigger
             // joystick.povUp()
             //     .whileTrue(coral.angleUp())
             //     .onFalse(
@@ -163,7 +163,6 @@ public class MechBackup {
             //     )
             // );
 
-            // MARK: L Trigger
             // joystick.leftTrigger()
             //     .onTrue(
             //         new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain)
@@ -185,7 +184,7 @@ public class MechBackup {
             //     )
             // );
             
-            // // MARK: R Trigger
+
             // joystick.povRight()
             //     .whileTrue(algae.angleAlgaeUp())
             //     .onFalse(

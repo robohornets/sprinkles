@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.656,
-        "y": 7.5
+        "x": 1.5875,
+        "y": 7.3914
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.8744070279396188,
-        "y": 7.275247451006355
+        "x": 2.805907027939619,
+        "y": 7.166647451006355
       },
       "isLocked": false,
       "linkedName": "J Start"
     },
     {
       "anchor": {
-        "x": 4.796335227272728,
-        "y": 5.336264204545455
+        "x": 4.8514,
+        "y": 5.33
       },
       "prevControl": {
-        "x": 5.697519516202813,
-        "y": 6.549236761484014
+        "x": 5.752584288930086,
+        "y": 6.542972556938559
       },
       "nextControl": null,
       "isLocked": false,
@@ -68,13 +68,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -118.345
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "L4 Auto I-J-K",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.227
+    "rotation": 126.0
   },
   "useDefaultConstraints": true
 }

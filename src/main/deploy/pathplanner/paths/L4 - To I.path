@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.2,
-        "y": 5.1
+        "x": 5.1562,
+        "y": 5.1308
       },
       "prevControl": {
-        "x": 6.22547159090909,
-        "y": 6.622849779408224
+        "x": 6.074168332025307,
+        "y": 6.720767790807088
       },
       "nextControl": null,
       "isLocked": false,
@@ -68,13 +68,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -118.345
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "L4 Auto I-J-K",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.21331045516135
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

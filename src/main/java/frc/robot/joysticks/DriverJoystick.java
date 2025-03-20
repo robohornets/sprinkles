@@ -9,6 +9,8 @@ import frc.robot.RobotContainer;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.mechanisms.algae.AlgaeController;
+import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
@@ -25,9 +27,11 @@ public class DriverJoystick {
     private final ElevatorSubsystem elevatorSubsystem;
     private final CoralController coral;
     private final CoralSubsystem coralSubsytem;
+    private final AlgaeController algae;
+    private final AlgaeSubsystem algaeSubsytem;
     
     public DriverJoystick(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem) {
+        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem, AlgaeController algae, AlgaeSubsystem algaeSubsystem) {
 
         this.joystick = joystick;
         this.drivetrain = drivetrain;
@@ -35,6 +39,8 @@ public class DriverJoystick {
         this.elevatorSubsystem = elevatorSubsystem;
         this.coral = coral;
         this.coralSubsytem = coralSubsystem;
+        this.algae = algae;
+        this.algaeSubsytem = algaeSubsystem;
     }
 
     public void configureBindings() {
@@ -48,16 +54,16 @@ public class DriverJoystick {
         
         // MARK: L Trigger
         joystick.leftTrigger()
-            .whileTrue(RobotContainer.coral.flywheelIn())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        RobotContainer.coral.flywheelStop();
-                        CoralSubsystem.flywheelMotor.set(0.0);
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
+        .whileTrue(algae.flywheelAlgaeOut())
+        .onFalse(
+            Commands.run(
+                () -> {
+                    AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
+                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Coast);
+                    CommandScheduler.getInstance().cancelAll();
+                }
+            )
+        );
         
         // MARK: R Trigger
         joystick.rightTrigger()
@@ -71,75 +77,36 @@ public class DriverJoystick {
                     }
                 )
             );
-        
-        // MARK: Left Bumper
-        joystick.leftBumper().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsytem).goToPreset());
 
-        // MARK: Right Bumper
-        joystick.rightBumper().onTrue(new LevelManager(Levels.DEFAULT_POSITION, elevatorSubsystem, coralSubsytem).goToPreset());
+        // MARK: Left Bumper
+        joystick.leftBumper()
+            .whileTrue(coral.angleDown())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        // CoralSubsystem.angleMotor.set(-0.015);
+                        CoralSubsystem.angleMotor
+                                .setNeutralMode(NeutralModeValue.Brake);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
         
+        // MARK: Right Bumper
+        joystick.rightBumper()
+            .whileTrue(coral.angleUp())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        // CoralSubsystem.angleMotor.set(-0.015);
+                        CoralSubsystem.angleMotor
+                                .setNeutralMode(NeutralModeValue.Brake);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
 
         // MARK: D-Pad
-        joystick.povUp()
-            .whileTrue(coral.angleUpSlow())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
-        
-
-        joystick.povDown()
-            .whileTrue(coral.angleDownSlow())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
-
-        
-        // joystick.povLeft()
-        //     .whileTrue(elevator.elevatorDownSlow())
-        //     .onFalse(
-        //         Commands.run(
-        //             () -> {
-        //                 ElevatorSubsystem.elevatorLeft.set(-0.015);
-        //                 ElevatorSubsystem.elevatorRight.set(0.015);
-
-        //                 ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-        //                 ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
-                        
-        //                 CommandScheduler.getInstance().cancelAll();
-        //             }
-        //         )
-        //     );
-
-        // joystick.povRight()
-        //     .whileTrue(elevator.elevatorUpSlow())
-        //     .onFalse(
-        //         Commands.run(
-        //             () -> {
-        //                 ElevatorSubsystem.elevatorLeft.set(-0.015);
-        //                 ElevatorSubsystem.elevatorRight.set(0.015);
-
-        //                 ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-        //                 ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
-
-        //                 CommandScheduler.getInstance().cancelAll();
-        //             }
-        //         )
-        //     );
-
         joystick.povLeft()
             .whileTrue(drivetrain.applyRequest(
                 () -> RobotContainer.driveRobotCentric.withVelocityY(RobotContainer.MaxSpeed * 0.2)));
@@ -147,5 +114,13 @@ public class DriverJoystick {
         joystick.povRight()
             .whileTrue(drivetrain.applyRequest(
                 () -> RobotContainer.driveRobotCentric.withVelocityY(-RobotContainer.MaxSpeed * 0.2)));
+
+        joystick.povDown()
+            .whileTrue(drivetrain.applyRequest(
+                () -> RobotContainer.driveRobotCentric.withVelocityX(RobotContainer.MaxSpeed * 0.2)));
+
+        joystick.povUp()
+            .whileTrue(drivetrain.applyRequest(
+                () -> RobotContainer.driveRobotCentric.withVelocityX(-RobotContainer.MaxSpeed * 0.2)));
     }
 }

@@ -55,7 +55,7 @@ public class MechBackup {
         );
 
         // MARK: Y-Button
-        joystick.y()
+        joystick.rightTrigger()
             .whileTrue(coral.flywheelIn())
             .onFalse(
                 Commands.run(
@@ -67,44 +67,26 @@ public class MechBackup {
                 )
             );
 
-        // MARK: X-Button
-        joystick.x().onTrue(new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain));
-
-        joystick.a().whileTrue(
-            Commands.run(
-                () -> {
-                    ClimberVariables.alexHonnold.set(0.5);
-                }
-            )
-        );
-
-        joystick.b().whileTrue(
-            Commands.run(
-                () -> {
-                    ClimberVariables.alexHonnold.set(-0.5);
-                }
-            )
-        );
-        // MARK: B-Button
-        //joystick.b().onTrue(new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain));
-
-        // MARK: A-Button
-        //joystick.a().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
+        joystick.leftBumper().onTrue(new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain));
+        joystick.rightBumper().onTrue(new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain));
         
-        // MARK: L Trigger
+        //MARK: A-Button
+        joystick.a().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
+          
         joystick.leftTrigger()
-            .onTrue(
-                new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain)
+            .whileTrue(algae.flywheelAlgaeIn())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
+                        AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Coast);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
             );
         
-        // MARK: R Trigger
-        joystick.rightTrigger()
-        .onTrue(
-            new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain)
-        );
-        
-        // MARK: Left Bumper
-        joystick.leftBumper()
+        // MARK: D-Pad
+        joystick.povDown()
             .whileTrue(elevator.elevatorDown())
             .onFalse(
                 Commands.run(
@@ -120,8 +102,7 @@ public class MechBackup {
                 )
             );
 
-        // MARK: Right Bumper
-        joystick.rightBumper()
+        joystick.povUp()
             .whileTrue(elevator.elevatorUp())
             .onFalse(
                 Commands.run(
@@ -143,56 +124,78 @@ public class MechBackup {
         // joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
         // joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
 
-                // MARK: L Trigger
-                joystick.povDown()
-                .whileTrue(coral.angleDown())
-                .onFalse(
-                    Commands.run(
-                        () -> {
-                            CoralSubsystem.angleMotor.set(-0.015);
+                // // MARK: L Trigger
+                // joystick.povDown()
+                // .whileTrue(coral.angleDown())
+                // .onFalse(
+                //     Commands.run(
+                //         () -> {
+                //             CoralSubsystem.angleMotor.set(-0.015);
                             
-                            CommandScheduler.getInstance().cancelAll();
-                        }
-                    )
-                );
+                //             CommandScheduler.getInstance().cancelAll();
+                //         }
+                //     )
+                // );
             
             // MARK: R Trigger
-            joystick.povUp()
-                .whileTrue(coral.angleUp())
-                .onFalse(
-                    Commands.run(
-                        () -> {
-                            CoralSubsystem.angleMotor.set(-0.015);
+            // joystick.povUp()
+            //     .whileTrue(coral.angleUp())
+            //     .onFalse(
+            //         Commands.run(
+            //             () -> {
+            //                 CoralSubsystem.angleMotor.set(-0.015);
                             
-                            CommandScheduler.getInstance().cancelAll();
-                        }
-                    )
-                );
+            //                 CommandScheduler.getInstance().cancelAll();
+            //             }
+            //         )
+            //     );
 
 
-                joystick.povLeft()
-                .whileTrue(algae.angleAlgaeDown())
-                .onFalse(
-                    Commands.run(
-                        () -> {
-                            algaeSubsytem.angleAlgaeMotor.set(0.0);
-                            
-                            CommandScheduler.getInstance().cancelAll();
-                        }
-                    )
-                );
+            // joystick.povLeft()
+            // .whileTrue(algae.angleAlgaeDown())
+            // .onFalse(
+            //     Commands.run(
+            //         () -> {
+            //             algaeSubsytem.angleAlgaeMotor.set(0.0);
+                        
+            //             CommandScheduler.getInstance().cancelAll();
+            //         }
+            //     )
+            // );
+
+            // MARK: L Trigger
+            // joystick.leftTrigger()
+            //     .onTrue(
+            //         new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain)
+            //     );
+
+            // joystick.a().whileTrue(
+            //     Commands.run(
+            //         () -> {
+            //             ClimberVariables.alexHonnold.set(0.5);
+            //         }
+            //     )
+            // );
+    
+            // joystick.b().whileTrue(
+            //     Commands.run(
+            //         () -> {
+            //             ClimberVariables.alexHonnold.set(-0.5);
+            //         }
+            //     )
+            // );
             
-            // MARK: R Trigger
-            joystick.povRight()
-                .whileTrue(algae.angleAlgaeUp())
-                .onFalse(
-                    Commands.run(
-                        () -> {
-                            algaeSubsytem.angleAlgaeMotor.set(0.0);
+            // // MARK: R Trigger
+            // joystick.povRight()
+            //     .whileTrue(algae.angleAlgaeUp())
+            //     .onFalse(
+            //         Commands.run(
+            //             () -> {
+            //                 algaeSubsytem.angleAlgaeMotor.set(0.0);
                             
-                            CommandScheduler.getInstance().cancelAll();
-                        }
-                    )
-                );
+            //                 CommandScheduler.getInstance().cancelAll();
+            //             }
+            //         )
+            //     );
     }
 }

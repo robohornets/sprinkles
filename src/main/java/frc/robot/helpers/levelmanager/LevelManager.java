@@ -50,7 +50,7 @@ public class LevelManager {
 
             case LEVEL_4:
                 targetHeight = 65.049;
-                targetAngle = 0.368;
+                targetAngle = 0.385;
                 break;
 
             case DEFAULT_POSITION:

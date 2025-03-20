@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.2,
-        "y": 5.1
+        "x": 5.1308,
+        "y": 5.1562
       },
       "prevControl": {
-        "x": 6.176097972972973,
-        "y": 5.932179054054054
+        "x": 6.106897972972972,
+        "y": 5.988379054054055
       },
       "nextControl": null,
       "isLocked": false,
@@ -68,7 +68,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -118.345
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "L4 Auto H-I-J",

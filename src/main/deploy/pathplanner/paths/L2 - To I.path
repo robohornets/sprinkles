@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.2,
-        "y": 5.1
+        "x": 5.1308,
+        "y": 5.1562
       },
       "prevControl": {
-        "x": 6.22547159090909,
-        "y": 6.622849779408224
+        "x": 6.15627159090909,
+        "y": 6.679049779408224
       },
       "nextControl": null,
       "isLocked": false,
@@ -68,7 +68,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -118.345
+    "rotation": -119.99999999999999
   },
   "reversed": false,
   "folder": "L2 Auto I-J-K",

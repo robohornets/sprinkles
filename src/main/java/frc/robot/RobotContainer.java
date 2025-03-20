@@ -202,20 +202,20 @@ public class RobotContainer {
                 )
             );
 
-            // algaeSubsystem.setDefaultCommand(
-            //     Commands.run(
-            //         () -> {
-            //             if (algaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble() < -8.0) {
-            //                 algaeSubsystem.flywheelAlgaeMotor.set(-0.2);
-            //             }
-            //             else {
-            //                 algaeSubsystem.flywheelAlgaeMotor.set(0.0);
-            //             }
-            //             CommandScheduler.getInstance().cancelAll();
-            //         },
-            //         algaeSubsystem
-            //     )
-            // );
+            algaeSubsystem.setDefaultCommand(
+                Commands.run(
+                    () -> {
+                        if (algae.getAlgaeAngle() < -8.0) {
+                            algaeSubsystem.flywheelAlgaeMotor.set(-0.2);
+                        }
+                        else {
+                            algaeSubsystem.flywheelAlgaeMotor.set(0.0);
+                        }
+                        //CommandScheduler.getInstance().cancelAll();
+                    },
+                    algaeSubsystem
+                )
+            );
         }
     
         private void configureBindings() {

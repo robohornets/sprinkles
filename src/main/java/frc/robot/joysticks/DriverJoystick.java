@@ -26,7 +26,7 @@ public class DriverJoystick {
     private final ElevatorController elevator;
     private final ElevatorSubsystem elevatorSubsystem;
     private final CoralController coral;
-    private final CoralSubsystem coralSubsytem;
+    private final CoralSubsystem coralSubsystem;
     private final AlgaeController algae;
     private final AlgaeSubsystem algaeSubsytem;
     
@@ -38,7 +38,7 @@ public class DriverJoystick {
         this.elevator = elevator;
         this.elevatorSubsystem = elevatorSubsystem;
         this.coral = coral;
-        this.coralSubsytem = coralSubsystem;
+        this.coralSubsystem = coralSubsystem;
         this.algae = algae;
         this.algaeSubsytem = algaeSubsystem;
     }
@@ -48,9 +48,30 @@ public class DriverJoystick {
 
         // MARK: Y-Button
         // Reset field centric heading
-        joystick.y().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.povDown().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         // joystick.x().onTrue(new InstantCommand(() -> RobotContainer.setUseFieldCentric(false)));
        
+        joystick.y()
+        .whileTrue(algae.angleAlgaeUp())
+        .onFalse(
+            Commands.run(
+                () -> {
+                    algaeSubsytem.angleAlgaeMotor.set(0.0);
+                }
+            )
+        );
+
+    joystick.a()
+        .whileTrue(algae.angleAlgaeDown())
+        .onFalse(
+            Commands.run(
+                () -> {
+                    algaeSubsytem.angleAlgaeMotor.set(0.0);
+                }
+            )
+        );
+
+        joystick.b().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset());
         
         // MARK: L Trigger
         joystick.leftTrigger()
@@ -119,13 +140,6 @@ public class DriverJoystick {
                 () -> RobotContainer.driveRobotCentric
                     .withVelocityX(0)
                     .withVelocityY(-RobotContainer.MaxSpeed * 0.15)
-            ));
-
-        joystick.povDown()
-            .whileTrue(drivetrain.applyRequest(
-                () -> RobotContainer.driveRobotCentric
-                    .withVelocityX(-RobotContainer.MaxSpeed * 0.15)
-                    .withVelocityY(0)
             ));
 
         joystick.povUp()

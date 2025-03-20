@@ -11,8 +11,10 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.helpers.ShuffleboardUtil;
@@ -77,12 +79,17 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
 
+    ShuffleboardUtil.put("Time Remaining", DriverStation.getMatchTime());
     ShuffleboardUtil.put("Slow Robot Speed", m_robotContainer.slowRobotSpeed);
     ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.camerasEnabled);
     ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble());
     ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
     ShuffleboardUtil.put("Algae Angle", AlgaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble());
+
+    if (DriverStation.getMatchTime() <= 1.5) {
+      m_robotContainer.coral.flywheelOut();
+    }
   }
 
   @Override

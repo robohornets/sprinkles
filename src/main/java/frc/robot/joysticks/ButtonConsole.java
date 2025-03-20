@@ -90,13 +90,6 @@ public class ButtonConsole {
 
         
         joystick.leftBumper()
-            // .whileTrue(
-            //     Commands.run(
-            //         () -> {
-            //             algae.angleAlgaeUp();
-            //         }
-            //     )
-            // )
             .whileTrue(algae.angleAlgaeUp())
             .onFalse(
                 Commands.run(
@@ -107,13 +100,6 @@ public class ButtonConsole {
             );
     
         joystick.rightBumper()
-            // .whileTrue(
-            //     Commands.run(
-            //         () -> {
-            //             algae.angleAlgaeDown();
-            //         }
-            //     )
-            // )
             .whileTrue(algae.angleAlgaeDown())
             .onFalse(
                 Commands.run(
@@ -122,24 +108,15 @@ public class ButtonConsole {
                     }
                 )
             );
-
-        joystick.x()
-            .onTrue(
-                Commands.run(
-                    () -> {
-                        robotContainer.camerasEnabled = false;
-                    }
-                )
-            );
         
 
         joystick.a()
-            .whileTrue(coral.angleDown())
+            .whileTrue(algae.flywheelAlgaeIn())
             .onFalse(
                 Commands.run(
                     () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
+                        algaeSubsytem.angleAlgaeMotor.set(0.0);
+                        algaeSubsytem.angleAlgaeMotor
                                 .setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -148,7 +125,7 @@ public class ButtonConsole {
         
 
         joystick.b()
-            .whileTrue(coral.angleUp())
+            .whileTrue(coral.flywheelIn())
             .onFalse(
                 Commands.run(
                     () -> {
@@ -160,8 +137,7 @@ public class ButtonConsole {
                 )
             );
 
-
-
+        joystick.y().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset());
 
         // MARK: DPAD Bindings
         joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());

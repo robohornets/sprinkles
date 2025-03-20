@@ -88,13 +88,15 @@ public class ButtonConsole {
 
         
         joystick.leftBumper()
-            .whileTrue(
-                Commands.run(
-                    () -> {
-                        algae.angleAlgaeUp();
-                    }
-                )
-            ).onFalse(
+            // .whileTrue(
+            //     Commands.run(
+            //         () -> {
+            //             algae.angleAlgaeUp();
+            //         }
+            //     )
+            // )
+            .whileTrue(algae.angleAlgaeUp())
+            .onFalse(
                 Commands.run(
                     () -> {
                         algaeSubsytem.angleAlgaeMotor.set(0.0);
@@ -103,13 +105,15 @@ public class ButtonConsole {
             );
     
         joystick.rightBumper()
-            .whileTrue(
-                Commands.run(
-                    () -> {
-                        algae.angleAlgaeDown();
-                    }
-                )
-            ).onFalse(
+            // .whileTrue(
+            //     Commands.run(
+            //         () -> {
+            //             algae.angleAlgaeDown();
+            //         }
+            //     )
+            // )
+            .whileTrue(algae.angleAlgaeDown())
+            .onFalse(
                 Commands.run(
                     () -> {
                         algaeSubsytem.angleAlgaeMotor.set(0.0);

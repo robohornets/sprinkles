@@ -67,7 +67,14 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     pdp.clearStickyFaults();
-    
+
+    if (m_robotContainer.elevatorSubsystem.elevatorLeft.get() < -50) {
+      m_robotContainer.slowRobotSpeed = true;
+    }
+    else {
+      m_robotContainer.slowRobotSpeed = false;
+    }
+
     CommandScheduler.getInstance().run();
 
     //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());

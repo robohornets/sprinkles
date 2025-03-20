@@ -111,27 +111,27 @@ public class DriverJoystick {
             .whileTrue(drivetrain.applyRequest(
                 () -> RobotContainer.driveRobotCentric
                     .withVelocityX(0)
-                    .withVelocityY(RobotContainer.MaxSpeed * 0.2)
+                    .withVelocityY(RobotContainer.MaxSpeed * 0.15)
             ));
 
         joystick.povRight()
             .whileTrue(drivetrain.applyRequest(
                 () -> RobotContainer.driveRobotCentric
                     .withVelocityX(0)
-                    .withVelocityY(-RobotContainer.MaxSpeed * 0.2)
+                    .withVelocityY(-RobotContainer.MaxSpeed * 0.15)
             ));
 
         joystick.povDown()
             .whileTrue(drivetrain.applyRequest(
                 () -> RobotContainer.driveRobotCentric
-                    .withVelocityX(RobotContainer.MaxSpeed * 0.2)
+                    .withVelocityX(-RobotContainer.MaxSpeed * 0.15)
                     .withVelocityY(0)
             ));
 
         joystick.povUp()
             .whileTrue(drivetrain.applyRequest(
                 () -> RobotContainer.driveRobotCentric
-                    .withVelocityX(-RobotContainer.MaxSpeed * 0.2)
+                    .withVelocityX(RobotContainer.MaxSpeed * 0.15)
                     .withVelocityY(0)
             ));
     }

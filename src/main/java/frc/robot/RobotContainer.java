@@ -85,6 +85,10 @@ public class RobotContainer {
         Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
     
         public boolean camerasEnabled = true;
+
+        public boolean slowRobotSpeed = false;
+
+        public double robotSpeedLimiter = 0.5;
     
         // MARK: Mechanisms
         private final ElevatorController elevator = new ElevatorController();
@@ -202,8 +206,8 @@ public class RobotContainer {
         private void configureBindings() {
             //if(useFieldCentric){
             drivetrain.setDefaultCommand(
-                drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)
-                    .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * 0.5)
+                drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.1: robotSpeedLimiter))
+                    .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.1: robotSpeedLimiter))
                     .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
                 )
             );//}

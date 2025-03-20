@@ -68,7 +68,7 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     pdp.clearStickyFaults();
 
-    if (m_robotContainer.elevatorSubsystem.elevatorLeft.get() < -50) {
+    if (m_robotContainer.elevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble() <= -50) {
       m_robotContainer.slowRobotSpeed = true;
     }
     else {
@@ -77,22 +77,12 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
 
-    //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
-
-    ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.slowRobotSpeed);
+    ShuffleboardUtil.put("Slow Robot Speed", m_robotContainer.slowRobotSpeed);
     ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.camerasEnabled);
     ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble());
-    //ShuffleboardUtil.put("Angle Encoder is Connected", CoralSubsystem.angleDCEncoder.isConnected());
     ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
-    //ShuffleboardUtil.put("Angle Motor Position", Math.round(CoralSubsystem.angleDCEncoder.get() * 10)/10);
-
     ShuffleboardUtil.put("Algae Angle", AlgaeSubsystem.angleAlgaeDCEncoder.get());
-
-    // print(RobotContainer.disableControllerIn);
-    // Test code for CANrange sensor
-    // System.out.println(canRangeSensor.getDistance(true).refresh().getValueAsDouble());
-    // System.out.println(VisionSubsystem.getLatestEstimatedPose());
   }
 
   @Override

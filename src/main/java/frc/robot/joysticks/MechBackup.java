@@ -29,7 +29,7 @@ public class MechBackup {
     private final ElevatorController elevator;
     private final ElevatorSubsystem elevatorSubsystem;
     private final CoralController coral;
-    private final CoralSubsystem coralSubsytem;
+    private final CoralSubsystem coralSubsystem;
     private final AlgaeController algae;
     private final AlgaeSubsystem algaeSubsytem;
     
@@ -41,7 +41,7 @@ public class MechBackup {
         this.elevator = elevator;
         this.elevatorSubsystem = elevatorSubsystem;
         this.coral = coral;
-        this.coralSubsytem = coralSubsystem;
+        this.coralSubsystem = coralSubsystem;
         this.algae = algae;
         this.algaeSubsytem = algaeSubsystem;
     }
@@ -57,7 +57,9 @@ public class MechBackup {
         // MARK: AutoAlign
         joystick.leftBumper().onTrue(new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain));
         joystick.rightBumper().onTrue(new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain));        
-        joystick.a().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
+        //joystick.a().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
+
+        joystick.x().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset());
 
 
         // MARK: Coral Intake
@@ -120,10 +122,10 @@ public class MechBackup {
             );
         
         
-        // joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsytem).goToPreset());
-        // joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsytem).goToPreset());
-        // joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
-        // joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
+        // joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
+        // joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
+        // joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());
+        // joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset());
 
                 // 
                 // joystick.povDown()

@@ -102,11 +102,11 @@ public class RobotContainer {
         private final CommandXboxController buttonConsole = new CommandXboxController(2);
         private final CommandXboxController debugJoystick = new CommandXboxController(3);
     
-        private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+        private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
         private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
         //private final ButtonConsole buttonConsoleController = new ButtonConsole(buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
         private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
-        private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem);
+        private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
     
         // MARK: Shuffleboard
         /* Path follower */

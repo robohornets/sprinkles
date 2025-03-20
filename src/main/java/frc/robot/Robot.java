@@ -8,6 +8,8 @@ import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -42,9 +44,17 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    UsbCamera zane1 = CameraServer.startAutomaticCapture(0);
+    UsbCamera zane2 = CameraServer.startAutomaticCapture(1);
+    zane1.setResolution(640, 360);
+    zane1.setFPS(20);
+    zane2.setResolution(640, 360);
+    zane2.setFPS(20);
+
+
     vision = new Vision();
     AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-    AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
 
     CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
     CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);

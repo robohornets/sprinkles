@@ -18,6 +18,8 @@ import frc.robot.commands.AlignOnTheFlyByPose;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.mechanisms.algae.AlgaeController;
+import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
 import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
@@ -33,10 +35,12 @@ public class ButtonConsole {
     private final ElevatorSubsystem elevatorSubsystem;
     private final CoralController coral;
     private final CoralSubsystem coralSubsystem;
+        private final AlgaeController algae;
+    private final AlgaeSubsystem algaeSubsytem;
     Optional<Alliance> ally = DriverStation.getAlliance();
     
     public ButtonConsole(RobotContainer robotContainer, CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem) {
+        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem, AlgaeController algae, AlgaeSubsystem algaeSubsystem) {
 
         this.robotContainer = robotContainer;
         this.joystick = joystick;
@@ -45,6 +49,8 @@ public class ButtonConsole {
         this.elevatorSubsystem = elevatorSubsystem;
         this.coral = coral;
         this.coralSubsystem = coralSubsystem;
+        this.algae = algae;
+        this.algaeSubsytem = algaeSubsystem;
     }
 
     public void configureBindings() {
@@ -80,6 +86,37 @@ public class ButtonConsole {
                 )
             );
 
+        
+        joystick.leftBumper()
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        algae.angleAlgaeUp();
+                    }
+                )
+            ).onFalse(
+                Commands.run(
+                    () -> {
+                        algaeSubsytem.angleAlgaeMotor.set(0.0);
+                    }
+                )
+            );
+    
+        joystick.rightBumper()
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        algae.angleAlgaeDown();
+                    }
+                )
+            ).onFalse(
+                Commands.run(
+                    () -> {
+                        algaeSubsytem.angleAlgaeMotor.set(0.0);
+                    }
+                )
+            );
+
         joystick.x()
             .onTrue(
                 Commands.run(
@@ -91,7 +128,7 @@ public class ButtonConsole {
         
 
         joystick.a()
-            .whileTrue(coral.angleUp())
+            .whileTrue(coral.angleDown())
             .onFalse(
                 Commands.run(
                     () -> {
@@ -105,7 +142,7 @@ public class ButtonConsole {
         
 
         joystick.b()
-            .whileTrue(coral.angleDown())
+            .whileTrue(coral.angleUp())
             .onFalse(
                 Commands.run(
                     () -> {

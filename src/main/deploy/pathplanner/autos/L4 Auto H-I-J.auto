@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2 - To H"
+            "pathName": "L4 To H"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoL4"
+            "name": "spitCoral"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "autoL4"
+            "name": "spitCoral"
           }
         },
         {
@@ -55,13 +55,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "2 - To J"
+            "pathName": "L4 - To J"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoL4"
+            "name": "spitCoral"
           }
         }
       ]

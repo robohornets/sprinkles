@@ -13,11 +13,13 @@ public class AlgaeController {
             () -> {
                 AlgaeSubsystem.flywheelAlgaeMotor.set(AlgaeSubsystem.flywheelAlgaeOutSpeed);
     });}
+    
     public Command flywheelAlgaeIn() {
         return Commands.run(
             () -> {
         AlgaeSubsystem.flywheelAlgaeMotor.set(-AlgaeSubsystem.flywheelAlgaeInSpeed);
     });}
+
     public Command flywheelAlgaeStop() {
         return Commands.run(
             () -> {
@@ -39,8 +41,8 @@ public class AlgaeController {
     public Command angleAlgaeDown() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() > 0.1) {
-        AlgaeSubsystem.angleAlgaeMotor.set(AlgaeSubsystem.angleAlgaeSpeed);} 
+        if (getAlgaeAngle() > 0.3) {
+            AlgaeSubsystem.angleAlgaeMotor.set(AlgaeSubsystem.angleAlgaeSpeed);} 
         else {
             AlgaeSubsystem.angleAlgaeMotor.set(0.0);
             AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);

@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
 
     //System.out.println(CoralVariables.angleMotor.getPosition().getValueAsDouble());
 
+    ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.slowRobotSpeed);
     ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.camerasEnabled);
     ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble());
     //ShuffleboardUtil.put("Angle Encoder is Connected", CoralSubsystem.angleDCEncoder.isConnected());

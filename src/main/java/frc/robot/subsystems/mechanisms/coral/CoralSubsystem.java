@@ -13,11 +13,11 @@ public class CoralSubsystem extends SubsystemBase {
     public static double angleLowerLimit = 0.3;
 
     public static double krakenAngleUpperLimit = 0.0;
-    public static double krakenAngleLowerLimit = 0.3;
+    public static double krakenAngleLowerLimit = 7.5;
 
     public static TalonFX angleMotor = new TalonFX(12);
     public static TalonFX flywheelMotor = new TalonFX(11);
-    public static DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(2);
+    public static DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
 
     public static Boolean angleDisabled = false;
     public static Boolean flywheelDisabled = false;

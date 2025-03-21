@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.095482954545455,
-        "y": 5.166747159090908
+        "x": 5.085511363636364,
+        "y": 5.126860795454545
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.779943181818183,
-        "y": 6.313829545454545
+        "x": 5.769971590909092,
+        "y": 6.273943181818181
       },
       "isLocked": false,
       "linkedName": "J End"
@@ -33,7 +33,7 @@
     {
       "name": "Start Slow",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.20391814720812182,
+      "maxWaypointRelativePos": 0.2375389408099701,
       "constraints": {
         "maxVelocity": 0.75,
         "maxAcceleration": 3.0,
@@ -45,10 +45,10 @@
     },
     {
       "name": "End Slow",
-      "minWaypointRelativePos": 0.8933021806853638,
+      "minWaypointRelativePos": 0.869771112865033,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 0.75,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -94,8 +94,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.73,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

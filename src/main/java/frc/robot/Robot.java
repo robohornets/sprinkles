@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.camerasEnabled);
     ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble());
     ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
+    ShuffleboardUtil.put("kraken Coral Angle", CoralSubsystem.angleMotor.getPosition().getValueAsDouble());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
     ShuffleboardUtil.put("Algae Angle", AlgaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble());
 

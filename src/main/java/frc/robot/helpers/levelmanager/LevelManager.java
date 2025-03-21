@@ -28,6 +28,7 @@ public class LevelManager {
     public Command goToPreset() {
         double targetHeight = 0.0;
         double targetAngle = 0.0;
+        double krakenTargetAngle = 0.0;
         // max Coral: 0.693
         // min coral: 0.262
 
@@ -36,31 +37,43 @@ public class LevelManager {
             case LEVEL_1:
                 targetHeight = 2.0;
                 targetAngle = 0.4;
+                krakenTargetAngle = 5.0;
+                // kraken angle : 5
                 break;
 
             case LEVEL_2:
                 targetHeight = 15.17;
                 targetAngle = 0.372;
+                krakenTargetAngle = 5.8;
+                // kraken angle : 5.8
                 break;
 
             case LEVEL_3:
                 targetHeight = 33.690;
                 targetAngle = 0.372;
+                krakenTargetAngle = 5.7;
+                // kraken angle : 5.7
                 break;
 
             case LEVEL_4:
                 targetHeight = 65.049;
                 targetAngle = 0.375;
+                krakenTargetAngle = 5.8;
+                // kraken angle : 5.8
                 break;
 
             case DEFAULT_POSITION:
                 targetHeight = 0.0;
                 targetAngle = 0.82;
+                krakenTargetAngle = 0.0;
+                // kraken angle : 0.0
                 break;
 
             case CORAL_STATION:
                 targetHeight = 7.1;
                 targetAngle = 0.55;
+                krakenTargetAngle = 2.4;
+                // kraken angle : 2.4
                 break;
 
             default:
@@ -69,7 +82,7 @@ public class LevelManager {
 
         // Run both the coral angle and elevator height commands
         return Commands.parallel(
-            new CoralAngleManager(targetAngle, coralSubsystem),
+            new CoralAngleManager(targetAngle, krakenTargetAngle, coralSubsystem),
             new ElevatorHeightManager(targetHeight, elevatorSubsystem)
         );
     }

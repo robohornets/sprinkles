@@ -28,7 +28,7 @@ public class CoralController {
     public Command angleUp() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() < CoralSubsystem.angleUpperLimit) {
+        if (getCoralAngle() != 1 ? (getCoralAngle() < CoralSubsystem.angleUpperLimit): (krakenGetCoralAngle() > CoralSubsystem.krakenAngleUpperLimit)) {
             CoralSubsystem.angleMotor.set(-CoralSubsystem.angleSpeed); }
         else {
             CoralSubsystem.angleMotor.set(0.0);
@@ -39,7 +39,7 @@ public class CoralController {
     public Command angleDown() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() > CoralSubsystem.angleLowerLimit) {
+        if (getCoralAngle() != 1 ? (getCoralAngle() > CoralSubsystem.angleLowerLimit): (krakenGetCoralAngle() < CoralSubsystem.krakenAngleLowerLimit)) {
             CoralSubsystem.angleMotor.set(CoralSubsystem.angleSpeed);} 
         else {
             CoralSubsystem.angleMotor.set(0.0);
@@ -51,7 +51,8 @@ public class CoralController {
     public Command angleUpSlow() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() < CoralSubsystem.angleUpperLimit) {
+                if (getCoralAngle() != 1 ? (getCoralAngle() < CoralSubsystem.angleUpperLimit): (krakenGetCoralAngle() > CoralSubsystem.krakenAngleUpperLimit)) {
+        // if (getCoralAngle() < CoralSubsystem.angleUpperLimit) {
             CoralSubsystem.angleMotor.set(-0.1); }
         else {
             CoralSubsystem.angleMotor.set(0.0);
@@ -62,7 +63,9 @@ public class CoralController {
     public Command angleDownSlow() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() > CoralSubsystem.angleLowerLimit) {
+
+                if (getCoralAngle() != 1 ? (getCoralAngle() > CoralSubsystem.angleLowerLimit): (krakenGetCoralAngle() < CoralSubsystem.krakenAngleLowerLimit)) {
+        // if (getCoralAngle() > CoralSubsystem.angleLowerLimit) {
         CoralSubsystem.angleMotor.set(0.1);} 
         else {
             CoralSubsystem.angleMotor.set(0.0);
@@ -73,5 +76,9 @@ public class CoralController {
 
     public static double getCoralAngle() {
         return CoralSubsystem.angleDCEncoder.get();
+    }
+
+    public static double krakenGetCoralAngle() {
+        return CoralSubsystem.angleMotor.getPosition().getValueAsDouble();
     }
 }

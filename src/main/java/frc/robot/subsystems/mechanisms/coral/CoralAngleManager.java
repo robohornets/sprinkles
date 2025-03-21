@@ -4,15 +4,18 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 public class CoralAngleManager extends Command {
     private double angle;
+    private double krakenAngle;
     private CoralSubsystem coralSubsystem;
     private boolean isFinishedToggle = false;
     private double oopsieThreshold = 0.01;
+    private double krakenOopsieThreshold = 0.1;
 
     // public double angleUpperLimit = 0.668; // Update: 0.668
     // public double angleLowerLimit = 0.255; // Update: 0.255
 
-    public CoralAngleManager(double angle, CoralSubsystem coralSubsystem) {
+    public CoralAngleManager(double angle, double krakenAngle, CoralSubsystem coralSubsystem) {
         this.angle = Math.max(coralSubsystem.angleLowerLimit, Math.min(coralSubsystem.angleUpperLimit, angle));
+        this.krakenAngle = krakenAngle;
         this.coralSubsystem = coralSubsystem;
         addRequirements(this.coralSubsystem);
     }
@@ -30,14 +33,15 @@ public class CoralAngleManager extends Command {
 
     private void updateMotorSpeed() {
         double currentAngle = getCoralAngle();
+        double krakenCurrentAngle = krakenGetCoralAngle();
 
-        if (Math.abs(currentAngle - angle) <= oopsieThreshold) {
+        if (currentAngle != 1 ? (Math.abs(currentAngle - angle) <= oopsieThreshold): (Math.abs(krakenCurrentAngle - krakenAngle) <= krakenOopsieThreshold)) {
             System.out.println("Stopping at target");
             //coralSubsystem.angleMotor.set(-0.015);
             isFinishedToggle = true;
         } 
-        else if (currentAngle >= coralSubsystem.angleUpperLimit) {
-            if (angle < currentAngle) {
+        else if (currentAngle != 1 ? (currentAngle >= coralSubsystem.angleUpperLimit) : (krakenCurrentAngle <= coralSubsystem.krakenAngleUpperLimit)) {
+            if (currentAngle != 1 ? (angle < currentAngle) : (krakenAngle > krakenCurrentAngle)) {
                 System.out.println("Above upper limit, moving down");
                 coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
             } else {
@@ -46,8 +50,8 @@ public class CoralAngleManager extends Command {
                 isFinishedToggle = true;
             }
         } 
-        else if (currentAngle <= coralSubsystem.angleLowerLimit) {
-            if (angle > currentAngle) {
+        else if (currentAngle != 1 ? (currentAngle <= coralSubsystem.angleLowerLimit) : (krakenCurrentAngle >= coralSubsystem.krakenAngleLowerLimit)) {
+            if (currentAngle != 1 ? (angle > currentAngle) : (krakenAngle < krakenCurrentAngle)) {
                 System.out.println("Below lower limit, moving up");
                 coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
             } else {
@@ -56,11 +60,11 @@ public class CoralAngleManager extends Command {
                 isFinishedToggle = true;
             }
         } 
-        else if (currentAngle > angle) {
+        else if (currentAngle != 1 ? (currentAngle > angle) : (krakenCurrentAngle < krakenAngle)) {
             System.out.println("Moving Down");
             coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
         } 
-        else if (currentAngle < angle) {
+        else if (currentAngle != 1 ? (currentAngle < angle) : (krakenCurrentAngle > krakenAngle)) {
             System.out.println("Moving Up");
             coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
         }
@@ -79,5 +83,9 @@ public class CoralAngleManager extends Command {
 
     public static double getCoralAngle() {
         return CoralSubsystem.angleDCEncoder.get();
+    }
+
+    public static double krakenGetCoralAngle() {
+        return CoralSubsystem.angleMotor.getPosition().getValueAsDouble();
     }
 }

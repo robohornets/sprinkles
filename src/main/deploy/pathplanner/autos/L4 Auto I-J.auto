@@ -63,18 +63,6 @@
           "data": {
             "name": "eatCoral"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "L4 - To K"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "spitCoral"
-          }
         }
       ]
     }

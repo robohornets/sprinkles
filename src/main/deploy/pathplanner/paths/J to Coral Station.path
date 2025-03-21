@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.9359375,
-        "y": 5.27643465909091
+        "x": 5.095482954545455,
+        "y": 5.166747159090908
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.620397727272728,
-        "y": 6.423517045454546
+        "x": 5.779943181818183,
+        "y": 6.313829545454545
       },
       "isLocked": false,
       "linkedName": "J End"
@@ -95,7 +95,7 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.73,
-    "maxAcceleration": 3.0,
+    "maxAcceleration": 6.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

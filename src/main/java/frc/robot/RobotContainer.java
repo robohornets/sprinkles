@@ -31,6 +31,7 @@ import frc.robot.commands.AlignOnTheFlyClosest;
 import frc.robot.commands.AlignOnTheFlyByPose;
 import frc.robot.commands.Destinations;
 import frc.robot.generated.TunerConstants;
+import frc.robot.helpers.ShuffleboardUtil;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.joysticks.ButtonConsole;
@@ -114,12 +115,6 @@ public class RobotContainer {
         /* Path follower */
         private final SendableChooser<Command> autoChooser;
     
-        private GenericEntry additionalAngleSpeed = Shuffleboard.getTab("Coral")
-                .add("Additional Angle Speed", 0.1)
-                .withWidget("Number Slider")
-                .withProperties(Map.of("min", -1.0, "max", 1.0)) // adjust min and max as needed
-                .getEntry();
-    
                 
         public RobotContainer() {
             // Gets rid of annoying print statements in the console
@@ -170,6 +165,7 @@ public class RobotContainer {
             // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
             autoChooser = AutoBuilder.buildAutoChooser();
             SmartDashboard.putData("Auto Mode", autoChooser);  
+            ShuffleboardUtil.put("Auto Selector Backup", autoChooser);
     
             drivetrain.registerTelemetry(logger::telemeterize);
     

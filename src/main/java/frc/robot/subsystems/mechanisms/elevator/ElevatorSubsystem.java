@@ -52,4 +52,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     // **Added Encoder (REV Through Bore in Quadrature Mode)**
     //public static Encoder elevatorEncoder = new Encoder(0, 1);
+
+    public double getElevatorHeight() {
+        return elevatorLeft.getPosition().getValueAsDouble();
+    }
 }

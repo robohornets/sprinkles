@@ -1,0 +1,115 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.140620659722222,
+        "y": 2.8513328269675924
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.412140823622881,
+        "y": 1.2048170186705511
+      },
+      "isLocked": false,
+      "linkedName": "E end"
+    },
+    {
+      "anchor": {
+        "x": 1.5233033130787026,
+        "y": 0.7155555555555543
+      },
+      "prevControl": {
+        "x": 3.6562015856726697,
+        "y": 2.3795906713453383
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "E start"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Slow Start",
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.22402442893400998,
+      "constraints": {
+        "maxVelocity": 0.75,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Slow End",
+      "minWaypointRelativePos": 0.9333558058375633,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "defaultPosition",
+      "waypointRelativePos": 0.03348909657320827,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "defaultPosition"
+        }
+      }
+    },
+    {
+      "name": "coralLevel",
+      "waypointRelativePos": 0.8508287292817691,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "coralLevel"
+        }
+      }
+    },
+    {
+      "name": "eatCoral",
+      "waypointRelativePos": 0.9471191791633765,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "eatCoral"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.73,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -126.0
+  },
+  "reversed": false,
+  "folder": "To Coral Station",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "useDefaultConstraints": true
+}

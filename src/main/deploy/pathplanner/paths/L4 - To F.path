@@ -1,0 +1,102 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.008649612687876,
+        "y": 0.487849245230974
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.9145342293457155,
+        "y": 1.3189295881864829
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.398439568990842,
+        "y": 3.066977290781822
+      },
+      "prevControl": {
+        "x": 5.66384691141669,
+        "y": 1.8587977522489827
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "F end"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.83624896179402,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 0.75,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "autoL2",
+      "waypointRelativePos": 0.417125207641196,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoL2"
+        }
+      }
+    },
+    {
+      "name": "autoL3",
+      "waypointRelativePos": 0.6392883098006643,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoL3"
+        }
+      }
+    },
+    {
+      "name": "autoL4",
+      "waypointRelativePos": 0.8585444352159467,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "autoL4"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 4.73,
+    "maxAcceleration": 4.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "reversed": false,
+  "folder": "L4 Auto F-E-D",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

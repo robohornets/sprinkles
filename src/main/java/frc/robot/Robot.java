@@ -110,9 +110,9 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
-      if (m_autonomousCommand.getName() != null || new PathPlannerAuto(m_autonomousCommand.getName()).getStartingPose() != null) {
-        m_robotContainer.drivetrain.resetPose(new PathPlannerAuto(m_autonomousCommand.getName()).getStartingPose());
-      }
+      // if (m_autonomousCommand.getName() != null || new PathPlannerAuto(m_autonomousCommand.getName()).getStartingPose() != null) {
+      //   m_robotContainer.drivetrain.resetPose(new PathPlannerAuto(m_autonomousCommand.getName()).getStartingPose());
+      // }
       m_autonomousCommand.schedule();
     }
   }

@@ -20,7 +20,7 @@ public class ElevatorController {
     public Command elevatorUp() {
         return Commands.run(
             () -> {
-                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) <= 65.0) {
+                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) <= 58.0) {
                     ElevatorSubsystem.elevatorLeft.set(-ElevatorSubsystem.elevatorUpDownSpeed);
                     ElevatorSubsystem.elevatorRight.set(ElevatorSubsystem.elevatorUpDownSpeed);
                 } else {
@@ -52,7 +52,7 @@ public class ElevatorController {
     public Command elevatorUpSlow() {
         return Commands.run(
             () -> {
-                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) <= 65.0) {
+                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) <= 58.0) {
                     ElevatorSubsystem.elevatorLeft.set(-ElevatorSubsystem.elevatorUpDownSpeedSlow);
                     ElevatorSubsystem.elevatorRight.set(ElevatorSubsystem.elevatorUpDownSpeedSlow);
                 } else {

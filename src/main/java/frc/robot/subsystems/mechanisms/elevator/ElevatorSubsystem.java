@@ -23,7 +23,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     // }
 
 
-    public static final double elevatorUpDownSpeed = 0.5;
+    public static final double elevatorUpDownSpeed = 0.65;
     public static final double elevatorUpDownSpeedSlow = 0.1;
 
     public static final TalonFX elevatorLeft = new TalonFX(10);
@@ -70,6 +70,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public static double getElevatorHeight() {
-        return ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble() - ElevatorSubsystem.elevatorEncoderOffset;
+        return ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble() - elevatorEncoderOffset;
     }
 }

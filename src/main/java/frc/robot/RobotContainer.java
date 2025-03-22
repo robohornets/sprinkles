@@ -63,11 +63,11 @@ public class RobotContainer {
     public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
 
 
-    public static final CANrange elevatorDownSensor = new CANrange(34);
+    // public static final CANrange elevatorDownSensor = new CANrange(34);
 
-    public static Trigger resetElevatorEncoderTrigger = new Trigger(
-        () -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() <= 0.2
-    );
+    // public static Trigger resetElevatorEncoderTrigger = new Trigger(
+    //     () -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() <= 0.2
+    // );
 
     
     // MARK: Drive System
@@ -91,8 +91,11 @@ public class RobotContainer {
     
         // MARK: Triggers
         public CANrange canRangeSensor = new CANrange(34);
-        Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
-    
+        // Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
+        Trigger canRangeTrigger = new Trigger(() -> 
+        canRangeSensor.getDistance(false).getValueAsDouble() < 0.2
+    );
+
         public boolean camerasEnabled = true;
 
         public boolean slowRobotSpeed = false;
@@ -125,8 +128,11 @@ public class RobotContainer {
     
                 
         public RobotContainer() {
+            
             // Gets rid of annoying print statements in the console
             DriverStation.silenceJoystickConnectionWarning(true);
+
+            System.out.println("CANrange: " + canRangeSensor.getDistance(true).refresh().getValueAsDouble());
             
             // MARK: Named Commands
             NamedCommands.registerCommand("autoL1",
@@ -183,6 +189,7 @@ public class RobotContainer {
                     () -> {
                         ShuffleboardUtil.put("Elevator Encoder", true);
                         //elevatorSubsystem.resetElevatorEncoder();
+                        System.out.println("Running");
                         elevatorSubsystem.elevatorLeft.setPosition(0.0);
                     }
                 )
@@ -190,6 +197,7 @@ public class RobotContainer {
             .whileFalse(
                 Commands.run(
                     () -> {
+                        ShuffleboardUtil.put("Elevator Encoder", false);
                         ShuffleboardUtil.put("Elevator Encoder", false);
                     }
                 )

@@ -13,7 +13,7 @@ public class ElevatorHeightManager extends Command {
 
     // Hard limits for the elevator
     private static final double minHeight = 0.0; 
-    private static final double maxHeight = 65.0; // max -66.4
+    private static final double maxHeight = 58.0; // max -66.4
 
     // How close we have to be to "done"
     private static final double threshold = 2.0;

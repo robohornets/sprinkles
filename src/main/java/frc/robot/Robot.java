@@ -83,11 +83,13 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     ShuffleboardUtil.put("Time Remaining", DriverStation.getMatchTime());
-    ShuffleboardUtil.put("Canrange", m_robotContainer.canRangeSensor.getDistance().getValueAsDouble());
+    ShuffleboardUtil.put("Canrange", m_robotContainer.canRangeSensor.getDistance(true).getValueAsDouble());
+    ShuffleboardUtil.put("elevator offset", m_robotContainer.elevatorSubsystem.elevatorEncoderOffset);
     // ShuffleboardUtil.put("Canrange senses", m_robotContainer.canRangeTrigger().ge);
     ShuffleboardUtil.put("Slow Robot Speed", m_robotContainer.slowRobotSpeed);
+    ShuffleboardUtil.put("canrange connected", m_robotContainer.canRangeSensor.isConnected());
     ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.camerasEnabled);
-    ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.getElevatorHeight());
+    ShuffleboardUtil.put("Elevator Height", m_robotContainer.elevatorSubsystem.getElevatorHeight());
     ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("kraken Coral Angle", CoralSubsystem.angleMotor.getPosition().getValueAsDouble());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);

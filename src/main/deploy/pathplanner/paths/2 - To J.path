@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.5875,
-        "y": 7.3914
+        "x": 1.3262215909090906,
+        "y": 7.15109375
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.589743465995995,
-        "y": 6.021050151745622
+        "x": 2.328465056905086,
+        "y": 5.780743901745622
       },
       "isLocked": false,
       "linkedName": "J Start"
@@ -59,10 +59,10 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 4.73,
-    "maxAcceleration": 5.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 2.0,
     "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 720.0,
+    "maxAngularAcceleration": 360.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },

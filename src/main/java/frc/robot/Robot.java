@@ -14,9 +14,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.helpers.ShuffleboardUtil;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
@@ -84,7 +87,7 @@ public class Robot extends TimedRobot {
     // ShuffleboardUtil.put("Canrange senses", m_robotContainer.canRangeTrigger().ge);
     ShuffleboardUtil.put("Slow Robot Speed", m_robotContainer.slowRobotSpeed);
     ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.camerasEnabled);
-    ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.getElevatorHeight());
     ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("kraken Coral Angle", CoralSubsystem.angleMotor.getPosition().getValueAsDouble());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
@@ -97,9 +100,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
+    // ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+    // ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+    CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+
+    Timer.delay(5);
     ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
     ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
-    CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
   }
 
   @Override

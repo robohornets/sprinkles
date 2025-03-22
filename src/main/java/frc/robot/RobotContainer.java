@@ -169,7 +169,7 @@ public class RobotContainer {
                 )
             );
 
-            resetElevatorEncoderTrigger
+            canRangeTrigger
             .onTrue(
                 Commands.run(
                     () -> {
@@ -182,8 +182,8 @@ public class RobotContainer {
                 Commands.run(
                     () -> {
                         ShuffleboardUtil.put("Elevator Encoder", true);
-                        elevatorSubsystem.resetElevatorEncoder();
-                        //elevatorSubsystem.elevatorLeft.setPosition(0.0);
+                        //elevatorSubsystem.resetElevatorEncoder();
+                        elevatorSubsystem.elevatorLeft.setPosition(0.0);
                     }
                 )
             )

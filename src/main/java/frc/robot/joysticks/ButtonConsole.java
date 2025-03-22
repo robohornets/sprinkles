@@ -90,21 +90,27 @@ public class ButtonConsole {
 
         
         joystick.leftBumper()
-            .whileTrue(algae.angleAlgaeUp())
+            .whileTrue(elevator.elevatorUpManual())
             .onFalse(
                 Commands.run(
                     () -> {
-                        algaeSubsytem.angleAlgaeMotor.set(0.0);
+                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorLeft.set(0.0);
+                        elevatorSubsystem.elevatorRight.set(0.0);
                     }
                 )
             );
     
         joystick.rightBumper()
-            .whileTrue(algae.angleAlgaeDown())
+            .whileTrue(elevator.elevatorDownManual())
             .onFalse(
                 Commands.run(
                     () -> {
-                        algaeSubsytem.angleAlgaeMotor.set(0.0);
+                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorLeft.set(0.0);
+                        elevatorSubsystem.elevatorRight.set(0.0);
                     }
                 )
             );

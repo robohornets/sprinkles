@@ -137,7 +137,32 @@ public class ButtonConsole {
                 )
             );
 
-        joystick.y().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.x()
+            .onTrue(
+                Commands.runOnce(
+                    () -> {
+                        if (elevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble() <= 20) {
+                            elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+                            elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+                        }
+                    }
+                )
+            );
+
+        joystick.y().onTrue(
+            Commands.sequence(
+                Commands.runOnce(
+                    () -> {
+                        new LevelManager(Levels.ZERO, elevatorSubsystem, coralSubsystem).goToPreset();
+                    }
+                ),
+                Commands.runOnce(
+                    () -> {
+                        new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset();
+                    }
+                )
+            )
+        );
 
         // MARK: DPAD Bindings
         joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());

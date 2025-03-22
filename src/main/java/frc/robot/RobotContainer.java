@@ -63,6 +63,13 @@ public class RobotContainer {
     public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
 
 
+    public static final CANrange elevatorDownSensor = new CANrange(34);
+
+    public static Trigger resetElevatorEncoderTrigger = new Trigger(
+        () -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() <= 0.2
+    );
+
+    
     // MARK: Drive System
     /* Setting up bindings for necessary control of the swerve drive platform */
     public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -161,6 +168,32 @@ public class RobotContainer {
                     Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
                 )
             );
+
+            resetElevatorEncoderTrigger
+            .onTrue(
+                Commands.run(
+                    () -> {
+                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                    }
+                )
+            )
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        ShuffleboardUtil.put("Elevator Encoder", true);
+                        elevatorSubsystem.resetElevatorEncoder();
+                        //elevatorSubsystem.elevatorLeft.setPosition(0.0);
+                    }
+                )
+            )
+            .whileFalse(
+                Commands.run(
+                    () -> {
+                        ShuffleboardUtil.put("Elevator Encoder", false);
+                    }
+                )
+            );
     
     
             // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
@@ -177,6 +210,7 @@ public class RobotContainer {
             debugJoystickController.configureBindings();
             configureBindings();
             configureDefaults();
+            elevatorSubsystem.configureTriggers();
         }
     
         // private void configureBindings() {

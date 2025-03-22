@@ -10,17 +10,17 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 public class ElevatorController {
 
-    public ElevatorController() {
-        ElevatorSubsystem.disableDownTrigger.whileTrue(Commands.runOnce(() -> ElevatorSubsystem.elevatorDownDisabled = true));
-        ElevatorSubsystem.disableDownTrigger.whileFalse(Commands.runOnce(() -> ElevatorSubsystem.elevatorDownDisabled = false));
-        ElevatorSubsystem.disableUpTrigger.whileTrue(Commands.runOnce(() -> ElevatorSubsystem.elevatorUpDisabled = true));
-        ElevatorSubsystem.disableUpTrigger.whileFalse(Commands.runOnce(() -> ElevatorSubsystem.elevatorUpDisabled = false));
-    }
+    // public ElevatorController() {
+    //     ElevatorSubsystem.disableDownTrigger.whileTrue(Commands.runOnce(() -> ElevatorSubsystem.elevatorDownDisabled = true));
+    //     ElevatorSubsystem.disableDownTrigger.whileFalse(Commands.runOnce(() -> ElevatorSubsystem.elevatorDownDisabled = false));
+    //     ElevatorSubsystem.disableUpTrigger.whileTrue(Commands.runOnce(() -> ElevatorSubsystem.elevatorUpDisabled = true));
+    //     ElevatorSubsystem.disableUpTrigger.whileFalse(Commands.runOnce(() -> ElevatorSubsystem.elevatorUpDisabled = false));
+    // }
 
     public Command elevatorUp() {
         return Commands.run(
             () -> {
-                if (Math.abs(ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble()) <= 65.0) {
+                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) <= 65.0) {
                     ElevatorSubsystem.elevatorLeft.set(-ElevatorSubsystem.elevatorUpDownSpeed);
                     ElevatorSubsystem.elevatorRight.set(ElevatorSubsystem.elevatorUpDownSpeed);
                 } else {
@@ -52,7 +52,7 @@ public class ElevatorController {
     public Command elevatorUpSlow() {
         return Commands.run(
             () -> {
-                if (Math.abs(ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble()) <= 65.0) {
+                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) <= 65.0) {
                     ElevatorSubsystem.elevatorLeft.set(-ElevatorSubsystem.elevatorUpDownSpeedSlow);
                     ElevatorSubsystem.elevatorRight.set(ElevatorSubsystem.elevatorUpDownSpeedSlow);
                 } else {
@@ -68,7 +68,7 @@ public class ElevatorController {
     public Command elevatorDownSlow() {
         return Commands.run(
             () -> {
-                if (Math.abs(ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble()) >= 5.0) {
+                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) >= 5.0) {
                     ElevatorSubsystem.elevatorLeft.set(ElevatorSubsystem.elevatorUpDownSpeedSlow);
                     ElevatorSubsystem.elevatorRight.set(-ElevatorSubsystem.elevatorUpDownSpeedSlow);
                 } else {
@@ -93,7 +93,7 @@ public class ElevatorController {
     public Command elevatorTestDown() {
         return Commands.run(
             () -> {
-                if (Math.abs(ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble()) >= 5.0) {
+                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) >= 5.0) {
                     CoralSubsystem.flywheelMotor.set(0.2);
                 } else {
                     CoralSubsystem.flywheelMotor.set(0.0);
@@ -105,7 +105,7 @@ public class ElevatorController {
     public Command elevatorTestUp() {
         return Commands.run(
             () -> {
-                if (Math.abs(ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble()) <= 55) {
+                if (Math.abs(ElevatorSubsystem.getElevatorHeight()) <= 55) {
                     CoralSubsystem.flywheelMotor.set(-0.2);
                 } else {
                     CoralSubsystem.flywheelMotor.set(0.0);
@@ -113,4 +113,6 @@ public class ElevatorController {
             }
         );
     }
+
+
 }

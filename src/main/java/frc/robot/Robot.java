@@ -80,6 +80,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
 
     ShuffleboardUtil.put("Time Remaining", DriverStation.getMatchTime());
+    ShuffleboardUtil.put("Canrange", m_robotContainer.canRangeSensor.getDistance().getValueAsDouble());
+    // ShuffleboardUtil.put("Canrange senses", m_robotContainer.canRangeTrigger().ge);
     ShuffleboardUtil.put("Slow Robot Speed", m_robotContainer.slowRobotSpeed);
     ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.camerasEnabled);
     ShuffleboardUtil.put("Elevator Height", ElevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble());

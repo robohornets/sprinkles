@@ -62,14 +62,6 @@ public class RobotContainer {
     public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
 
-
-    // public static final CANrange elevatorDownSensor = new CANrange(34);
-
-    // public static Trigger resetElevatorEncoderTrigger = new Trigger(
-    //     () -> elevatorDownSensor.getDistance(true).refresh().getValueAsDouble() <= 0.2
-    // );
-
-    
     // MARK: Drive System
     /* Setting up bindings for necessary control of the swerve drive platform */
     public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()

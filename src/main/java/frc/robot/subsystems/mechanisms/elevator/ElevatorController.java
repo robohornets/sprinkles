@@ -49,6 +49,38 @@ public class ElevatorController {
         );
     }
 
+    public Command elevatorUpManual() {
+        return Commands.run(
+            () -> {
+                if (true) {
+                    ElevatorSubsystem.elevatorLeft.set(-ElevatorSubsystem.elevatorUpDownSpeed);
+                    ElevatorSubsystem.elevatorRight.set(ElevatorSubsystem.elevatorUpDownSpeed);
+                } else {
+                    ElevatorSubsystem.elevatorLeft.set(0.0);
+                    ElevatorSubsystem.elevatorRight.set(0.0);
+                    ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                }
+            }
+        );
+    }
+
+    public Command elevatorDownManual() {
+        return Commands.run(
+            () -> {
+                if (true) {
+                    ElevatorSubsystem.elevatorLeft.set(ElevatorSubsystem.elevatorUpDownSpeed);
+                    ElevatorSubsystem.elevatorRight.set(-ElevatorSubsystem.elevatorUpDownSpeed);
+                } else {
+                    ElevatorSubsystem.elevatorLeft.set(0.0);
+                    ElevatorSubsystem.elevatorRight.set(0.0);
+                    ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                }
+            }
+        );
+    }
+
     public Command elevatorUpSlow() {
         return Commands.run(
             () -> {

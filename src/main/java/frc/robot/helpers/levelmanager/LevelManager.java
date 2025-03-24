@@ -56,9 +56,10 @@ public class LevelManager {
                 break;
 
             case LEVEL_4:
-                targetHeight = 58;
+                targetHeight = 65.049;
                 targetAngle = 0.385;
-                krakenTargetAngle = 5.7;
+                krakenTargetAngle = 5.8;
+
                 // kraken angle : 5.8
                 break;
 

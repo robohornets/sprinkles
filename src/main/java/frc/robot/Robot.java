@@ -5,7 +5,11 @@
 package frc.robot;
 
 import com.ctre.phoenix6.Utils;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.StringLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -18,8 +22,14 @@ public class Robot extends TimedRobot {
 
   private final boolean kUseLimelight = false;
 
+  public static StringLogEntry myStringLog;
+
   public Robot() {
     m_robotContainer = new RobotContainer();
+    DataLogManager.start();
+    // Set up custom log entries
+    DataLog log = DataLogManager.getLog();
+    myStringLog = new StringLogEntry(log, "/myfrc/string");
   }
 
   @Override
@@ -59,6 +69,9 @@ public class Robot extends TimedRobot {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
+      m_robotContainer.drivetrain.resetPose(new PathPlannerAuto(m_autonomousCommand.getName()).getStartingPose());
+      myStringLog.append("onTheFlyTest autonomousInit m_autonomousCommand startingPose: " + new PathPlannerAuto(m_autonomousCommand.getName()).getStartingPose().toString());
+      myStringLog.append("onTheFlyTest autonomousInit drivetrain Pose after set to startingPose: " + m_robotContainer.drivetrain.getState().Pose.toString());
       m_autonomousCommand.schedule();
     }
   }

@@ -60,9 +60,12 @@ public class RobotContainer {
             )
         );
 
-        // joystick.a().onTrue(Commands.runOnce(() -> { 
-        //         System.out.println("getPose: " + drivetrain.getState().Pose);
-        // }, drivetrain));
+        joystick.a().onTrue(Commands.sequence(
+            Commands.runOnce(() -> { 
+                Robot.myStringLog.append("onTheFlyTest AlignOnTheFlyClosest joystick.a() before pose: " + drivetrain.getState().Pose);
+            }, drivetrain),
+            new AlignOnTheFlyClosest("collector", drivetrain)
+        ));
         
         // collect top algae by passing in Pose2d location
         joystick.a().onTrue(new AlignOnTheFly(new Pose2d(1.05, 6.4, new Rotation2d(216.0)), drivetrain));
@@ -85,6 +88,7 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         /* Run the path selected from the auto chooser */
+        Robot.myStringLog.append("onTheFlyTest getAutonomousCommand: " + autoChooser.getSelected().getName());
         return autoChooser.getSelected();
     }
 }

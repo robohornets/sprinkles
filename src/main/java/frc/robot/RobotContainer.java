@@ -62,7 +62,6 @@ public class RobotContainer {
     public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
 
-
     // MARK: Drive System
     /* Setting up bindings for necessary control of the swerve drive platform */
     public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -84,8 +83,11 @@ public class RobotContainer {
     
         // MARK: Triggers
         public CANrange canRangeSensor = new CANrange(34);
-        Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
-    
+        // Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
+        Trigger canRangeTrigger = new Trigger(() -> 
+        canRangeSensor.getDistance(false).getValueAsDouble() < 0.2
+    );
+
         public boolean camerasEnabled = true;
 
         public boolean slowRobotSpeed = false;
@@ -118,8 +120,11 @@ public class RobotContainer {
     
                 
         public RobotContainer() {
+            
             // Gets rid of annoying print statements in the console
             DriverStation.silenceJoystickConnectionWarning(true);
+
+            System.out.println("CANrange: " + canRangeSensor.getDistance(true).refresh().getValueAsDouble());
             
             // MARK: Named Commands
             NamedCommands.registerCommand("autoL1",
@@ -161,6 +166,34 @@ public class RobotContainer {
                     Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
                 )
             );
+
+            canRangeTrigger
+            .onTrue(
+                Commands.run(
+                    () -> {
+                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                    }
+                )
+            )
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        ShuffleboardUtil.put("Elevator Encoder", true);
+                        //elevatorSubsystem.resetElevatorEncoder();
+                        System.out.println("Running");
+                        elevatorSubsystem.elevatorLeft.setPosition(0.0);
+                    }
+                )
+            )
+            .whileFalse(
+                Commands.run(
+                    () -> {
+                        ShuffleboardUtil.put("Elevator Encoder", false);
+                        ShuffleboardUtil.put("Elevator Encoder", false);
+                    }
+                )
+            );
     
     
             // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
@@ -177,6 +210,7 @@ public class RobotContainer {
             debugJoystickController.configureBindings();
             configureBindings();
             configureDefaults();
+            elevatorSubsystem.configureTriggers();
         }
     
         // private void configureBindings() {

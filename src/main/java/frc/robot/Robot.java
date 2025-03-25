@@ -88,7 +88,6 @@ public class Robot extends TimedRobot {
     // ShuffleboardUtil.put("Canrange senses", m_robotContainer.canRangeTrigger().ge);
     ShuffleboardUtil.put("Slow Robot Speed", m_robotContainer.slowRobotSpeed);
     ShuffleboardUtil.put("canrange connected", m_robotContainer.canRangeSensor.isConnected());
-    ShuffleboardUtil.put("Cameras Enabled", m_robotContainer.camerasEnabled);
     ShuffleboardUtil.put("Elevator Height", m_robotContainer.elevatorSubsystem.getElevatorHeight());
     ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("kraken Coral Angle", CoralSubsystem.angleMotor.getPosition().getValueAsDouble());
@@ -149,36 +148,36 @@ public class Robot extends TimedRobot {
     //System.out.println(elevatorEncoder.get());
     //System.out.println(elevatorEncoder.getDistance());
 
-    if (m_robotContainer.camerasEnabled) {
-      // Get current time in seconds
-      double currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
+    // if (m_robotContainer.camerasEnabled) {
+    //   // Get current time in seconds
+    //   double currentTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
 
-      if (currentTime - lastPrintTime >= 2.0) { 
-          lastPrintTime = currentTime;  // Reset timer
+    //   if (currentTime - lastPrintTime >= 2.0) { 
+    //       lastPrintTime = currentTime;  // Reset timer
 
-          // Print the current odometry pose
-          System.out.println("[Odometry] Current Pose: " + RobotContainer.drivetrain.getState().Pose);
+    //       // Print the current odometry pose
+    //       System.out.println("[Odometry] Current Pose: " + RobotContainer.drivetrain.getState().Pose);
 
-          // Check for vision estimate
-          var visionEst = vision.getEstimatedGlobalPose();
-          visionEst.ifPresent(est -> {
-              Pose2d estimatedPose = est.estimatedPose.toPose2d();
+    //       // Check for vision estimate
+    //       var visionEst = vision.getEstimatedGlobalPose();
+    //       visionEst.ifPresent(est -> {
+    //           Pose2d estimatedPose = est.estimatedPose.toPose2d();
 
-              Pose2d currentPose = RobotContainer.drivetrain.getState().Pose;
+    //           Pose2d currentPose = RobotContainer.drivetrain.getState().Pose;
 
-              Pose2d newPose = new Pose2d(
-                estimatedPose.getTranslation(),
-                currentPose.getRotation()
-              );
+    //           Pose2d newPose = new Pose2d(
+    //             estimatedPose.getTranslation(),
+    //             currentPose.getRotation()
+    //           );
 
-              var estStdDevs = vision.getEstimationStdDevs();
-              System.out.println("[Vision] Estimated Pose: " + newPose);
-              ShuffleboardUtil.put("Vision Estimated Pose", newPose);
-              m_robotContainer.drivetrain.resetPose(newPose);
-              //m_robotContainer.drivetrain.addVisionMeasurement(estimatedPose, currentTime, estStdDevs);
-          });
-      }
-    }
+    //           var estStdDevs = vision.getEstimationStdDevs();
+    //           System.out.println("[Vision] Estimated Pose: " + newPose);
+    //           ShuffleboardUtil.put("Vision Estimated Pose", newPose);
+    //           m_robotContainer.drivetrain.resetPose(newPose);
+    //           //m_robotContainer.drivetrain.addVisionMeasurement(estimatedPose, currentTime, estStdDevs);
+    //       });
+    //   }
+    // }
   }
 
   @Override

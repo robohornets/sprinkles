@@ -1,6 +1,7 @@
 package frc.robot.subsystems.mechanisms.coral;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -27,4 +28,78 @@ public class CoralSubsystem extends SubsystemBase {
     public static Double flywheelOutSpeed = 0.6;
     
     public static Double angleHoldSpeed = 0.015;
+
+    public Command flywheelOut() {
+        return Commands.run(
+            () -> {
+        flywheelMotor.set(flywheelOutSpeed);
+    });}
+    public Command flywheelIn() {
+        return Commands.run(
+            () -> {
+        flywheelMotor.set(-flywheelInSpeed);
+    });}
+    public Command flywheelStop() {
+        return Commands.run(
+            () -> {
+        flywheelMotor.set(0.0);
+    }); }
+
+    //Angle commands
+    public Command angleUp() {
+        return Commands.run(
+            () -> {
+        if (getCoralAngle() != 1 ? (getCoralAngle() < angleUpperLimit): (krakenGetCoralAngle() > krakenAngleUpperLimit)) {
+            angleMotor.set(-angleSpeed); }
+        else {
+            angleMotor.set(0.0);
+            angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
+    }); }
+
+    public Command angleDown() {
+        return Commands.run(
+            () -> {
+        if (getCoralAngle() != 1 ? (getCoralAngle() > angleLowerLimit): (krakenGetCoralAngle() < krakenAngleLowerLimit)) {
+            angleMotor.set(angleSpeed);} 
+        else {
+            angleMotor.set(0.0);
+            angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
+    }); }
+
+
+    public Command angleUpSlow() {
+        return Commands.run(
+            () -> {
+                if (getCoralAngle() != 1 ? (getCoralAngle() < angleUpperLimit): (krakenGetCoralAngle() > krakenAngleUpperLimit)) {
+        // if (getCoralAngle() < angleUpperLimit) {
+            angleMotor.set(-0.1); }
+        else {
+            angleMotor.set(0.0);
+            angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
+    }); }
+
+    public Command angleDownSlow() {
+        return Commands.run(
+            () -> {
+
+                if (getCoralAngle() != 1 ? (getCoralAngle() > angleLowerLimit): (krakenGetCoralAngle() < krakenAngleLowerLimit)) {
+        // if (getCoralAngle() > angleLowerLimit) {
+        angleMotor.set(0.1);} 
+        else {
+            angleMotor.set(0.0);
+            angleMotor.setNeutralMode(NeutralModeValue.Brake);
+            }
+    }); }
+
+
+    public static double getCoralAngle() {
+        return angleDCEncoder.get();
+    }
+
+    public static double krakenGetCoralAngle() {
+        return angleMotor.getPosition().getValueAsDouble();
+    }
 }

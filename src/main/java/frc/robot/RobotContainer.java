@@ -5,7 +5,6 @@
 package frc.robot;
 
 import com.ctre.phoenix6.hardware.CANrange;
-import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -16,21 +15,12 @@ import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
 
-import java.util.Map;
-
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.AlignOnTheFlyClosest;
-import frc.robot.commands.AlignOnTheFlyByPose;
-import frc.robot.commands.Destinations;
 import frc.robot.generated.TunerConstants;
 import frc.robot.helpers.ShuffleboardUtil;
 import frc.robot.helpers.levelmanager.LevelManager;
@@ -39,50 +29,49 @@ import frc.robot.joysticks.ButtonConsole;
 import frc.robot.joysticks.DebugJoystick;
 import frc.robot.joysticks.DriverJoystick;
 import frc.robot.joysticks.MechBackup;
-import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.networktables.GenericEntry;
-import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
 public class RobotContainer {
     // MARK: Constants
     public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second
 
-
     // MARK: Drive System
     /* Setting up bindings for necessary control of the swerve drive platform */
     public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+        .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     public static final SwerveRequest.RobotCentric driveRobotCentric = new SwerveRequest.RobotCentric()
-            .withDeadband(MaxSpeed * 0.1)
-            .withRotationalDeadband(MaxAngularRate * 0.1)
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
-            private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+        .withDeadband(MaxSpeed * 0.1)
+        .withRotationalDeadband(MaxAngularRate * 0.1)
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final SwerveRequest.RobotCentric forwardStraight = new SwerveRequest.RobotCentric()
-            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+        .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
 
     public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
     
     // MARK: Triggers
-    public CANrange canRangeSensor = new CANrange(34);
-    Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
-
-    public boolean camerasEnabled = true;
+    public CANrange elevatorDownSensor = new CANrange(34);
+    Trigger elevatorDownTrigger = new Trigger(() -> 
+        elevatorDownSensor.getDistance(true).getValueAsDouble() < 0.2
+    );
+    public CANrange coralForwardSensor = new CANrange(35);
+    Trigger coralForwardTrigger = new Trigger(() -> 
+        coralForwardSensor.getDistance(true).getValueAsDouble() < 0.2
+    );
+    public CANrange canRangeSensor = new CANrange(36);
+    Trigger canRangeTrigger = new Trigger(() -> 
+        canRangeSensor.getDistance(true).getValueAsDouble() < 0.2
+    );
 
     public boolean slowRobotSpeed = false;
 
@@ -200,22 +189,31 @@ public class RobotContainer {
         );
     }
 
+    private void configureTriggers() {
+        elevatorDownTrigger
+            .onTrue(
+                Commands.run(
+                    () -> {
+                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                    }
+                )
+            )
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        elevatorSubsystem.elevatorLeft.setPosition(0.0);
+                    }
+                )
+            );
+    }
+
     private void configureBindings() {
         drivetrain.setDefaultCommand(
             drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.7: robotSpeedLimiter))
                 .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.7: robotSpeedLimiter))
                 .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
             )
-        );
-    }
-
-    public Command applyHoldCurrent() {
-        return Commands.run(
-            () -> {
-                coralSubsystem.angleMotor.set(-0.015);
-                elevatorSubsystem.elevatorLeft.set(-0.015);
-                elevatorSubsystem.elevatorRight.set(0.015); 
-            }
         );
     }
 

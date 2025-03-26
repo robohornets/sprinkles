@@ -33,21 +33,21 @@ public class LevelManager {
         // Assign values based on the selected level
         switch (selectedLevel) {
             case LEVEL_1:
-                targetHeight = 2.0;
+                targetHeight = 0.0;
                 targetAngle = 0.4;
                 krakenTargetAngle = 5.0;
                 // kraken angle : 5
                 break;
 
             case LEVEL_2:
-                targetHeight = 15.17;
+                targetHeight = 11.17;
                 targetAngle = 0.372;
                 krakenTargetAngle = 5.8;
                 // kraken angle : 5.8
                 break;
 
             case LEVEL_3:
-                targetHeight = 33.690;
+                targetHeight = 30.690;
                 targetAngle = 0.372;
                 krakenTargetAngle = 5.7;
                 // kraken angle : 5.7
@@ -57,6 +57,7 @@ public class LevelManager {
                 targetHeight = 65.049;
                 targetAngle = 0.385;
                 krakenTargetAngle = 5.8;
+
                 // kraken angle : 5.8
                 break;
 
@@ -68,7 +69,14 @@ public class LevelManager {
                 break;
 
             case CORAL_STATION:
-                targetHeight = 8.1;
+                targetHeight = 2.1;
+                targetAngle = 0.55;
+                krakenTargetAngle = 2.4;
+                // kraken angle : 2.4
+                break;
+
+            case ZERO:
+                targetHeight = 0.0;
                 targetAngle = 0.55;
                 krakenTargetAngle = 2.4;
                 // kraken angle : 2.4

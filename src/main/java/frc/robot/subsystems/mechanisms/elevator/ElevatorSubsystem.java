@@ -11,14 +11,6 @@ import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.helpers.ShuffleboardUtil;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    public ElevatorSubsystem() {
-        disableDownTrigger.whileTrue(Commands.runOnce(() -> elevatorDownDisabled = true));
-        disableDownTrigger.whileFalse(Commands.runOnce(() -> elevatorDownDisabled = false));
-        disableUpTrigger.whileTrue(Commands.runOnce(() -> elevatorUpDisabled = true));
-        disableUpTrigger.whileFalse(Commands.runOnce(() -> elevatorUpDisabled = false));
-    }
-
-
     public static final double elevatorUpDownSpeed = 0.65;
     public static final double elevatorUpDownSpeedSlow = 0.1;
 

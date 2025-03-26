@@ -9,12 +9,9 @@ import frc.robot.RobotContainer;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.algae.AlgaeController;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
@@ -23,23 +20,17 @@ import frc.robot.RobotContainer;
 public class DriverJoystick {
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
-    private final ElevatorController elevator;
     private final ElevatorSubsystem elevatorSubsystem;
-    private final CoralController coral;
     private final CoralSubsystem coralSubsystem;
-    private final AlgaeController algae;
     private final AlgaeSubsystem algaeSubsytem;
     
     public DriverJoystick(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem, AlgaeController algae, AlgaeSubsystem algaeSubsystem) {
+        ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem, AlgaeSubsystem algaeSubsystem) {
 
         this.joystick = joystick;
         this.drivetrain = drivetrain;
-        this.elevator = elevator;
         this.elevatorSubsystem = elevatorSubsystem;
-        this.coral = coral;
         this.coralSubsystem = coralSubsystem;
-        this.algae = algae;
         this.algaeSubsytem = algaeSubsystem;
     }
 
@@ -52,7 +43,7 @@ public class DriverJoystick {
         // joystick.x().onTrue(new InstantCommand(() -> RobotContainer.setUseFieldCentric(false)));
        
         joystick.y()
-        .whileTrue(algae.angleAlgaeUp())
+        .whileTrue(algaeSubsytem.angleAlgaeUp())
         .onFalse(
             Commands.run(
                 () -> {
@@ -62,7 +53,7 @@ public class DriverJoystick {
         );
 
     joystick.a()
-        .whileTrue(algae.angleAlgaeDown())
+        .whileTrue(algaeSubsytem.angleAlgaeDown())
         .onFalse(
             Commands.run(
                 () -> {
@@ -75,11 +66,11 @@ public class DriverJoystick {
         
         // MARK: L Trigger
         joystick.leftTrigger()
-        .whileTrue(algae.flywheelAlgaeOut())
+        .whileTrue(algaeSubsytem.flywheelAlgaeOut())
         .onFalse(
             Commands.run(
                 () -> {
-                    AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
+                    algaeSubsytem.flywheelAlgaeMotor.set(0.0);
                     
                     CommandScheduler.getInstance().cancelAll();
                 }
@@ -88,12 +79,12 @@ public class DriverJoystick {
         
         // MARK: R Trigger
         joystick.rightTrigger()
-            .whileTrue(RobotContainer.coral.flywheelOut())
+            .whileTrue(coralSubsystem.flywheelOut())
             .onFalse(
                 Commands.run(
                     () -> {
-                        RobotContainer.coral.flywheelStop();
-                        CoralSubsystem.flywheelMotor.set(0.0);
+                        coralSubsystem.flywheelStop();
+                        coralSubsystem.flywheelMotor.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -101,13 +92,11 @@ public class DriverJoystick {
 
         // MARK: Left Bumper
         joystick.leftBumper()
-            .whileTrue(coral.angleDownSlow())
+            .whileTrue(coralSubsystem.angleDownSlow())
             .onFalse(
                 Commands.run(
                     () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
+                        coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -115,13 +104,11 @@ public class DriverJoystick {
         
         // MARK: Right Bumper
         joystick.rightBumper()
-            .whileTrue(coral.angleUpSlow())
+            .whileTrue(coralSubsystem.angleUpSlow())
             .onFalse(
                 Commands.run(
                     () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
+                        coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )

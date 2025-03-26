@@ -41,13 +41,10 @@ import frc.robot.joysticks.DriverJoystick;
 import frc.robot.joysticks.MechBackup;
 import frc.robot.namedcommands.AutoNamedCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.coral.CoralController;
-import frc.robot.subsystems.mechanisms.algae.AlgaeController;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -93,10 +90,6 @@ public class RobotContainer {
         public double robotSpeedLimiter = 0.80;
     
         // MARK: Mechanisms
-        private final ElevatorController elevator = new ElevatorController();
-        public static final CoralController coral = new CoralController();
-        public static final AlgaeController algae = new AlgaeController();
-    
         public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
         public final CoralSubsystem coralSubsystem = new CoralSubsystem();
         public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
@@ -107,10 +100,10 @@ public class RobotContainer {
         private final CommandXboxController buttonConsole = new CommandXboxController(2);
         private final CommandXboxController debugJoystick = new CommandXboxController(3);
     
-        private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
-        private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
-        private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
-        private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevator, elevatorSubsystem, coral, coralSubsystem, algae, algaeSubsystem);
+        private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
+        private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
+        private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
+        private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
     
         // MARK: Shuffleboard
         /* Path follower */
@@ -142,7 +135,7 @@ public class RobotContainer {
             );
             NamedCommands.registerCommand("eatCoral",
                 Commands.sequence(
-                    coral.flywheelIn().withTimeout(0.8),
+                    coralSubsystem.flywheelIn().withTimeout(0.8),
                     
                     Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
                 )
@@ -156,7 +149,7 @@ public class RobotContainer {
             );
             NamedCommands.registerCommand("spitCoral",
                 Commands.sequence(
-                    coral.flywheelOut().withTimeout(0.3),
+                    coralSubsystem.flywheelOut().withTimeout(0.3),
                     
                     Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
                 )
@@ -202,13 +195,12 @@ public class RobotContainer {
             algaeSubsystem.setDefaultCommand(
                 Commands.run(
                     () -> {
-                        if (algae.getAlgaeAngle() < -8.0) {
+                        if (algaeSubsystem.getAlgaeAngle() < -8.0) {
                             algaeSubsystem.flywheelAlgaeMotor.set(-0.2);
                         }
                         else {
                             algaeSubsystem.flywheelAlgaeMotor.set(0.0);
                         }
-                        //CommandScheduler.getInstance().cancelAll();
                     },
                     algaeSubsystem
                 )

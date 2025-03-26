@@ -18,12 +18,9 @@ import frc.robot.commands.AlignOnTheFlyByPose;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.algae.AlgaeController;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
-import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
@@ -31,25 +28,18 @@ public class ButtonConsole {
     private final RobotContainer robotContainer;
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
-    private final ElevatorController elevator;
     private final ElevatorSubsystem elevatorSubsystem;
-    private final CoralController coral;
     private final CoralSubsystem coralSubsystem;
-        private final AlgaeController algae;
     private final AlgaeSubsystem algaeSubsytem;
     Optional<Alliance> ally = DriverStation.getAlliance();
     
-    public ButtonConsole(RobotContainer robotContainer, CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem, AlgaeController algae, AlgaeSubsystem algaeSubsystem) {
+    public ButtonConsole(RobotContainer robotContainer, CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem, AlgaeSubsystem algaeSubsystem) {
 
         this.robotContainer = robotContainer;
         this.joystick = joystick;
         this.drivetrain = drivetrain;
-        this.elevator = elevator;
         this.elevatorSubsystem = elevatorSubsystem;
-        this.coral = coral;
         this.coralSubsystem = coralSubsystem;
-        this.algae = algae;
         this.algaeSubsytem = algaeSubsystem;
     }
 
@@ -90,12 +80,12 @@ public class ButtonConsole {
 
         
         joystick.leftBumper()
-            .whileTrue(elevator.elevatorUpManual())
+            .whileTrue(elevatorSubsystem.elevatorUpManual())
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         elevatorSubsystem.elevatorLeft.set(0.0);
                         elevatorSubsystem.elevatorRight.set(0.0);
                     }
@@ -103,12 +93,12 @@ public class ButtonConsole {
             );
     
         joystick.rightBumper()
-            .whileTrue(elevator.elevatorDownManual())
+            .whileTrue(elevatorSubsystem.elevatorDownManual())
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         elevatorSubsystem.elevatorLeft.set(0.0);
                         elevatorSubsystem.elevatorRight.set(0.0);
                     }
@@ -117,13 +107,12 @@ public class ButtonConsole {
         
 
         joystick.a()
-            .whileTrue(algae.flywheelAlgaeIn())
+            .whileTrue(algaeSubsytem.flywheelAlgaeIn())
             .onFalse(
                 Commands.run(
                     () -> {
                         algaeSubsytem.angleAlgaeMotor.set(0.0);
-                        algaeSubsytem.angleAlgaeMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
+                        algaeSubsytem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -131,13 +120,12 @@ public class ButtonConsole {
         
 
         joystick.b()
-            .whileTrue(coral.flywheelIn())
+            .whileTrue(coralSubsystem.flywheelIn())
             .onFalse(
                 Commands.run(
                     () -> {
                         // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
+                        CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )

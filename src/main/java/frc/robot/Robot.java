@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Algae Angle", AlgaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble());
 
     if (DriverStation.getMatchTime() <= 1.5) {
-      m_robotContainer.coral.flywheelOut();
+      m_robotContainer.coralSubsystem.flywheelOut();
     }
   }
 

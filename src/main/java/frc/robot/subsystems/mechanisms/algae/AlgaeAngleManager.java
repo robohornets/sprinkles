@@ -79,8 +79,8 @@ public class AlgaeAngleManager extends Command{
         System.out.println("Command Ended. Motor Stopped.");
     }
 
-    public static double getAlgaeAngle() {
-        return AlgaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble();
+    public double getAlgaeAngle() {
+        return algaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble();
     }
 }
 

@@ -14,7 +14,6 @@ import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 

@@ -81,11 +81,11 @@ public class CoralAngleManager extends Command {
         System.out.println("Command Ended. Motor Stopped.");
     }
 
-    public static double getCoralAngle() {
-        return CoralSubsystem.angleDCEncoder.get();
+    public double getCoralAngle() {
+        return coralSubsystem.angleDCEncoder.get();
     }
 
-    public static double krakenGetCoralAngle() {
-        return CoralSubsystem.angleMotor.getPosition().getValueAsDouble();
+    public double krakenGetCoralAngle() {
+        return coralSubsystem.angleMotor.getPosition().getValueAsDouble();
     }
 }

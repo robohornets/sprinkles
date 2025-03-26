@@ -9,49 +9,47 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeSubsystem extends SubsystemBase {
-    // public void initDefaultCommand() {
-    //     setDefaultCommand(Commands.run(
-    //         () -> {
-    //             angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-    //         }
-    //     ));
-    // }
+    public double angleAlgaeUpperLimit = 0.0;
+    public double angleAlgaeLowerLimit = -15.0;
 
-    public static double angleAlgaeUpperLimit = 0.0;
-    public static double angleAlgaeLowerLimit = -15.0;
-
-    public static TalonFX angleAlgaeMotor = new TalonFX(15);
-    public static TalonFX flywheelAlgaeMotor = new TalonFX(14);
-    public static DutyCycleEncoder angleAlgaeDCEncoder = new DutyCycleEncoder(3);
+    public TalonFX angleAlgaeMotor = new TalonFX(15);
+    public TalonFX flywheelAlgaeMotor = new TalonFX(14);
+    public DutyCycleEncoder angleAlgaeDCEncoder = new DutyCycleEncoder(3);
 
     public static Boolean angleAlgaeDisabled = false;
     public static Boolean flywheelAlgaeDisabled = false;
     
     // Angle 12, flywheel 11
-    public static Double angleAlgaeSpeed = 0.2;
-    public static Double flywheelAlgaeInSpeed = 0.3;
-    public static Double flywheelAlgaeOutSpeed = 1.0;
+    public Double angleAlgaeSpeed = 0.2;
+    public Double flywheelAlgaeInSpeed = 0.3;
+    public Double flywheelAlgaeOutSpeed = 1.0;
 
-    public static Double angleAlgaeHoldSpeed = 0.015;
+    public Double angleAlgaeHoldSpeed = 0.015;
 
-            //Flywheel commands
+    //Flywheel commands
     public Command flywheelAlgaeOut() {
         return Commands.run(
             () -> {
                 flywheelAlgaeMotor.set(flywheelAlgaeOutSpeed);
-    });}
+            }
+        );
+    }
     
     public Command flywheelAlgaeIn() {
         return Commands.run(
             () -> {
-        flywheelAlgaeMotor.set(-flywheelAlgaeInSpeed);
-    });}
+                flywheelAlgaeMotor.set(-flywheelAlgaeInSpeed);
+            }
+        );
+    }
 
     public Command flywheelAlgaeStop() {
         return Commands.run(
             () -> {
-        flywheelAlgaeMotor.set(0.0);
-    }); }
+                flywheelAlgaeMotor.set(0.0);
+            }
+        );
+    }
 
     //Angle commands
     public Command angleAlgaeUp() {
@@ -68,40 +66,45 @@ public class AlgaeSubsystem extends SubsystemBase {
     public Command angleAlgaeDown() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() > angleAlgaeLowerLimit) {
-            angleAlgaeMotor.set(-angleAlgaeSpeed);} 
-        else {
-            angleAlgaeMotor.set(0.0);
-            angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                if (getAlgaeAngle() > angleAlgaeLowerLimit) {
+                    angleAlgaeMotor.set(-angleAlgaeSpeed);} 
+                else {
+                    angleAlgaeMotor.set(0.0);
+                    angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                }
             }
-    }); }
+        );
+    }
 
 
     public Command angleAlgaeUpSlow() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() < angleAlgaeUpperLimit) {
-            angleAlgaeMotor.set(-0.1); }
-        else {
-            angleAlgaeMotor.set(0.0);
-            angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                if (getAlgaeAngle() < angleAlgaeUpperLimit) {
+                    angleAlgaeMotor.set(-0.1); }
+                else {
+                    angleAlgaeMotor.set(0.0);
+                    angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                }
             }
-    }); }
+        );
+    }
 
     public Command angleAlgaeDownSlow() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() > angleAlgaeLowerLimit) {
-        angleAlgaeMotor.set(0.1);} 
-        else {
-            angleAlgaeMotor.set(0.0);
-            angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                if (getAlgaeAngle() > angleAlgaeLowerLimit) {
+                angleAlgaeMotor.set(0.1);} 
+                else {
+                    angleAlgaeMotor.set(0.0);
+                    angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                }
             }
-    }); }
+        );
+    }
 
 
-    public static double getAlgaeAngle() {
+    public double getAlgaeAngle() {
         return angleAlgaeMotor.getPosition().getValueAsDouble();
-        //return angleAlgaeDCEncoder.get();
     }
 }

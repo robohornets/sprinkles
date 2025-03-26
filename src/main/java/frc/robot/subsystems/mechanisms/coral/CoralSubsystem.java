@@ -10,24 +10,21 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralSubsystem extends SubsystemBase {
 
-    public static double angleUpperLimit = 0.668;
-    public static double angleLowerLimit = 0.3;
+    public double angleUpperLimit = 0.668;
+    public double angleLowerLimit = 0.3;
 
-    public static double krakenAngleUpperLimit = 0.0;
-    public static double krakenAngleLowerLimit = 7.5;
+    public double krakenAngleUpperLimit = 0.0;
+    public double krakenAngleLowerLimit = 7.5;
 
-    public static TalonFX angleMotor = new TalonFX(12);
-    public static TalonFX flywheelMotor = new TalonFX(11);
-    public static DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
-
-    public static Boolean angleDisabled = false;
-    public static Boolean flywheelDisabled = false;
+    public TalonFX angleMotor = new TalonFX(12);
+    public TalonFX flywheelMotor = new TalonFX(11);
+    public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
     
-    public static Double angleSpeed = 0.1;
-    public static Double flywheelInSpeed = 0.4;
-    public static Double flywheelOutSpeed = 0.6;
+    public Double angleSpeed = 0.1;
+    public Double flywheelInSpeed = 0.4;
+    public Double flywheelOutSpeed = 0.6;
     
-    public static Double angleHoldSpeed = 0.015;
+    public Double angleHoldSpeed = 0.015;
 
     public Command flywheelOut() {
         return Commands.run(
@@ -95,11 +92,11 @@ public class CoralSubsystem extends SubsystemBase {
     }); }
 
 
-    public static double getCoralAngle() {
+    public double getCoralAngle() {
         return angleDCEncoder.get();
     }
 
-    public static double krakenGetCoralAngle() {
+    public double krakenGetCoralAngle() {
         return angleMotor.getPosition().getValueAsDouble();
     }
 }

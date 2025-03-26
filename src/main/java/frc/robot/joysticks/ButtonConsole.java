@@ -4,24 +4,18 @@ import java.util.Optional;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
-import frc.robot.commands.AlignOnTheFlyByPose;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class ButtonConsole {
@@ -124,8 +118,7 @@ public class ButtonConsole {
             .onFalse(
                 Commands.run(
                     () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                        coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -136,18 +129,14 @@ public class ButtonConsole {
                 Commands.run(
                     () -> {
                         CommandScheduler.getInstance().cancelAll();
-                       // if (Math.abs(elevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble()) <= 20) {
-                            elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-                            elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
-
-                        //}
+                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
                     }
                 )
             );
 
         joystick.y().onTrue(
             Commands.sequence(
-                // new LevelManager(Levels.ZERO, elevatorSubsystem, coralSubsystem).goToPreset(),
                 new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset()
             )
         );

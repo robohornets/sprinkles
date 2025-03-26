@@ -3,7 +3,6 @@ package frc.robot.subsystems.mechanisms.elevator;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 
 public class ElevatorHeightManager extends Command {
     private ElevatorSubsystem elevatorSubsystem;
@@ -13,7 +12,7 @@ public class ElevatorHeightManager extends Command {
 
     // Hard limits for the elevator
     private static final double minHeight = 0.0; 
-    private static final double maxHeight = 58.0; // max -66.4
+    private static final double maxHeight = 58.0;
 
     // How close we have to be to "done"
     private static final double threshold = 2.0;
@@ -38,7 +37,7 @@ public class ElevatorHeightManager extends Command {
     }
 
     private void updateMotorSpeed() {
-        double currentHeight = -ElevatorSubsystem.getElevatorHeight();
+        double currentHeight = -elevatorSubsystem.getElevatorHeight();
         double heightLimiter = (currentHeight >= -5 ? 0.4: currentHeight >= -10 ? 0.6: currentHeight >= -15 ? 0.8: 1.0);
         // 1. If we’re close enough to target, just hold and finish
         if (Math.abs(currentHeight - targetHeight) <= threshold) {
@@ -57,8 +56,8 @@ public class ElevatorHeightManager extends Command {
             if (targetHeight < currentHeight) {
                 // We still want to go down
                 System.out.println("At/above max limit. Moving down.");
-                elevatorSubsystem.elevatorLeft.set(ElevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
-                elevatorSubsystem.elevatorRight.set(-ElevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
+                elevatorSubsystem.elevatorLeft.set(elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
+                elevatorSubsystem.elevatorRight.set(-elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
             } else {
                 // We want to go up or hold, but we’re at max, so just hold
                 System.out.println("At/above max limit. Stopping.");
@@ -72,8 +71,8 @@ public class ElevatorHeightManager extends Command {
             if (targetHeight > currentHeight) {
                 // We want to go up
                 System.out.println("At/below min limit. Moving up.");
-                elevatorSubsystem.elevatorLeft.set(-ElevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
-                elevatorSubsystem.elevatorRight.set(ElevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
+                elevatorSubsystem.elevatorLeft.set(-elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
+                elevatorSubsystem.elevatorRight.set(elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
             } else {
                 // We want to go down or hold, but we’re at min, so just hold
                 System.out.println("At/below min limit. Stopping.");
@@ -85,14 +84,14 @@ public class ElevatorHeightManager extends Command {
         // 4. If we’re within normal operating range but above target, move down
         else if (currentHeight > targetHeight) {
             System.out.println("Moving down.");
-            elevatorSubsystem.elevatorLeft.set(ElevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
-            elevatorSubsystem.elevatorRight.set(-ElevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
+            elevatorSubsystem.elevatorLeft.set(elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
+            elevatorSubsystem.elevatorRight.set(-elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
         }
         // 5. If we’re within normal operating range but below target, move up
         else if (currentHeight < targetHeight) {
             System.out.println("Moving up.");
-            elevatorSubsystem.elevatorLeft.set(-ElevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
-            elevatorSubsystem.elevatorRight.set(ElevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
+            elevatorSubsystem.elevatorLeft.set(-elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
+            elevatorSubsystem.elevatorRight.set(elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
         }
     }
 

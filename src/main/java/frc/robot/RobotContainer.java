@@ -23,16 +23,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.generated.TunerConstants;
 import frc.robot.helpers.ShuffleboardUtil;
-import frc.robot.helpers.levelmanager.LevelManager;
-import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.joysticks.ButtonConsole;
 import frc.robot.joysticks.DebugJoystick;
 import frc.robot.joysticks.DriverJoystick;
 import frc.robot.joysticks.MechBackup;
+import frc.robot.namedcommands.RegisterCommands;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.wpilibj.DriverStation;
 
@@ -81,6 +79,7 @@ public class RobotContainer {
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
     public final CoralSubsystem coralSubsystem = new CoralSubsystem();
     public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+    public final RegisterCommands registerCommands = new RegisterCommands(elevatorSubsystem, coralSubsystem);
 
     // MARK: Inputs
     private final CommandXboxController driverJoystick = new CommandXboxController(0);
@@ -104,7 +103,7 @@ public class RobotContainer {
         
         // MARK: Named Commands
         // This configures the named commands to access during autonomous mode
-        NamedCommands.registerCommand("autoL1",
+        /*NamedCommands.registerCommand("autoL1",
                 new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset()
         );
         NamedCommands.registerCommand("autoL2",
@@ -142,8 +141,9 @@ public class RobotContainer {
                 
                 Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
             )
-        );
+        );*/
 
+        registerCommands.registerCommands();
 
         // MARK: Build Autos
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos and add them to Shuffleboard
@@ -168,7 +168,7 @@ public class RobotContainer {
                 () -> {
                     // TODO
                     coralSubsystem.flywheelMotor.set(-0.06);
-                    coralSubsystem.angleMotor.set(-CoralSubsystem.angleHoldSpeed);
+                    coralSubsystem.angleMotor.set(-coralSubsystem.angleHoldSpeed);
                 },
                 coralSubsystem
             )

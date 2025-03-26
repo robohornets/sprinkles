@@ -11,12 +11,8 @@ import frc.robot.commands.Destinations;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.algae.AlgaeAngleManager;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.climber.ClimberController;
-import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 

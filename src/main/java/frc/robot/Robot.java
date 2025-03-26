@@ -6,27 +6,17 @@ package frc.robot;
 
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.signals.NeutralModeValue;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStation.MatchType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.helpers.ShuffleboardUtil;
-import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
-import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.photonvision.Vision;
-import frc.robot.subsystems.photonvision.VisionSubsystem;
 
 
 public class Robot extends TimedRobot {
@@ -36,8 +26,6 @@ public class Robot extends TimedRobot {
   private Vision vision;
 
   public CANrange canRangeSensor = new CANrange(34);
-
-  private final boolean kUseLimelight = false;
 
   private PowerDistribution pdp = new PowerDistribution();
 
@@ -58,17 +46,16 @@ public class Robot extends TimedRobot {
 
 
     vision = new Vision();
-    AlgaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.algaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.algaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
-    CoralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
   }
 
-  private double lastPrintTime = 0;
   @Override
   public void robotPeriodic() {
     pdp.clearStickyFaults();
@@ -89,10 +76,10 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Slow Robot Speed", m_robotContainer.slowRobotSpeed);
     ShuffleboardUtil.put("canrange connected", m_robotContainer.canRangeSensor.isConnected());
     ShuffleboardUtil.put("Elevator Height", m_robotContainer.elevatorSubsystem.getElevatorHeight());
-    ShuffleboardUtil.put("Coral Angle", CoralSubsystem.angleDCEncoder.get());
-    ShuffleboardUtil.put("kraken Coral Angle", CoralSubsystem.angleMotor.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Coral Angle", m_robotContainer.coralSubsystem.angleDCEncoder.get());
+    ShuffleboardUtil.put("kraken Coral Angle", m_robotContainer.coralSubsystem.angleMotor.getPosition().getValueAsDouble());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
-    ShuffleboardUtil.put("Algae Angle", AlgaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Algae Angle", m_robotContainer.algaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble());
 
     if (DriverStation.getMatchTime() <= 1.5) {
       m_robotContainer.coralSubsystem.flywheelOut();
@@ -101,13 +88,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    // ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-    // ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
-    CoralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
 
     Timer.delay(5);
-    ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+    m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+    m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
   }
 
   @Override
@@ -129,8 +114,7 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousPeriodic() {
-  }
+  public void autonomousPeriodic() {}
 
   @Override
   public void autonomousExit() {}

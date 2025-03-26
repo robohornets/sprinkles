@@ -37,8 +37,6 @@ This file has all the auto code for path planner and stuff.
 ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓██████▒▒▒▒▒▒▒░░░░░░░░░░░░░░░░░░░░░░░░░▒▒░░░░░░░░░
  */
 
-import com.pathplanner.lib.path.PathConstraints;
-import com.pathplanner.lib.trajectory.PathPlannerTrajectory;
 
 public class Baymax {
 

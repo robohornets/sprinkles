@@ -1,4 +1,4 @@
-package frc.robot.namedcommands;
+package frc.robot.commands.namedcommands;
 
 import com.pathplanner.lib.auto.NamedCommands;
 

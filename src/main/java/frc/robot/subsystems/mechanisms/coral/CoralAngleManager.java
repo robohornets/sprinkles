@@ -11,7 +11,7 @@ public class CoralAngleManager extends Command {
     private double krakenOopsieThreshold = 0.1;
 
     // public double angleUpperLimit = 0.668; // Update: 0.668
-    // public double angleLowerLimit = 0.255; // Update: 0.255
+    // public double angleLowerLimit = 0.255; // Update: 0.25
 
     public CoralAngleManager(double angle, double krakenAngle, CoralSubsystem coralSubsystem) {
         this.angle = Math.max(coralSubsystem.angleLowerLimit, Math.min(coralSubsystem.angleUpperLimit, angle));

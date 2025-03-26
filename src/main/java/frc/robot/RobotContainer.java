@@ -9,12 +9,11 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
 
 import static edu.wpi.first.units.Units.MetersPerSecond;
 import static edu.wpi.first.units.Units.RadiansPerSecond;
 import static edu.wpi.first.units.Units.RotationsPerSecond;
-
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -32,7 +31,6 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
-import edu.wpi.first.wpilibj.DriverStation;
 
 public class RobotContainer {
     // MARK: Constants
@@ -163,16 +161,29 @@ public class RobotContainer {
     }
 
     private void configureDefaults() {
-        coralSubsystem.setDefaultCommand(
+        // coralSubsystem.setDefaultCommand(
+        //     Commands.run(
+        //         () -> {
+        //             // TODO
+        //             coralSubsystem.flywheelMotor.set(-0.06);
+        //             coralSubsystem.angleMotor.set(-coralSubsystem.angleHoldSpeed);
+        //         },
+        //         coralSubsystem
+        //     )
+        // );
+
+        //in and out flywheels 11, coral angle 12, algae 13, funnel wheels 14, remove seperate algae wheels and 
+        //change coral wheels to in and out wheels (one motor controls both), might need to change id on angles
+
+        coralSubsystem.setDefaultCommand( 
             Commands.run(
                 () -> {
-                    // TODO
-                    coralSubsystem.flywheelMotor.set(-0.06);
-                    coralSubsystem.angleMotor.set(-coralSubsystem.angleHoldSpeed);
+                   coralSubsystem.flywheelMotor.set(0.5); 
+
                 },
                 coralSubsystem
-            )
-        );
+                )
+            );
 
         algaeSubsystem.setDefaultCommand(
             Commands.run(

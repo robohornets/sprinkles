@@ -10,6 +10,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralSubsystem extends SubsystemBase {
 
+    //in and out flywheels 11, coral angle 12, algae 13, funnel wheels 14, remove seperate algae wheels and 
+    //change coral wheels to in and out wheels (one motor controls both), might need to change id on angles
+
     public double angleUpperLimit = 0.668;
     public double angleLowerLimit = 0.3;
 
@@ -18,6 +21,7 @@ public class CoralSubsystem extends SubsystemBase {
 
     public TalonFX angleMotor = new TalonFX(12);
     public TalonFX flywheelMotor = new TalonFX(11);
+    public TalonFX funnelMotor = new TalonFX(14);
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
     
     public Double angleSpeed = 0.1;

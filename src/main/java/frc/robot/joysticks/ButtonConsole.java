@@ -99,18 +99,6 @@ public class ButtonConsole {
                 )
             );
         
-
-        joystick.a()
-            .whileTrue(algaeSubsytem.flywheelAlgaeIn())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        algaeSubsytem.angleAlgaeMotor.set(0.0);
-                        algaeSubsytem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
-            );
         
 
         joystick.b()

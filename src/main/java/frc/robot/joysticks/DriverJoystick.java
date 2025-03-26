@@ -39,40 +39,9 @@ public class DriverJoystick {
         joystick.povDown().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
         // joystick.x().onTrue(new InstantCommand(() -> RobotContainer.setUseFieldCentric(false)));
        
-        joystick.y()
-        .whileTrue(algaeSubsytem.angleAlgaeUp())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    algaeSubsytem.angleAlgaeMotor.set(0.0);
-                }
-            )
-        );
-
-    joystick.a()
-        .whileTrue(algaeSubsytem.angleAlgaeDown())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    algaeSubsytem.angleAlgaeMotor.set(0.0);
-                }
-            )
-        );
 
         joystick.b().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset());
         
-        // MARK: L Trigger
-        joystick.leftTrigger()
-        .whileTrue(algaeSubsytem.flywheelAlgaeOut())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    algaeSubsytem.flywheelAlgaeMotor.set(0.0);
-                    
-                    CommandScheduler.getInstance().cancelAll();
-                }
-            )
-        );
         
         // MARK: R Trigger
         joystick.rightTrigger()

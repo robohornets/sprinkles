@@ -29,8 +29,6 @@ public class Robot extends TimedRobot {
 
   private PowerDistribution pdp = new PowerDistribution();
 
-  //public static Encoder elevatorEncoder = new Encoder(0, 1);
-
   public Robot() {
     m_robotContainer = new RobotContainer();
   }
@@ -46,12 +44,10 @@ public class Robot extends TimedRobot {
 
 
     vision = new Vision();
-    m_robotContainer.algaeSubsystem.angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-    m_robotContainer.algaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
 
+    m_robotContainer.algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
-
     m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
   }
@@ -79,7 +75,7 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Coral Angle", m_robotContainer.coralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("kraken Coral Angle", m_robotContainer.coralSubsystem.angleMotor.getPosition().getValueAsDouble());
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
-    ShuffleboardUtil.put("Algae Angle", m_robotContainer.algaeSubsystem.angleAlgaeMotor.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Algae Angle", m_robotContainer.algaeSubsystem.angleMotor.getPosition().getValueAsDouble());
 
     if (DriverStation.getMatchTime() <= 1.5) {
       m_robotContainer.coralSubsystem.flywheelOut();

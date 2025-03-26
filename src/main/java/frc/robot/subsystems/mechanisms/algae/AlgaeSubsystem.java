@@ -12,12 +12,8 @@ public class AlgaeSubsystem extends SubsystemBase {
     public double angleAlgaeUpperLimit = 0.0;
     public double angleAlgaeLowerLimit = -15.0;
 
-    public TalonFX angleAlgaeMotor = new TalonFX(15);
-    public TalonFX flywheelAlgaeMotor = new TalonFX(14);
-    public DutyCycleEncoder angleAlgaeDCEncoder = new DutyCycleEncoder(3);
-
-    public static Boolean angleAlgaeDisabled = false;
-    public static Boolean flywheelAlgaeDisabled = false;
+    public TalonFX angleMotor = new TalonFX(15);
+    public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(3);
     
     // Angle 12, flywheel 11
     public Double angleAlgaeSpeed = 0.2;
@@ -26,51 +22,28 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public Double angleAlgaeHoldSpeed = 0.015;
 
-    //Flywheel commands
-    public Command flywheelAlgaeOut() {
-        return Commands.run(
-            () -> {
-                flywheelAlgaeMotor.set(flywheelAlgaeOutSpeed);
-            }
-        );
-    }
-    
-    public Command flywheelAlgaeIn() {
-        return Commands.run(
-            () -> {
-                flywheelAlgaeMotor.set(-flywheelAlgaeInSpeed);
-            }
-        );
-    }
-
-    public Command flywheelAlgaeStop() {
-        return Commands.run(
-            () -> {
-                flywheelAlgaeMotor.set(0.0);
-            }
-        );
-    }
-
     //Angle commands
     public Command angleAlgaeUp() {
         return Commands.run(
             () -> {
-        if (getAlgaeAngle() < angleAlgaeUpperLimit) {
-            angleAlgaeMotor.set(angleAlgaeSpeed); }
-        else {
-            angleAlgaeMotor.set(0.0);
-            angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                if (getAlgaeAngle() < angleAlgaeUpperLimit) {
+                    angleMotor.set(angleAlgaeSpeed); }
+                else {
+                    angleMotor.set(0.0);
+                    angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                }
             }
-    }); }
+        );
+    }
 
     public Command angleAlgaeDown() {
         return Commands.run(
             () -> {
                 if (getAlgaeAngle() > angleAlgaeLowerLimit) {
-                    angleAlgaeMotor.set(-angleAlgaeSpeed);} 
+                    angleMotor.set(-angleAlgaeSpeed);} 
                 else {
-                    angleAlgaeMotor.set(0.0);
-                    angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                    angleMotor.set(0.0);
+                    angleMotor.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -81,10 +54,10 @@ public class AlgaeSubsystem extends SubsystemBase {
         return Commands.run(
             () -> {
                 if (getAlgaeAngle() < angleAlgaeUpperLimit) {
-                    angleAlgaeMotor.set(-0.1); }
+                    angleMotor.set(-0.1); }
                 else {
-                    angleAlgaeMotor.set(0.0);
-                    angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                    angleMotor.set(0.0);
+                    angleMotor.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -94,10 +67,10 @@ public class AlgaeSubsystem extends SubsystemBase {
         return Commands.run(
             () -> {
                 if (getAlgaeAngle() > angleAlgaeLowerLimit) {
-                angleAlgaeMotor.set(0.1);} 
+                angleMotor.set(0.1);} 
                 else {
-                    angleAlgaeMotor.set(0.0);
-                    angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
+                    angleMotor.set(0.0);
+                    angleMotor.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -105,6 +78,6 @@ public class AlgaeSubsystem extends SubsystemBase {
 
 
     public double getAlgaeAngle() {
-        return angleAlgaeMotor.getPosition().getValueAsDouble();
+        return angleMotor.getPosition().getValueAsDouble();
     }
 }

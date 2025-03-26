@@ -184,20 +184,6 @@ public class RobotContainer {
                 coralSubsystem
                 )
             );
-
-        algaeSubsystem.setDefaultCommand(
-            Commands.run(
-                () -> {
-                    if (algaeSubsystem.getAlgaeAngle() < -8.0) {
-                        algaeSubsystem.flywheelAlgaeMotor.set(-0.2);
-                    }
-                    else {
-                        algaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    }
-                },
-                algaeSubsystem
-            )
-        );
     }
 
     private void configureTriggers() {

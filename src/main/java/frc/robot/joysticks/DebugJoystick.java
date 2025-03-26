@@ -80,31 +80,6 @@ public class DebugJoystick {
         // MARK: Back
         joystick.back().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
 
-        // MARK: Left Trigger
-        joystick.leftTrigger()
-        .whileTrue(algaeSubsystem.flywheelAlgaeIn())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    algaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    
-                    CommandScheduler.getInstance().cancelAll();
-                }
-            )
-        );
-
-        // MARK: Right Trigger
-        joystick.rightTrigger()
-        .whileTrue(algaeSubsystem.flywheelAlgaeOut())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    algaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    
-                    CommandScheduler.getInstance().cancelAll();
-                }
-            )
-        );
 
         // MARK: Left Bumper
         joystick.leftBumper()

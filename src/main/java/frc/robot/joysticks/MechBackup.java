@@ -60,25 +60,6 @@ public class MechBackup {
                 )
             );
 
-        // MARK: Algae Intake
-        joystick.rightTrigger()
-        .whileTrue(algaeSubsytem.flywheelAlgaeIn())
-        .onTrue(
-            Commands.run(
-                () -> {
-                    algaeSubsytem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-                }
-            )
-        )
-        .onFalse(
-            Commands.run(
-                () -> {
-                    algaeSubsytem.flywheelAlgaeMotor.set(0.0);
-                    algaeSubsytem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-                    CommandScheduler.getInstance().cancelAll();
-                }
-            )
-        );
         
         // MARK: Elevator U/D
         joystick.povDown()

@@ -1,6 +1,7 @@
 package frc.robot.subsystems.mechanisms.coral;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class CoralAngleManager extends Command {
     private double angle;
@@ -88,4 +89,15 @@ public class CoralAngleManager extends Command {
     public double krakenGetCoralAngle() {
         return coralSubsystem.angleMotor.getPosition().getValueAsDouble();
     }
+
+    public Command funnelToFlywheel() {
+        return Commands.run( () -> {
+            if (coralSubsystem.coralForwardSensor.getDistance(true).getValueAsDouble() < 0.2) {
+                coralSubsystem.funnelMotor.set(0.0);
+            } else {
+                coralSubsystem.funnelMotor.set(0.5);
+            }
+        } );
+    }   
+
 }

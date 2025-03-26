@@ -60,13 +60,9 @@ public class RobotContainer {
     Trigger elevatorDownTrigger = new Trigger(() -> 
         elevatorDownSensor.getDistance(true).getValueAsDouble() < 0.2
     );
-    public CANrange coralForwardSensor = new CANrange(35);
-    Trigger coralForwardTrigger = new Trigger(() -> 
-        coralForwardSensor.getDistance(true).getValueAsDouble() < 0.2
-    );
-    public CANrange canRangeSensor = new CANrange(36);
+    public CANrange funnelRangeSensor = new CANrange(36);
     Trigger canRangeTrigger = new Trigger(() -> 
-        canRangeSensor.getDistance(true).getValueAsDouble() < 0.2
+        funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2
     );
 
     public boolean slowRobotSpeed = false;
@@ -178,8 +174,11 @@ public class RobotContainer {
         coralSubsystem.setDefaultCommand( 
             Commands.run(
                 () -> {
-                   coralSubsystem.flywheelMotor.set(0.5); 
-
+                   if (funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2){
+                    coralSubsystem.flywheelMotor.set(0);
+                   } else {
+                    coralSubsystem.flywheelMotor.set(0.5);
+                   }
                 },
                 coralSubsystem
                 )

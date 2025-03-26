@@ -78,170 +78,149 @@ public class RobotContainer {
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
     
-    
-        // MARK: Triggers
-        public CANrange canRangeSensor = new CANrange(34);
-        Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
-    
-        public boolean camerasEnabled = true;
+    // MARK: Triggers
+    public CANrange canRangeSensor = new CANrange(34);
+    Trigger canRangeTrigger = new Trigger(() -> canRangeSensor.getDistance(true).refresh().getValueAsDouble() < 0.2);
 
-        public boolean slowRobotSpeed = false;
+    public boolean camerasEnabled = true;
 
-        public double robotSpeedLimiter = 0.80;
-    
-        // MARK: Mechanisms
-        public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-        public final CoralSubsystem coralSubsystem = new CoralSubsystem();
-        public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
-    
-        // MARK: Inputs
-        private final CommandXboxController driverJoystick = new CommandXboxController(0);
-        private final CommandXboxController mechanismsJoystick = new CommandXboxController(1);
-        private final CommandXboxController buttonConsole = new CommandXboxController(2);
-        private final CommandXboxController debugJoystick = new CommandXboxController(3);
-    
-        private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
-        private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
-        private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
-        private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
-    
-        // MARK: Shuffleboard
-        /* Path follower */
-        private final SendableChooser<Command> autoChooser;
-    
+    public boolean slowRobotSpeed = false;
+
+    public double robotSpeedLimiter = 0.80;
+
+    // MARK: Mechanisms
+    public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+    public final CoralSubsystem coralSubsystem = new CoralSubsystem();
+    public final AlgaeSubsystem algaeSubsystem = new AlgaeSubsystem();
+
+    // MARK: Inputs
+    private final CommandXboxController driverJoystick = new CommandXboxController(0);
+    private final CommandXboxController mechanismsJoystick = new CommandXboxController(1);
+    private final CommandXboxController buttonConsole = new CommandXboxController(2);
+    private final CommandXboxController debugJoystick = new CommandXboxController(3);
+
+    private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
+    private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
+    private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
+    private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
+
+    // MARK: Shuffleboard
+    /* Path follower */
+    private final SendableChooser<Command> autoChooser;
+
+            
+    public RobotContainer() {
+        // Gets rid of annoying print statements in the console
+        DriverStation.silenceJoystickConnectionWarning(true);
+        
+        // MARK: Named Commands
+        // This configures the named commands to access during autonomous mode
+        NamedCommands.registerCommand("autoL1",
+                new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("autoL2",
+                new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("autoL3",
+                new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("autoL4",
+                new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("coralLevel",
+                new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("defaultPosition",
+                new LevelManager(Levels.DEFAULT_POSITION, elevatorSubsystem, coralSubsystem).goToPreset()
+        );
+        NamedCommands.registerCommand("eatCoral",
+            Commands.sequence(
+                coralSubsystem.flywheelIn().withTimeout(0.8),
                 
-        public RobotContainer() {
-            // Gets rid of annoying print statements in the console
-            DriverStation.silenceJoystickConnectionWarning(true);
-            
-            // MARK: Named Commands
-            NamedCommands.registerCommand("autoL1",
-                    new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset()
-            );
-            NamedCommands.registerCommand("autoL2",
-                    new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset()
-            );
-            NamedCommands.registerCommand("autoL3",
-                    new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset()
-            );
-            NamedCommands.registerCommand("autoL4",
-                    new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset()
-            );
-            NamedCommands.registerCommand("coralLevel",
-                    new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset()
-            );
-            NamedCommands.registerCommand("defaultPosition",
-                    new LevelManager(Levels.DEFAULT_POSITION, elevatorSubsystem, coralSubsystem).goToPreset()
-            );
-            NamedCommands.registerCommand("eatCoral",
-                Commands.sequence(
-                    coralSubsystem.flywheelIn().withTimeout(0.8),
-                    
-                    Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
-                )
-            );
-            NamedCommands.registerCommand("stopCoral",
-                Commands.run(
-                    () -> {
-                        coralSubsystem.flywheelMotor.set(0.0);
-                    }
-                ) 
-            );
-            NamedCommands.registerCommand("spitCoral",
-                Commands.sequence(
-                    coralSubsystem.flywheelOut().withTimeout(0.3),
-                    
-                    Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
-                )
-            );
-    
-    
-            // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos
-            autoChooser = AutoBuilder.buildAutoChooser();
-            SmartDashboard.putData("Auto Mode", autoChooser);  
-            ShuffleboardUtil.put("Auto Selector Backup", autoChooser);
-    
-            drivetrain.registerTelemetry(logger::telemeterize);
-    
-            // MARK: Configure Bindings
-            driverJoystickController.configureBindings();
-            mechanismsJoystickController.configureBindings();
-            buttonConsoleController.configureBindings();
-            debugJoystickController.configureBindings();
-            configureBindings();
-            configureDefaults();
-        }
-    
-        // private void configureBindings() {
-        //     drivetrain.setDefaultCommand(
-        //         drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)
-        //             .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * 0.5)
-        //             .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
-        //         )
-        //     );
-        // }
-
-        private void configureDefaults() {
-            coralSubsystem.setDefaultCommand(
-                Commands.run(
-                    () -> {
-                        coralSubsystem.flywheelMotor.set(-0.06);
-                        coralSubsystem.angleMotor.set(-CoralSubsystem.angleHoldSpeed);
-                    },
-                    coralSubsystem
-                )
-            );
-
-            algaeSubsystem.setDefaultCommand(
-                Commands.run(
-                    () -> {
-                        if (algaeSubsystem.getAlgaeAngle() < -8.0) {
-                            algaeSubsystem.flywheelAlgaeMotor.set(-0.2);
-                        }
-                        else {
-                            algaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                        }
-                    },
-                    algaeSubsystem
-                )
-            );
-        }
-    
-        private void configureBindings() {
-            //if(useFieldCentric){
-            drivetrain.setDefaultCommand(
-                drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.7: robotSpeedLimiter))
-                    .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.7: robotSpeedLimiter))
-                    .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
-                )
-            );//}
-            // else{
-            //     drivetrain.setDefaultCommand(
-            //         drivetrain.applyRequest(() -> RobotContainer.driveRobotCentric.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * 0.5)
-            //             .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * 0.5)
-            //             .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
-            //         )
-            //     );
-            
-            // }
-        }
-    
-        public Command applyHoldCurrent() {
-            return Commands.run(
+                Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
+            )
+        );
+        NamedCommands.registerCommand("stopCoral",
+            Commands.run(
                 () -> {
-                    coralSubsystem.angleMotor.set(-0.015);
-                    elevatorSubsystem.elevatorLeft.set(-0.015);
-                    elevatorSubsystem.elevatorRight.set(0.015); 
+                    coralSubsystem.flywheelMotor.set(0.0);
                 }
-            );
-        }
-    
-        public Command getAutonomousCommand() {
-            /* Run the path selected from the auto chooser */
-            return autoChooser.getSelected();
-        }
-    
-    //     public static void setUseFieldCentric(boolean useFieldCentric) {
-    //         RobotContainer.useFieldCentric = useFieldCentric;
-    // }
+            ) 
+        );
+        NamedCommands.registerCommand("spitCoral",
+            Commands.sequence(
+                coralSubsystem.flywheelOut().withTimeout(0.3),
+                
+                Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
+            )
+        );
+
+
+        // MARK: Build Autos
+        // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos and add them to Shuffleboard
+        autoChooser = AutoBuilder.buildAutoChooser();
+        SmartDashboard.putData("Auto Mode", autoChooser);  
+        ShuffleboardUtil.put("Auto Selector Backup", autoChooser);
+
+        drivetrain.registerTelemetry(logger::telemeterize);
+
+        // MARK: Configure Bindings
+        driverJoystickController.configureBindings();
+        mechanismsJoystickController.configureBindings();
+        buttonConsoleController.configureBindings();
+        debugJoystickController.configureBindings();
+        configureBindings();
+        configureDefaults();
+    }
+
+    private void configureDefaults() {
+        coralSubsystem.setDefaultCommand(
+            Commands.run(
+                () -> {
+                    // TODO
+                    coralSubsystem.flywheelMotor.set(-0.06);
+                    coralSubsystem.angleMotor.set(-CoralSubsystem.angleHoldSpeed);
+                },
+                coralSubsystem
+            )
+        );
+
+        algaeSubsystem.setDefaultCommand(
+            Commands.run(
+                () -> {
+                    if (algaeSubsystem.getAlgaeAngle() < -8.0) {
+                        algaeSubsystem.flywheelAlgaeMotor.set(-0.2);
+                    }
+                    else {
+                        algaeSubsystem.flywheelAlgaeMotor.set(0.0);
+                    }
+                },
+                algaeSubsystem
+            )
+        );
+    }
+
+    private void configureBindings() {
+        drivetrain.setDefaultCommand(
+            drivetrain.applyRequest(() -> RobotContainer.drive.withVelocityX(-driverJoystick.getLeftY() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.7: robotSpeedLimiter))
+                .withVelocityY(-driverJoystick.getLeftX() * RobotContainer.MaxSpeed * (slowRobotSpeed ? 0.7: robotSpeedLimiter))
+                .withRotationalRate(-driverJoystick.getRightX() * RobotContainer.MaxAngularRate)
+            )
+        );
+    }
+
+    public Command applyHoldCurrent() {
+        return Commands.run(
+            () -> {
+                coralSubsystem.angleMotor.set(-0.015);
+                elevatorSubsystem.elevatorLeft.set(-0.015);
+                elevatorSubsystem.elevatorRight.set(0.015); 
+            }
+        );
+    }
+
+    public Command getAutonomousCommand() {
+        /* Run the path selected from the auto chooser */
+        return autoChooser.getSelected();
+    }
 }

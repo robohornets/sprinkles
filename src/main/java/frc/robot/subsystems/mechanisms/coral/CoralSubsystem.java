@@ -1,5 +1,6 @@
 package frc.robot.subsystems.mechanisms.coral;
 
+import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -7,6 +8,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class CoralSubsystem extends SubsystemBase {
 
@@ -29,6 +31,11 @@ public class CoralSubsystem extends SubsystemBase {
     public Double flywheelOutSpeed = 0.6;
     
     public Double angleHoldSpeed = 0.015;
+
+    public CANrange coralForwardSensor = new CANrange(35);
+    Trigger coralForwardTrigger = new Trigger(() -> 
+        coralForwardSensor.getDistance(true).getValueAsDouble() < 0.2
+    );
 
     public Command flywheelOut() {
         return Commands.run(

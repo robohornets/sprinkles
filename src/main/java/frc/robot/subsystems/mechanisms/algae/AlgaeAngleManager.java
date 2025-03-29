@@ -2,7 +2,6 @@ package frc.robot.subsystems.mechanisms.algae;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 
 public class AlgaeAngleManager extends Command{
     private double angle;
@@ -10,11 +9,8 @@ public class AlgaeAngleManager extends Command{
     private boolean isFinishedToggle = false;
     private double oopsieThreshold = 0.01;
 
-    public double angleAlgaeUpperLimit = 0.0;
-    public double angleAlgaeLowerLimit = -15.0;
-
     public AlgaeAngleManager(double angle, AlgaeSubsystem algaeSubsystem) {
-        this.angle = Math.max(angleAlgaeLowerLimit, Math.min(angleAlgaeUpperLimit, angle));
+        this.angle = Math.max(algaeSubsystem.angleLowerLimit, Math.min(algaeSubsystem.angleUpperLimit, angle));
         this.algaeSubsystem = algaeSubsystem;
         addRequirements(this.algaeSubsystem);
     }
@@ -38,23 +34,21 @@ public class AlgaeAngleManager extends Command{
             algaeSubsystem.angleMotor.set(0.015);
             isFinishedToggle = true;
         } 
-        else if (currentAlgaeAngle >= angleAlgaeUpperLimit) {
+        else if (currentAlgaeAngle >= algaeSubsystem.angleUpperLimit) {
             if (angle < currentAlgaeAngle) {
                 System.out.println("Above upper limit, moving down");
                 algaeSubsystem.angleMotor.set(algaeSubsystem.angleAlgaeSpeed);
             } else {
                 System.out.println("Above upper limit, stopping");
-                algaeSubsystem.angleMotor.set(0.015);
                 isFinishedToggle = true;
             }
         } 
-        else if (currentAlgaeAngle <= angleAlgaeLowerLimit) {
+        else if (currentAlgaeAngle <= algaeSubsystem.angleLowerLimit) {
             if (angle > currentAlgaeAngle) {
                 System.out.println("Below lower limit, moving up");
                 algaeSubsystem.angleMotor.set(-algaeSubsystem.angleAlgaeSpeed);
             } else {
                 System.out.println("Below lower limit, stopping");
-                algaeSubsystem.angleMotor.set(0.015);
                 isFinishedToggle = true;
             }
         } 
@@ -75,7 +69,6 @@ public class AlgaeAngleManager extends Command{
 
     @Override
     public void end(boolean interrupted) {
-        algaeSubsystem.angleMotor.set(-0.015);
         System.out.println("Command Ended. Motor Stopped.");
     }
 

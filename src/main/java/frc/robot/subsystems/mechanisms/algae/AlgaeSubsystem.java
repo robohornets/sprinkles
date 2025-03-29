@@ -8,8 +8,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeSubsystem extends SubsystemBase {
-    public double angleAlgaeUpperLimit = 0.0;
-    public double angleAlgaeLowerLimit = -15.0;
+    public double angleUpperLimit = 0.0;
+    public double angleLowerLimit = -15.0;
 
     public TalonFX angleMotor = new TalonFX(15, "Mechanisms");
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(3);
@@ -20,11 +20,11 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public Double angleAlgaeHoldSpeed = 0.015;
 
-    //Angle commands
+    // MARK: Angle Commands
     public Command angleAlgaeUp() {
         return Commands.run(
             () -> {
-                if (getAlgaeAngle() < angleAlgaeUpperLimit) {
+                if (getAlgaeAngle() < angleUpperLimit) {
                     angleMotor.set(angleAlgaeSpeed); }
                 else {
                     angleMotor.set(0.0);
@@ -36,7 +36,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     public Command angleAlgaeDown() {
         return Commands.run(
             () -> {
-                if (getAlgaeAngle() > angleAlgaeLowerLimit) {
+                if (getAlgaeAngle() > angleLowerLimit) {
                     angleMotor.set(-angleAlgaeSpeed);} 
                 else {
                     angleMotor.set(0.0);
@@ -49,7 +49,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     public Command angleAlgaeUpSlow() {
         return Commands.run(
             () -> {
-                if (getAlgaeAngle() < angleAlgaeUpperLimit) {
+                if (getAlgaeAngle() < angleUpperLimit) {
                     angleMotor.set(-0.1); }
                 else {
                     angleMotor.set(0.0);
@@ -61,7 +61,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     public Command angleAlgaeDownSlow() {
         return Commands.run(
             () -> {
-                if (getAlgaeAngle() > angleAlgaeLowerLimit) {
+                if (getAlgaeAngle() > angleLowerLimit) {
                 angleMotor.set(0.1);} 
                 else {
                     angleMotor.set(0.0);

@@ -1,7 +1,6 @@
 package frc.robot.subsystems.mechanisms.algae;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -12,10 +11,9 @@ public class AlgaeSubsystem extends SubsystemBase {
     public double angleAlgaeUpperLimit = 0.0;
     public double angleAlgaeLowerLimit = -15.0;
 
-    public TalonFX angleMotor = new TalonFX(15);
+    public TalonFX angleMotor = new TalonFX(15, "Mechanisms");
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(3);
     
-    // Angle 12, flywheel 11
     public Double angleAlgaeSpeed = 0.2;
     public Double flywheelAlgaeInSpeed = 0.3;
     public Double flywheelAlgaeOutSpeed = 1.0;

@@ -56,12 +56,8 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
     
     // MARK: Triggers
-    public CANrange elevatorDownSensor = new CANrange(34);
-    Trigger elevatorDownTrigger = new Trigger(() -> 
-        elevatorDownSensor.getDistance(true).getValueAsDouble() < 0.2
-    );
 
-    public CANrange funnelRangeSensor = new CANrange(36);
+    public CANrange funnelRangeSensor = new CANrange(36, "Mechanisms");
     Trigger canRangeTrigger = new Trigger(() -> 
         funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2
     );
@@ -175,20 +171,20 @@ public class RobotContainer {
     }
 
     private void configureTriggers() {
-        elevatorDownTrigger
-            .onTrue(
-                Commands.run(
-                    () -> {
-                    }
-                )
-            )
-            .whileTrue(
-                Commands.run(
-                    () -> {
-                        elevatorSubsystem.elevatorLeft.setPosition(0.0);
-                    }
-                )
-            );
+        // elevatorDownTrigger
+        //     .onTrue(
+        //         Commands.run(
+        //             () -> {
+        //             }
+        //         )
+        //     )
+        //     .whileTrue(
+        //         Commands.run(
+        //             () -> {
+        //                 elevatorSubsystem.elevatorLeft.setPosition(0.0);
+        //             }
+        //         )
+        //     );
     }
 
     private void configureBindings() {

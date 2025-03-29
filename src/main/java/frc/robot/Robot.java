@@ -78,6 +78,9 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
     ShuffleboardUtil.put("Algae Angle", m_robotContainer.algaeSubsystem.angleMotor.getPosition().getValueAsDouble());
 
+    ShuffleboardUtil.put("Coral CANRange Distance", m_robotContainer.coralSubsystem.coralForwardSensor.getDistance().getValueAsDouble());
+    ShuffleboardUtil.put("Coral CANRange Bool", m_robotContainer.coralSubsystem.coralForwardTrigger.getAsBoolean());
+
     if (DriverStation.getMatchTime() <= 1.5) {
       m_robotContainer.coralSubsystem.flywheelOut();
     }

@@ -30,7 +30,6 @@ public class AlgaeSubsystem extends SubsystemBase {
                     angleMotor.set(angleAlgaeSpeed); }
                 else {
                     angleMotor.set(0.0);
-                    angleMotor.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -43,7 +42,6 @@ public class AlgaeSubsystem extends SubsystemBase {
                     angleMotor.set(-angleAlgaeSpeed);} 
                 else {
                     angleMotor.set(0.0);
-                    angleMotor.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -57,7 +55,6 @@ public class AlgaeSubsystem extends SubsystemBase {
                     angleMotor.set(-0.1); }
                 else {
                     angleMotor.set(0.0);
-                    angleMotor.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -70,7 +67,6 @@ public class AlgaeSubsystem extends SubsystemBase {
                 angleMotor.set(0.1);} 
                 else {
                     angleMotor.set(0.0);
-                    angleMotor.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );

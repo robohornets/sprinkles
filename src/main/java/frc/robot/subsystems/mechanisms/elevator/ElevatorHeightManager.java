@@ -46,9 +46,6 @@ public class ElevatorHeightManager extends Command {
             elevatorSubsystem.elevatorLeft.set(-0.015);
             elevatorSubsystem.elevatorRight.set(0.015);
 
-            elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-            elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
-
             isFinishedToggle = true;
         }
         // 2. If we're already above the max limit

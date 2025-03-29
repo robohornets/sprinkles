@@ -34,8 +34,6 @@ public class ElevatorSubsystem extends SubsystemBase {
                 } else {
                     elevatorLeft.set(0.0);
                     elevatorRight.set(0.0);
-                    elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                    elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -50,8 +48,6 @@ public class ElevatorSubsystem extends SubsystemBase {
                 } else {
                     elevatorLeft.set(0.0);
                     elevatorRight.set(0.0);
-                    elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                    elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -84,8 +80,6 @@ public class ElevatorSubsystem extends SubsystemBase {
                 } else {
                     elevatorLeft.set(0.0);
                     elevatorRight.set(0.0);
-                    elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                    elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );
@@ -100,8 +94,6 @@ public class ElevatorSubsystem extends SubsystemBase {
                 } else {
                     elevatorLeft.set(0.0);
                     elevatorRight.set(0.0);
-                    elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                    elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                 }
             }
         );

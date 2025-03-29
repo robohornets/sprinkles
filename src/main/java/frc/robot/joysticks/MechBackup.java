@@ -69,9 +69,6 @@ public class MechBackup {
                     () -> {
                         elevatorSubsystem.elevatorLeft.set(-0.015);
                         elevatorSubsystem.elevatorRight.set(0.015);
-
-                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -85,9 +82,6 @@ public class MechBackup {
                     () -> {
                         elevatorSubsystem.elevatorLeft.set(-0.015);
                         elevatorSubsystem.elevatorRight.set(0.015);
-
-                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
 
                         CommandScheduler.getInstance().cancelAll();
                     }

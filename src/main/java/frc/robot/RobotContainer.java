@@ -60,6 +60,7 @@ public class RobotContainer {
     Trigger elevatorDownTrigger = new Trigger(() -> 
         elevatorDownSensor.getDistance(true).getValueAsDouble() < 0.2
     );
+
     public CANrange funnelRangeSensor = new CANrange(36);
     Trigger canRangeTrigger = new Trigger(() -> 
         funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2
@@ -142,8 +143,7 @@ public class RobotContainer {
         // MARK: Build Autos
         // Build auto chooser. This will find all .auto files in deploy/pathplanner/autos and add them to Shuffleboard
         autoChooser = AutoBuilder.buildAutoChooser();
-        SmartDashboard.putData("Auto Mode", autoChooser);  
-        ShuffleboardUtil.put("Auto Selector Backup", autoChooser);
+        SmartDashboard.putData("Auto Mode", autoChooser);
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
@@ -157,30 +157,19 @@ public class RobotContainer {
     }
 
     private void configureDefaults() {
-        // coralSubsystem.setDefaultCommand(
-        //     Commands.run(
-        //         () -> {
-        //             // TODO
-        //             coralSubsystem.flywheelMotor.set(-0.06);
-        //             coralSubsystem.angleMotor.set(-coralSubsystem.angleHoldSpeed);
-        //         },
-        //         coralSubsystem
-        //     )
-        // );
-
-        //in and out flywheels 11, coral angle 12, algae 13, funnel wheels 14, remove seperate algae wheels and 
-        //change coral wheels to in and out wheels (one motor controls both), might need to change id on angles
-
-        coralSubsystem.setDefaultCommand( 
-            Commands.run(
-                () -> {
-                   if (funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2){
-                    coralSubsystem.flywheelMotor.set(0);
-                   } else {
-                    coralSubsystem.flywheelMotor.set(0.5);
-                   }
-                },
-                coralSubsystem
+        coralSubsystem
+            .setDefaultCommand( 
+                Commands.run(
+                    () -> {
+                        if (funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2){
+                            coralSubsystem.funnelLeft.set(0);
+                            coralSubsystem.funnelRight.set(0);
+                        } else {
+                            coralSubsystem.funnelLeft.set(coralSubsystem.funnelSpeed);
+                            coralSubsystem.funnelRight.set(-coralSubsystem.funnelSpeed);
+                        }
+                    },
+                    coralSubsystem
                 )
             );
     }
@@ -190,8 +179,6 @@ public class RobotContainer {
             .onTrue(
                 Commands.run(
                     () -> {
-                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                     }
                 )
             )

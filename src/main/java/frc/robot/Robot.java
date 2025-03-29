@@ -25,8 +25,6 @@ public class Robot extends TimedRobot {
   private final RobotContainer m_robotContainer;
   private Vision vision;
 
-  public CANrange canRangeSensor = new CANrange(34);
-
   private PowerDistribution pdp = new PowerDistribution();
 
   public Robot() {
@@ -35,6 +33,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    // MARK: Configure Cameras
     UsbCamera zane1 = CameraServer.startAutomaticCapture(0);
     UsbCamera zane2 = CameraServer.startAutomaticCapture(1);
     zane1.setResolution(320, 180);
@@ -45,9 +44,12 @@ public class Robot extends TimedRobot {
 
     vision = new Vision();
 
-    m_robotContainer.algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+    // MARK: Set Brake Modes
     m_robotContainer.coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.coralSubsystem.funnelLeft.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.coralSubsystem.funnelRight.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
   }
@@ -65,11 +67,10 @@ public class Robot extends TimedRobot {
 
     CommandScheduler.getInstance().run();
 
+    // MARK: Put Shuffleboard Values
     ShuffleboardUtil.put("Time Remaining", DriverStation.getMatchTime());
     ShuffleboardUtil.put("Canrange", m_robotContainer.funnelRangeSensor.getDistance(true).getValueAsDouble());
     ShuffleboardUtil.put("elevator offset", m_robotContainer.elevatorSubsystem.elevatorEncoderOffset);
-    // ShuffleboardUtil.put("Canrange senses", m_robotContainer.canRangeTrigger().ge);
-    ShuffleboardUtil.put("Slow Robot Speed", m_robotContainer.slowRobotSpeed);
     ShuffleboardUtil.put("canrange connected", m_robotContainer.funnelRangeSensor.isConnected());
     ShuffleboardUtil.put("Elevator Height", m_robotContainer.elevatorSubsystem.getElevatorHeight());
     ShuffleboardUtil.put("Coral Angle", m_robotContainer.coralSubsystem.angleDCEncoder.get());
@@ -85,6 +86,10 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     m_robotContainer.coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.coralSubsystem.funnelLeft.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.coralSubsystem.funnelRight.setNeutralMode(NeutralModeValue.Brake);
+    m_robotContainer.coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
 
     Timer.delay(5);
     m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
@@ -176,10 +181,4 @@ public class Robot extends TimedRobot {
 
   @Override
   public void simulationPeriodic() {}
-
-
-  // This is because I am too lazy to type sysout all the time
-  public void print(Object printValue) {
-    System.out.println(printValue);
-  }
 }

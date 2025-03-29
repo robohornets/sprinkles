@@ -42,14 +42,12 @@ public class ButtonConsole {
         joystick.leftTrigger().whileTrue(
             Commands.run(
                 () -> {
-                    //ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
                     ClimberVariables.alexHonnold.set(-1.0);
                 }
             )
         ).onFalse(
             Commands.run(
                 () -> {
-                    ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
                     ClimberVariables.alexHonnold.set(0.0);
                 }
             )
@@ -59,14 +57,12 @@ public class ButtonConsole {
             .whileTrue(
                 Commands.run(
                     () -> {
-                        //ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
                         ClimberVariables.alexHonnold.set(1.0);
                     }
                 )
             ).onFalse(
                 Commands.run(
                     () -> {
-                        ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
                         ClimberVariables.alexHonnold.set(0.0);
                     }
                 )
@@ -78,8 +74,6 @@ public class ButtonConsole {
             .onFalse(
                 Commands.run(
                     () -> {
-                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         elevatorSubsystem.elevatorLeft.set(0.0);
                         elevatorSubsystem.elevatorRight.set(0.0);
                     }
@@ -91,8 +85,6 @@ public class ButtonConsole {
             .onFalse(
                 Commands.run(
                     () -> {
-                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         elevatorSubsystem.elevatorLeft.set(0.0);
                         elevatorSubsystem.elevatorRight.set(0.0);
                     }
@@ -106,7 +98,6 @@ public class ButtonConsole {
             .onFalse(
                 Commands.run(
                     () -> {
-                        coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -117,8 +108,8 @@ public class ButtonConsole {
                 Commands.run(
                     () -> {
                         CommandScheduler.getInstance().cancelAll();
-                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+                        // elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+                        // elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
                     }
                 )
             );

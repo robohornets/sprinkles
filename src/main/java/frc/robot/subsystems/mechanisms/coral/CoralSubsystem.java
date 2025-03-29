@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class CoralSubsystem extends SubsystemBase {
 
@@ -23,12 +24,15 @@ public class CoralSubsystem extends SubsystemBase {
 
     public TalonFX angleMotor = new TalonFX(12);
     public TalonFX flywheelMotor = new TalonFX(11);
-    public TalonFX funnelMotor = new TalonFX(14);
+
+    public TalonFX funnelLeft = new TalonFX(14);
+    public TalonFX funnelRight = new TalonFX(15);
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
     
-    public Double angleSpeed = 0.1;
-    public Double flywheelInSpeed = 0.4;
-    public Double flywheelOutSpeed = 0.6;
+    public double angleSpeed = 0.1;
+    public double flywheelInSpeed = 0.4;
+    public double flywheelOutSpeed = 0.6;
+    public double funnelSpeed = 0.2; 
     
     public Double angleHoldSpeed = 0.015;
 
@@ -37,77 +41,113 @@ public class CoralSubsystem extends SubsystemBase {
         coralForwardSensor.getDistance(true).getValueAsDouble() < 0.2
     );
 
+    // MARK: Flywheel Commands
     public Command flywheelOut() {
         return Commands.run(
             () -> {
-        flywheelMotor.set(flywheelOutSpeed);
-    });}
+                flywheelMotor.set(flywheelOutSpeed);
+            }
+        );
+    }
     public Command flywheelIn() {
         return Commands.run(
             () -> {
-        flywheelMotor.set(-flywheelInSpeed);
-    });}
+                flywheelMotor.set(-flywheelInSpeed);
+            }
+        );
+    }
     public Command flywheelStop() {
         return Commands.run(
             () -> {
-        flywheelMotor.set(0.0);
-    }); }
+                flywheelMotor.set(0.0);
+            }
+        );
+    }
 
-    //Angle commands
+    // MARK: Angle Commands
     public Command angleUp() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() != 1 ? (getCoralAngle() < angleUpperLimit): (krakenGetCoralAngle() > krakenAngleUpperLimit)) {
-            angleMotor.set(-angleSpeed); }
-        else {
-            angleMotor.set(0.0);
-            angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                if (getLimitAsBool(true)) {
+                    angleMotor.set(-angleSpeed); }
+                else {
+                    angleMotor.set(0.0);
+                }
             }
-    }); }
+        );
+    }
 
     public Command angleDown() {
         return Commands.run(
             () -> {
-        if (getCoralAngle() != 1 ? (getCoralAngle() > angleLowerLimit): (krakenGetCoralAngle() < krakenAngleLowerLimit)) {
-            angleMotor.set(angleSpeed);} 
-        else {
-            angleMotor.set(0.0);
-            angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                if (getLimitAsBool(false)) {
+                    angleMotor.set(angleSpeed);} 
+                else {
+                    angleMotor.set(0.0);
+                }
             }
-    }); }
-
+        );
+    }
 
     public Command angleUpSlow() {
         return Commands.run(
             () -> {
-                if (getCoralAngle() != 1 ? (getCoralAngle() < angleUpperLimit): (krakenGetCoralAngle() > krakenAngleUpperLimit)) {
-        // if (getCoralAngle() < angleUpperLimit) {
-            angleMotor.set(-0.1); }
-        else {
-            angleMotor.set(0.0);
-            angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                if (getLimitAsBool(true)) {
+                    angleMotor.set(-0.1); }
+                else {
+                    angleMotor.set(0.0);
+                }
             }
-    }); }
+        );
+    }
 
     public Command angleDownSlow() {
         return Commands.run(
             () -> {
-
-                if (getCoralAngle() != 1 ? (getCoralAngle() > angleLowerLimit): (krakenGetCoralAngle() < krakenAngleLowerLimit)) {
-        // if (getCoralAngle() > angleLowerLimit) {
-        angleMotor.set(0.1);} 
-        else {
-            angleMotor.set(0.0);
-            angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                if (getLimitAsBool(false)) {
+                    angleMotor.set(0.1);} 
+                else {
+                    angleMotor.set(0.0);
+                }
             }
-    }); }
+        );
+    }
+
+    // MARK: Funnel Commands
+    public Command funnelThrough(ElevatorSubsystem elevatorSubsystem) {
+        return Commands.run(
+            () -> {
+                if (Math.abs(elevatorSubsystem.getElevatorHeight()) < 2) {
+                    funnelLeft.set(funnelSpeed);
+                    funnelRight.set(-funnelSpeed);
+                } 
+                else {
+                    funnelLeft.set(0.0);
+                    funnelRight.set(0.0);
+                }
+            }
+        );
+    }
 
 
     public double getCoralAngle() {
         return angleDCEncoder.get();
     }
 
+    public boolean coralAngleIsConnected() {
+        return angleDCEncoder.isConnected();
+    }
+
     public double krakenGetCoralAngle() {
         return angleMotor.getPosition().getValueAsDouble();
+    }
+
+    public boolean getLimitAsBool(boolean isUpperLimit) {
+        if (isUpperLimit) {
+            return coralAngleIsConnected() ? (getCoralAngle() < angleUpperLimit): (krakenGetCoralAngle() > krakenAngleUpperLimit);
+        }
+        else {
+            return coralAngleIsConnected() ? (getCoralAngle() > angleLowerLimit): (krakenGetCoralAngle() < krakenAngleLowerLimit);
+        }
     }
 }

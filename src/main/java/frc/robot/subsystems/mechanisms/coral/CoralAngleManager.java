@@ -89,15 +89,4 @@ public class CoralAngleManager extends Command {
     public double krakenGetCoralAngle() {
         return coralSubsystem.angleMotor.getPosition().getValueAsDouble();
     }
-
-    public Command funnelToFlywheel() {
-        return Commands.run( () -> {
-            if (coralSubsystem.coralForwardSensor.getDistance(true).getValueAsDouble() < 0.2) {
-                coralSubsystem.funnelMotor.set(0.0);
-            } else {
-                coralSubsystem.funnelMotor.set(0.5);
-            }
-        } );
-    }   
-
 }

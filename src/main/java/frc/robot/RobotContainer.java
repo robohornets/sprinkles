@@ -57,7 +57,7 @@ public class RobotContainer {
     
     // MARK: Triggers
 
-    public CANrange funnelRangeSensor = new CANrange(36, "Mechanisms");
+    public CANrange funnelRangeSensor = new CANrange(36);
     Trigger canRangeTrigger = new Trigger(() -> 
         funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2
     );
@@ -166,6 +166,19 @@ public class RobotContainer {
                         }
                     },
                     coralSubsystem
+                )
+            );
+
+        elevatorSubsystem
+            .setDefaultCommand(
+                Commands.run(
+                    () -> {
+                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorLeft.set(-0.015);
+                        elevatorSubsystem.elevatorRight.set(0.015);
+                    },
+                    elevatorSubsystem
                 )
             );
     }

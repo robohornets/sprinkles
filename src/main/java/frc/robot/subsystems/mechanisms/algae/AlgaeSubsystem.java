@@ -11,7 +11,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     public double angleUpperLimit = 0.0;
     public double angleLowerLimit = -15.0;
 
-    public TalonFX angleMotor = new TalonFX(15, "Mechanisms");
+    public TalonFX angleMotor = new TalonFX(15);
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(3);
     
     public Double angleAlgaeSpeed = 0.2;

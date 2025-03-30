@@ -4,11 +4,12 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    public final double elevatorUpDownSpeed = 0.65;
+    public final double elevatorUpDownSpeed = 0.4;//0.65;
     public final double elevatorUpDownSpeedSlow = 0.1;
 
     public final TalonFX elevatorLeft = new TalonFX(10);
@@ -22,18 +23,19 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public double getElevatorHeight() {
-        return elevatorLeft.getPosition().getValueAsDouble() - elevatorEncoderOffset;
+        return elevatorLeft.getPosition().getValueAsDouble();
     }
 
     public Command elevatorUp() {
         return Commands.run(
             () -> {
-                if (Math.abs(elevatorLeft.getPosition().getValueAsDouble()) <= 65.0) {
+                if (Math.abs(elevatorLeft.getPosition().getValueAsDouble()) <= 50.0) {
                     elevatorLeft.set(-elevatorUpDownSpeed);
                     elevatorRight.set(elevatorUpDownSpeed);
+                    CommandScheduler.getInstance().cancelAll();
                 } else {
-                    elevatorLeft.set(0.0);
-                    elevatorRight.set(0.0);
+                    elevatorLeft.set(-0.015);
+                    elevatorRight.set(0.015);
                 }
             }
         );
@@ -46,8 +48,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                     elevatorLeft.set(elevatorUpDownSpeed);
                     elevatorRight.set(-elevatorUpDownSpeed);
                 } else {
-                    elevatorLeft.set(0.0);
-                    elevatorRight.set(0.0);
+                    elevatorLeft.set(-0.015);
+                    elevatorRight.set(0.015);
                 }
             }
         );
@@ -78,8 +80,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                     elevatorLeft.set(-elevatorUpDownSpeedSlow);
                     elevatorRight.set(elevatorUpDownSpeedSlow);
                 } else {
-                    elevatorLeft.set(0.0);
-                    elevatorRight.set(0.0);
+                    elevatorLeft.set(-0.015);
+                    elevatorRight.set(0.015);
                 }
             }
         );
@@ -92,8 +94,8 @@ public class ElevatorSubsystem extends SubsystemBase {
                     elevatorLeft.set(elevatorUpDownSpeedSlow);
                     elevatorRight.set(-elevatorUpDownSpeedSlow);
                 } else {
-                    elevatorLeft.set(0.0);
-                    elevatorRight.set(0.0);
+                    elevatorLeft.set(-0.015);
+                    elevatorRight.set(0.015);
                 }
             }
         );
@@ -102,8 +104,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     public Command stopElevator() {
         return Commands.run(
             () -> {
-                elevatorLeft.set(0.0);
-                elevatorRight.set(0.0);
+                elevatorLeft.set(-0.015);
+                elevatorRight.set(0.015);
             }
         );
     }

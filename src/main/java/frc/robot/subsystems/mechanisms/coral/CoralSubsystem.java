@@ -22,11 +22,11 @@ public class CoralSubsystem extends SubsystemBase {
     public double krakenAngleUpperLimit = 0.0;
     public double krakenAngleLowerLimit = 7.5;
 
-    public TalonFX angleMotor = new TalonFX(12, "Mechanisms");
-    public TalonFX flywheelMotor = new TalonFX(11, "Mechanisms");
+    public TalonFX angleMotor = new TalonFX(12);
+    public TalonFX flywheelMotor = new TalonFX(11);
 
-    public TalonFX funnelLeft = new TalonFX(14, "Mechanisms");
-    public TalonFX funnelRight = new TalonFX(15, "Mechanisms");
+    public TalonFX funnelLeft = new TalonFX(14);
+    public TalonFX funnelRight = new TalonFX(15);
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
     
     public double angleSpeed = 0.1;
@@ -36,7 +36,7 @@ public class CoralSubsystem extends SubsystemBase {
     
     public Double angleHoldSpeed = 0.015;
 
-    public CANrange coralForwardSensor = new CANrange(35, "Mechanisms");
+    public CANrange coralForwardSensor = new CANrange(35);
     public Trigger coralForwardTrigger = new Trigger(() -> 
         coralForwardSensor.getDistance(true).getValueAsDouble() < 0.1
     );

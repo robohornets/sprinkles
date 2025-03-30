@@ -3,6 +3,7 @@ package frc.robot.subsystems.mechanisms.elevator;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 public class ElevatorHeightManager extends Command {
     private ElevatorSubsystem elevatorSubsystem;
@@ -103,5 +104,7 @@ public class ElevatorHeightManager extends Command {
         elevatorSubsystem.elevatorLeft.set(-0.015);
         elevatorSubsystem.elevatorRight.set(0.015);
         System.out.println("Command Ended. Motors Stopped.");
+
+        CommandScheduler.getInstance().cancelAll();
     }
 }

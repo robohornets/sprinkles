@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.CANrange;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -15,6 +16,9 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.helpers.ShuffleboardUtil;
 import frc.robot.subsystems.photonvision.Vision;
 
@@ -26,6 +30,7 @@ public class Robot extends TimedRobot {
   private Vision vision;
 
   private PowerDistribution pdp = new PowerDistribution();
+  
 
   public Robot() {
     m_robotContainer = new RobotContainer();
@@ -35,12 +40,8 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     // MARK: Configure Cameras
     UsbCamera zane1 = CameraServer.startAutomaticCapture(0);
-    UsbCamera zane2 = CameraServer.startAutomaticCapture(1);
     zane1.setResolution(320, 180);
     zane1.setFPS(60);
-    zane2.setResolution(640, 360);
-    zane2.setFPS(30);
-
 
     vision = new Vision();
 
@@ -75,10 +76,9 @@ public class Robot extends TimedRobot {
     ShuffleboardUtil.put("Elevator Height", m_robotContainer.elevatorSubsystem.getElevatorHeight());
     ShuffleboardUtil.put("Coral Angle", m_robotContainer.coralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("kraken Coral Angle", m_robotContainer.coralSubsystem.angleMotor.getPosition().getValueAsDouble());
-    ShuffleboardUtil.put("Robot Pose", RobotContainer.drivetrain.getState().Pose);
-    ShuffleboardUtil.put("Algae Angle", m_robotContainer.algaeSubsystem.angleMotor.getPosition().getValueAsDouble());
+    ShuffleboardUtil.put("Algae Angle", m_robotContainer.algaeSubsystem.angleDCEncoder.get());
 
-    ShuffleboardUtil.put("Coral CANRange Distance", m_robotContainer.coralSubsystem.coralForwardSensor.getDistance().getValueAsDouble());
+    ShuffleboardUtil.put("Coral CANRange Distance", m_robotContainer.coralSubsystem.coralForwardSensor.getDistance(true).getValueAsDouble());
     ShuffleboardUtil.put("Coral CANRange Bool", m_robotContainer.coralSubsystem.coralForwardTrigger.getAsBoolean());
 
     if (DriverStation.getMatchTime() <= 1.5) {
@@ -94,9 +94,9 @@ public class Robot extends TimedRobot {
     m_robotContainer.coralSubsystem.funnelRight.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    Timer.delay(5);
-    m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-    m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+    // Timer.delay(5);
+    // m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+    // m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
   }
 
   @Override

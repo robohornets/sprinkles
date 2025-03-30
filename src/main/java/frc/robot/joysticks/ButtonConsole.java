@@ -15,6 +15,7 @@ import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
+import frc.robot.subsystems.mechanisms.coral.CoralPositionManager;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
@@ -107,9 +108,7 @@ public class ButtonConsole {
             .onTrue(
                 Commands.run(
                     () -> {
-                        CommandScheduler.getInstance().cancelAll();
-                        // elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-                        // elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+                        new CoralPositionManager(coralSubsystem);
                     }
                 )
             );

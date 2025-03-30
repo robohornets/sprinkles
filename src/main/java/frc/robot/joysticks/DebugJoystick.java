@@ -62,13 +62,6 @@ public class DebugJoystick {
             );
         
 
-        // collect top algae by passing in Pose2d location
-        joystick.y().onTrue(new AlignOnTheFlyByPose(new Pose2d(1.05, 6.4, new Rotation2d(216.0)), drivetrain));
-
-        // MARK: X-Button
-        // Aligns to the right side of the reef
-        joystick.x().onTrue(new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain));
-
         // MARK: Y-Button
         // Aligns to the left side of the reef
     //    joystick.y().onTrue(new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain));
@@ -76,9 +69,6 @@ public class DebugJoystick {
 
         // MARK: Start
         joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-
-        // MARK: Back
-        joystick.back().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
 
 
         // MARK: Left Bumper

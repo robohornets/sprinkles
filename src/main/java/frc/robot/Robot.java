@@ -53,6 +53,8 @@ public class Robot extends TimedRobot {
     m_robotContainer.algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+
+    CommandScheduler.getInstance().cancelAll();
   }
 
   @Override
@@ -94,9 +96,9 @@ public class Robot extends TimedRobot {
     m_robotContainer.coralSubsystem.funnelRight.setNeutralMode(NeutralModeValue.Brake);
     m_robotContainer.coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
 
-    // Timer.delay(5);
-    // m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-    // m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+    Timer.delay(5);
+    m_robotContainer.elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+    m_robotContainer.elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
   }
 
   @Override

@@ -157,7 +157,7 @@ public class RobotContainer {
             .setDefaultCommand( 
                 Commands.run(
                     () -> {
-                        if (funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2){
+                        if (funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.1){
                             coralSubsystem.funnelLeft.set(0);
                             coralSubsystem.funnelRight.set(0);
                         } else {
@@ -173,31 +173,12 @@ public class RobotContainer {
             .setDefaultCommand(
                 Commands.run(
                     () -> {
-                        elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
                         elevatorSubsystem.elevatorLeft.set(-0.015);
                         elevatorSubsystem.elevatorRight.set(0.015);
                     },
                     elevatorSubsystem
                 )
             );
-    }
-
-    private void configureTriggers() {
-        // elevatorDownTrigger
-        //     .onTrue(
-        //         Commands.run(
-        //             () -> {
-        //             }
-        //         )
-        //     )
-        //     .whileTrue(
-        //         Commands.run(
-        //             () -> {
-        //                 elevatorSubsystem.elevatorLeft.setPosition(0.0);
-        //             }
-        //         )
-        //     );
     }
 
     private void configureBindings() {

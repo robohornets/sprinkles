@@ -21,7 +21,7 @@ public class DebugJoystick {
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
     private final ElevatorSubsystem elevatorSubsystem;
-    private final CoralSubsystem coralSubsytem;
+    private final CoralSubsystem coralSubsystem;
     private final AlgaeSubsystem algaeSubsystem;
     
     public DebugJoystick(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
@@ -30,18 +30,18 @@ public class DebugJoystick {
         this.joystick = joystick;
         this.drivetrain = drivetrain;
         this.elevatorSubsystem = elevatorSubsystem;
-        this.coralSubsytem = coralSubsystem;
+        this.coralSubsystem = coralSubsystem;
         this.algaeSubsystem = algaeSubsystem;
     }
 
     public void configureBindings() {
         // MARK: A-Button
         joystick.a()
-            .whileTrue(coralSubsytem.flywheelOut())
+            .whileTrue(coralSubsystem.flywheelOut())
             .onFalse(
                 Commands.run(
                     () -> {
-                        coralSubsytem.flywheelMotor.set(0.0);
+                        coralSubsystem.flywheelMotor.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -50,11 +50,11 @@ public class DebugJoystick {
         // MARK: B-Button
         
         joystick.b()
-            .whileTrue(coralSubsytem.flywheelIn())
+            .whileTrue(coralSubsystem.flywheelIn())
             .onFalse(
                 Commands.run(
                     () -> {
-                        coralSubsytem.flywheelMotor.set(0.0);
+                        coralSubsystem.flywheelMotor.set(0.0);
                         
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -68,7 +68,20 @@ public class DebugJoystick {
 
 
         // MARK: Start
-        joystick.start().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        joystick.start()
+        .onTrue(
+            Commands.run(
+                () -> {
+                    coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Coast);
+                    coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+                    coralSubsystem.funnelLeft.setNeutralMode(NeutralModeValue.Coast);
+                    coralSubsystem.funnelRight.setNeutralMode(NeutralModeValue.Coast);
+                    algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Coast);
+                    elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+                    elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+                }
+            )
+        );
 
 
         // MARK: Left Bumper
@@ -99,9 +112,35 @@ public class DebugJoystick {
                 )
             );
 
-        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsytem).goToPreset());
-        joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsytem).goToPreset());
-        joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsytem).goToPreset());
-        joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsytem).goToPreset());
+        
+            joystick.leftTrigger()
+            .whileTrue(coralSubsystem.angleDown())
+            .onFalse(Commands.run(
+                    () -> {
+                        coralSubsystem.angleMotor.set(0.0);
+
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+
+        // MARK: Right Bumper
+        joystick.rightTrigger()
+            .whileTrue(coralSubsystem.angleUp())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.angleMotor.set(0.0);
+
+                        CommandScheduler.getInstance().cancelAll();
+
+                    }
+                )
+            );
+
+        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset());
     }
 }

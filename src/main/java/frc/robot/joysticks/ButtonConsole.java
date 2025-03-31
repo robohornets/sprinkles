@@ -14,8 +14,9 @@ import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
-import frc.robot.subsystems.mechanisms.coral.CoralPositionManager;
+//import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
+import frc.robot.subsystems.mechanisms.coral.CoralInCommand;
+import frc.robot.subsystems.mechanisms.coral.CoralOutCommand;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
@@ -39,32 +40,23 @@ public class ButtonConsole {
     }
 
     public void configureBindings() {
-        // MARK: Climber
-        joystick.leftTrigger().whileTrue(
-            Commands.run(
-                () -> {
-                    ClimberVariables.alexHonnold.set(-1.0);
-                }
-            )
-        ).onFalse(
-            Commands.run(
-                () -> {
-                    ClimberVariables.alexHonnold.set(0.0);
-                }
-            )
-        );
+        // MARK: Empty for now
+        joystick.leftTrigger()
+            .onTrue(
+                new CoralOutCommand(coralSubsystem)
+            );
 
         joystick.rightTrigger()
             .whileTrue(
                 Commands.run(
                     () -> {
-                        ClimberVariables.alexHonnold.set(1.0);
+                        //ClimberVariables.alexHonnold.set(1.0);
                     }
                 )
             ).onFalse(
                 Commands.run(
                     () -> {
-                        ClimberVariables.alexHonnold.set(0.0);
+                        //ClimberVariables.alexHonnold.set(0.0);
                     }
                 )
             );
@@ -106,11 +98,7 @@ public class ButtonConsole {
 
         joystick.x()
             .onTrue(
-                Commands.run(
-                    () -> {
-                        new CoralPositionManager(coralSubsystem);
-                    }
-                )
+                new CoralInCommand(coralSubsystem)
             );
 
         joystick.y().onTrue(

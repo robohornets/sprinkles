@@ -1,4 +1,4 @@
-package frc.robot.joysticks;
+package frc.robot.joysticks.Debug;
 
 import java.util.Optional;
 
@@ -6,8 +6,10 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.RobotContainer;
 import frc.robot.helpers.levelmanager.LevelManager;
@@ -17,9 +19,11 @@ import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralInCommand;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralOutCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.FunnelInCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.FunnelOutCommand;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
-public class ButtonConsole {
+public class DebugButtonConsole {
     private final RobotContainer robotContainer;
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
@@ -28,7 +32,7 @@ public class ButtonConsole {
     private final AlgaeSubsystem algaeSubsytem;
     Optional<Alliance> ally = DriverStation.getAlliance();
     
-    public ButtonConsole(RobotContainer robotContainer, CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem, AlgaeSubsystem algaeSubsystem) {
+    public DebugButtonConsole(RobotContainer robotContainer, CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem, AlgaeSubsystem algaeSubsystem) {
 
         this.robotContainer = robotContainer;
         this.joystick = joystick;
@@ -39,25 +43,16 @@ public class ButtonConsole {
     }
 
     public void configureBindings() {
-        // MARK: Empty for now
+        // MARK: A Button
         joystick.leftTrigger()
             .onTrue(
                 new CoralOutCommand(coralSubsystem)
             );
 
+        // MARK: B Button
         joystick.rightTrigger()
-            .whileTrue(
-                Commands.run(
-                    () -> {
-                        //ClimberVariables.alexHonnold.set(1.0);
-                    }
-                )
-            ).onFalse(
-                Commands.run(
-                    () -> {
-                        //ClimberVariables.alexHonnold.set(0.0);
-                    }
-                )
+            .onTrue(
+                new CoralInCommand(coralSubsystem)
             );
 
         
@@ -84,15 +79,19 @@ public class ButtonConsole {
             );
         
         
-
+        // E Button
         joystick.b()
-            .whileTrue(coralSubsystem.flywheelIn())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        CommandScheduler.getInstance().cancelAll();
-                    }
-                )
+            .onTrue(
+                new FunnelInCommand(coralSubsystem)
+            );
+        
+        // D Button
+        joystick.a()
+            .onTrue(
+                new InstantCommand(() -> {
+                    new FunnelOutCommand(coralSubsystem).schedule();
+                    new CoralInCommand(coralSubsystem).schedule();
+                })
             );
 
         joystick.x()

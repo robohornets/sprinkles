@@ -1,7 +1,8 @@
-package frc.robot.subsystems.mechanisms.coral;
+package frc.robot.subsystems.mechanisms.coral.CommandManagers;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 
 public class CoralAngleManager extends Command {
     private double angle;

@@ -24,9 +24,10 @@ import frc.robot.commands.namedcommands.RegisterCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.helpers.ShuffleboardUtil;
 import frc.robot.joysticks.ButtonConsole;
-import frc.robot.joysticks.DebugJoystick;
 import frc.robot.joysticks.DriverJoystick;
 import frc.robot.joysticks.MechBackup;
+import frc.robot.joysticks.Debug.DebugButtonConsole;
+import frc.robot.joysticks.Debug.DebugJoystick;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
@@ -54,13 +55,6 @@ public class RobotContainer {
     public static final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    
-    // MARK: Triggers
-
-    public CANrange funnelRangeSensor = new CANrange(36);
-    Trigger canRangeTrigger = new Trigger(() -> 
-        funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.2
-    );
 
     public boolean slowRobotSpeed = false;
 
@@ -77,11 +71,13 @@ public class RobotContainer {
     private final CommandXboxController mechanismsJoystick = new CommandXboxController(1);
     private final CommandXboxController buttonConsole = new CommandXboxController(2);
     private final CommandXboxController debugJoystick = new CommandXboxController(3);
+    private final CommandXboxController debugButtonConsole = new CommandXboxController(4);
 
     private final DriverJoystick driverJoystickController = new DriverJoystick(driverJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
     private final MechBackup mechanismsJoystickController = new MechBackup(mechanismsJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
     private final DebugJoystick debugJoystickController = new DebugJoystick(debugJoystick, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
     private final ButtonConsole buttonConsoleController = new ButtonConsole(this, buttonConsole, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
+    private final DebugButtonConsole debugButtonConsoleController = new DebugButtonConsole(this, debugButtonConsole, drivetrain, elevatorSubsystem, coralSubsystem, algaeSubsystem);
 
     // MARK: Shuffleboard
     /* Path follower */
@@ -148,26 +144,27 @@ public class RobotContainer {
         mechanismsJoystickController.configureBindings();
         buttonConsoleController.configureBindings();
         debugJoystickController.configureBindings();
+        debugButtonConsoleController.configureBindings();
         configureBindings();
         configureDefaults();
     }
 
     private void configureDefaults() {
-        coralSubsystem
-            .setDefaultCommand( 
-                Commands.run(
-                    () -> {
-                        if (funnelRangeSensor.getDistance(true).getValueAsDouble() < 0.1){
-                            coralSubsystem.funnelLeft.set(0);
-                            coralSubsystem.funnelRight.set(0);
-                        } else {
-                            coralSubsystem.funnelLeft.set(coralSubsystem.funnelSpeed);
-                            coralSubsystem.funnelRight.set(-coralSubsystem.funnelSpeed);
-                        }
-                    },
-                    coralSubsystem
-                )
-            );
+        // coralSubsystem
+        //     .setDefaultCommand( 
+        //         Commands.run(
+        //             () -> {
+        //                 if (coralSubsystem.funnelSensor.getDistance(true).getValueAsDouble() < 0.1){
+        //                     coralSubsystem.funnelLeft.set(0);
+        //                     coralSubsystem.funnelRight.set(0);
+        //                 } else {
+        //                     coralSubsystem.funnelLeft.set(-0.1);
+        //                     coralSubsystem.funnelRight.set(0.1);
+        //                 }
+        //             },
+        //             coralSubsystem
+        //         )
+        //     );
 
         elevatorSubsystem
             .setDefaultCommand(

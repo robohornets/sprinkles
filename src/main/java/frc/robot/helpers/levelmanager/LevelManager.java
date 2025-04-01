@@ -4,10 +4,10 @@ import com.ctre.phoenix6.hardware.CANrange;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralAngleManager;
 
 public class LevelManager {
     private final Levels selectedLevel;

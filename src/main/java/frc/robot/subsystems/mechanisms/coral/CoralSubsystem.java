@@ -16,8 +16,8 @@ public class CoralSubsystem extends SubsystemBase {
     //in and out flywheels 11, coral angle 12, algae 13, funnel wheels 14, remove seperate algae wheels and 
     //change coral wheels to in and out wheels (one motor controls both), might need to change id on angles
 
-    public double angleUpperLimit = 0.668;
-    public double angleLowerLimit = 0.3;
+    public double angleUpperLimit = 0.79;
+    public double angleLowerLimit = 0.32;
 
     public double krakenAngleUpperLimit = 0.0;
     public double krakenAngleLowerLimit = 7.5;
@@ -32,13 +32,18 @@ public class CoralSubsystem extends SubsystemBase {
     public double angleSpeed = 0.1;
     public double flywheelInSpeed = 0.4;
     public double flywheelOutSpeed = 0.6;
-    public double funnelSpeed = 0.2; 
+    public double funnelSpeed = 0.1; 
     
     public Double angleHoldSpeed = 0.015;
 
     public CANrange coralForwardSensor = new CANrange(35);
     public Trigger coralForwardTrigger = new Trigger(() -> 
         coralForwardSensor.getDistance(true).getValueAsDouble() < 0.1
+    );
+
+    public CANrange funnelSensor = new CANrange(36);
+    public Trigger funnelTrigger = new Trigger(() -> 
+        funnelSensor.getDistance(true).getValueAsDouble() < 0.2
     );
 
     // MARK: Flywheel Commands
@@ -69,7 +74,7 @@ public class CoralSubsystem extends SubsystemBase {
         return Commands.run(
             () -> {
                 if (getLimitAsBool(true)) {
-                    angleMotor.set(-angleSpeed); }
+                    angleMotor.set(angleSpeed); }
                 else {
                     angleMotor.set(0.0);
                 }
@@ -81,7 +86,7 @@ public class CoralSubsystem extends SubsystemBase {
         return Commands.run(
             () -> {
                 if (getLimitAsBool(false)) {
-                    angleMotor.set(angleSpeed);} 
+                    angleMotor.set(-angleSpeed);} 
                 else {
                     angleMotor.set(0.0);
                 }

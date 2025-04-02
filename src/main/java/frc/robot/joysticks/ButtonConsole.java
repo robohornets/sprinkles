@@ -15,8 +15,8 @@ import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralInCommand;
-import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralOutCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralInCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralOutCommand;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class ButtonConsole {

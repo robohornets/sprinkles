@@ -24,13 +24,14 @@ public class HandoffManager extends Command {
         addRequirements(this.coralSubsystem, this.elevatorSubsystem);
     }
 
-    private int handoffStep = 0;
+    private int handoffStep = 1;
     private double handoffStartTime = -1;
+    private double downBrakeDelay = 0.25;
 
     @Override
     public void initialize() {
         isFinishedToggle = false;
-        handoffStep = 0;
+        handoffStep = 1;
         handoffStartTime = -1;
         updateState();
     }    
@@ -41,6 +42,7 @@ public class HandoffManager extends Command {
     }
 
     private void updateState() {
+        // Step 0 intakes in the funnel until the CANrange detects coral
         if (handoffStep == 0) {
             if (coralSubsystem.funnelSensor.getDistance(true).getValueAsDouble() < 0.1) {
                 coralSubsystem.funnelLeft.set(0.0);
@@ -52,6 +54,7 @@ public class HandoffManager extends Command {
                 coralSubsystem.funnelRight.set(coralSubsystem.funnelSpeed);
             }
         }
+        // Step 1 moves the elevator to the bottom
         else if (handoffStep == 1) {
             double currentHeight = -elevatorSubsystem.getElevatorHeight();
             double heightLimiter = (currentHeight >= -5 ? 0.4: currentHeight >= -10 ? 0.6: currentHeight >= -15 ? 0.8: 1.0);
@@ -107,6 +110,8 @@ public class HandoffManager extends Command {
                 elevatorSubsystem.elevatorRight.set(elevatorSubsystem.elevatorUpDownSpeed * heightLimiter);
             }
         }
+        // Step 2 disables brake mode, waits, then re-enables brake mode
+        // This brings the elevator all the way down
         else if (handoffStep == 2) {
             if (handoffStartTime < 0) {
                 elevatorSubsystem.elevatorLeft.set(0);
@@ -118,20 +123,22 @@ public class HandoffManager extends Command {
                 return;
             }
         
-            if (Timer.getFPGATimestamp() - handoffStartTime >= 1.0) {
+            if (Timer.getFPGATimestamp() - handoffStartTime >= downBrakeDelay) {
                 elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
                 elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
 
                 handoffStartTime = -1;
                 handoffStep++;
             }
-        }        
+        }
+        // Step 3 angles for intake
         else if (handoffStep == 3) {
             double target = -1.44;
             if (moveAngleToTarget(target)) {
                 handoffStep++;
             }
-        }                      
+        }
+        // Step 4 passes from the funnel to coralator                
         else if (handoffStep == 4) {
             if (coralSubsystem.funnelSensor.getDistance(true).getValueAsDouble() > 0.1) {
                 coralSubsystem.funnelLeft.set(0.0);
@@ -146,7 +153,7 @@ public class HandoffManager extends Command {
                 coralSubsystem.flywheelMotor.set(0.0);
             }
             else {
-                coralSubsystem.flywheelMotor.set(-0.2);
+                coralSubsystem.flywheelMotor.set(-coralSubsystem.flywheelOutSpeed);
             }
 
             if ((coralSubsystem.funnelSensor.getDistance(true).getValueAsDouble() > 0.1) && (coralSubsystem.coralForwardSensor.getDistance(true).getValueAsDouble() < 0.1)) {
@@ -156,6 +163,7 @@ public class HandoffManager extends Command {
                 handoffStep++;
             }
         }
+        // Step 5 angles for movement and elevator
         else if (handoffStep == 5) {
             double target = -9;
             if (moveAngleToTarget(target)) {

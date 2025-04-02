@@ -34,52 +34,37 @@ public class LevelManager {
         switch (selectedLevel) {
             case LEVEL_1:
                 targetHeight = 0.0;
-                targetAngle = 0.4;
-                krakenTargetAngle = 5.0;
-                // kraken angle : 5
+                krakenTargetAngle = 0.0;
                 break;
 
             case LEVEL_2:
-                targetHeight = 11.17;
-                targetAngle = 0.372;
-                krakenTargetAngle = 5.8;
-                // kraken angle : 5.8
+                targetHeight = 15.88;
+                krakenTargetAngle = -3.77;
                 break;
 
             case LEVEL_3:
-                targetHeight = 30.690;
-                targetAngle = 0.372;
-                krakenTargetAngle = 5.7;
-                // kraken angle : 5.7
+                targetHeight = 32;
+                krakenTargetAngle = -3.77;
                 break;
 
             case LEVEL_4:
-                targetHeight = 65.049;
-                targetAngle = 0.385;
-                krakenTargetAngle = 5.8;
-
-                // kraken angle : 5.8
+                targetHeight = 64;
+                krakenTargetAngle = -3.86;
                 break;
 
             case DEFAULT_POSITION:
                 targetHeight = 0.0;
-                targetAngle = 0.82;
                 krakenTargetAngle = 0.0;
-                // kraken angle : 0.0
                 break;
 
             case CORAL_STATION:
                 targetHeight = 2.1;
-                targetAngle = 0.55;
                 krakenTargetAngle = 2.4;
-                // kraken angle : 2.4
                 break;
 
             case ZERO:
                 targetHeight = 0.0;
-                targetAngle = 0.55;
                 krakenTargetAngle = 2.4;
-                // kraken angle : 2.4
                 break;
 
             default:
@@ -88,7 +73,7 @@ public class LevelManager {
 
         // Run both the coral angle and elevator height commands
         return Commands.parallel(
-            new CoralAngleManager(targetAngle, krakenTargetAngle, coralSubsystem),
+            new CoralAngleManager(krakenTargetAngle, coralSubsystem),
             new ElevatorHeightManager(targetHeight, elevatorSubsystem)
         );
     }

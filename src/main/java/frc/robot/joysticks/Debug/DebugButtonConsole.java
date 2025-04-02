@@ -18,11 +18,11 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralAngleManager;
-import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralInCommand;
-import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralOutCommand;
-import frc.robot.subsystems.mechanisms.coral.CommandManagers.FunnelInCommand;
-import frc.robot.subsystems.mechanisms.coral.CommandManagers.FunnelOutCommand;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.HandoffManager;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralInCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralOutCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.FunnelInCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.FunnelOutCommand;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class DebugButtonConsole {
@@ -101,10 +101,14 @@ public class DebugButtonConsole {
                 new CoralInCommand(coralSubsystem)
             );
 
+        // F Button
         joystick.y().onTrue(
-            Commands.sequence(
-                new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset()
-            )
+            Commands.run(
+                () -> {
+                    coralSubsystem.funnelLeft.set(0.6);
+                    coralSubsystem.funnelRight.set(-0.6);
+                }
+            ).withTimeout(1.5)
         );
 
         // MARK: DPAD Bindings

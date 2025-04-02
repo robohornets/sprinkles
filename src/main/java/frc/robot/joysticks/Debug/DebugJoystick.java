@@ -83,6 +83,21 @@ public class DebugJoystick {
             )
         );
 
+        joystick.back()
+        .onTrue(
+            Commands.run(
+                () -> {
+                    coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                    coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Brake);
+                    coralSubsystem.funnelLeft.setNeutralMode(NeutralModeValue.Brake);
+                    coralSubsystem.funnelRight.setNeutralMode(NeutralModeValue.Brake);
+                    algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+                    elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
+                    elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                }
+            )
+        );
+
 
         // MARK: Left Bumper
         joystick.leftBumper()

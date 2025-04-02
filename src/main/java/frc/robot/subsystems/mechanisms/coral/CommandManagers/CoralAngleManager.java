@@ -5,18 +5,13 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 
 public class CoralAngleManager extends Command {
-    private double angle;
     private double krakenAngle;
     private CoralSubsystem coralSubsystem;
     private boolean isFinishedToggle = false;
     private double oopsieThreshold = 0.01;
     private double krakenOopsieThreshold = 0.1;
 
-    // public double angleUpperLimit = 0.668; // Update: 0.668
-    // public double angleLowerLimit = 0.255; // Update: 0.25
-
-    public CoralAngleManager(double angle, double krakenAngle, CoralSubsystem coralSubsystem) {
-        this.angle = Math.max(coralSubsystem.angleLowerLimit, Math.min(coralSubsystem.angleUpperLimit, angle));
+    public CoralAngleManager(double krakenAngle, CoralSubsystem coralSubsystem) {
         this.krakenAngle = krakenAngle;
         this.coralSubsystem = coralSubsystem;
         addRequirements(this.coralSubsystem);
@@ -34,7 +29,6 @@ public class CoralAngleManager extends Command {
     }
 
     private void updateMotorSpeed() {
-        double currentAngle = getCoralAngle();
         double krakenCurrentAngle = krakenGetCoralAngle();
     
         if (Math.abs(krakenCurrentAngle - krakenAngle) <= krakenOopsieThreshold) {
@@ -77,10 +71,6 @@ public class CoralAngleManager extends Command {
     public void end(boolean interrupted) {
         coralSubsystem.angleMotor.set(0.015);
         System.out.println("Command Ended. Motor Stopped.");
-    }
-
-    public double getCoralAngle() {
-        return coralSubsystem.angleDCEncoder.get();
     }
 
     public double krakenGetCoralAngle() {

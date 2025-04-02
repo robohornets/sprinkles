@@ -1,16 +1,18 @@
 
-package frc.robot.subsystems.mechanisms.coral.CommandManagers;
+package frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 
-public class FunnelOutCommand extends Command {
+public class CoralInCommand extends Command {
     private CoralSubsystem coralSubsystem;
     private boolean isFinishedToggle = false;
 
-    public FunnelOutCommand(CoralSubsystem coralSubsystem) {
+    // public double angleUpperLimit = 0.668; // Update: 0.668
+    // public double angleLowerLimit = 0.255; // Update: 0.25
+
+    public CoralInCommand(CoralSubsystem coralSubsystem) {
         this.coralSubsystem = coralSubsystem;
         addRequirements(this.coralSubsystem);
     }
@@ -27,14 +29,12 @@ public class FunnelOutCommand extends Command {
     }
 
     private void updateMotorSpeed() {
-        if (coralSubsystem.funnelSensor.getDistance(true).getValueAsDouble() > 0.1) {
-            coralSubsystem.funnelLeft.set(0.0);
-            coralSubsystem.funnelRight.set(0.0);
+        if (coralSubsystem.coralForwardSensor.getDistance(true).getValueAsDouble() < 0.1) {
+            coralSubsystem.flywheelMotor.set(0.0);
             isFinishedToggle = true;
         }
         else {
-            coralSubsystem.funnelLeft.set(-coralSubsystem.funnelSpeed);
-            coralSubsystem.funnelRight.set(coralSubsystem.funnelSpeed);
+            coralSubsystem.flywheelMotor.set(-0.2);
         }
     }
 

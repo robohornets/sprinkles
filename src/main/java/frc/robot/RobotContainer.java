@@ -159,8 +159,8 @@ public class RobotContainer {
                             coralSubsystem.funnelLeft.set(0);
                             coralSubsystem.funnelRight.set(0);
                         } else {
-                            coralSubsystem.funnelLeft.set(-0.05);
-                            coralSubsystem.funnelRight.set(0.05);
+                            coralSubsystem.funnelLeft.set(-coralSubsystem.funnelSpeed);
+                            coralSubsystem.funnelRight.set(coralSubsystem.funnelSpeed);
                         }
                     },
                     coralSubsystem

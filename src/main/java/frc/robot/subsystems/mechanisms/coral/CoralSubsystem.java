@@ -5,6 +5,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,12 +30,13 @@ public class CoralSubsystem extends SubsystemBase {
     public TalonFX funnelRight = new TalonFX(15);
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
     
-    public double angleSpeed = 0.1;
+    public double angleSpeed = 0.15;
     public double flywheelInSpeed = 0.2;
-    public double flywheelOutSpeed = 0.2;
-    public double funnelSpeed = 0.1; 
+    public double flywheelOutSpeed = 0.4;
+    public double funnelSpeed = 0.1;
     
     public Double angleHoldSpeed = 0.015;
+
 
     public CANrange coralForwardSensor = new CANrange(35);
     public Trigger coralForwardTrigger = new Trigger(() -> 

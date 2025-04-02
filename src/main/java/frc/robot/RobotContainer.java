@@ -150,21 +150,22 @@ public class RobotContainer {
     }
 
     private void configureDefaults() {
-        // coralSubsystem
-        //     .setDefaultCommand( 
-        //         Commands.run(
-        //             () -> {
-        //                 if (coralSubsystem.funnelSensor.getDistance(true).getValueAsDouble() < 0.1){
-        //                     coralSubsystem.funnelLeft.set(0);
-        //                     coralSubsystem.funnelRight.set(0);
-        //                 } else {
-        //                     coralSubsystem.funnelLeft.set(-0.1);
-        //                     coralSubsystem.funnelRight.set(0.1);
-        //                 }
-        //             },
-        //             coralSubsystem
-        //         )
-        //     );
+        coralSubsystem
+            .setDefaultCommand( 
+                Commands.run(
+                    () -> {
+                        coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed);
+                        if (coralSubsystem.funnelSensor.getDistance(true).getValueAsDouble() < 0.1){
+                            coralSubsystem.funnelLeft.set(0);
+                            coralSubsystem.funnelRight.set(0);
+                        } else {
+                            coralSubsystem.funnelLeft.set(-0.05);
+                            coralSubsystem.funnelRight.set(0.05);
+                        }
+                    },
+                    coralSubsystem
+                )
+            );
 
         elevatorSubsystem
             .setDefaultCommand(

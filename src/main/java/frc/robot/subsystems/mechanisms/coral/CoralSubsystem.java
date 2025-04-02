@@ -20,7 +20,7 @@ public class CoralSubsystem extends SubsystemBase {
     public double angleLowerLimit = 0.32;
 
     public double krakenAngleUpperLimit = 0.0;
-    public double krakenAngleLowerLimit = 7.5;
+    public double krakenAngleLowerLimit = -9.5;
 
     public TalonFX angleMotor = new TalonFX(12);
     public TalonFX flywheelMotor = new TalonFX(11);
@@ -30,8 +30,8 @@ public class CoralSubsystem extends SubsystemBase {
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
     
     public double angleSpeed = 0.1;
-    public double flywheelInSpeed = 0.4;
-    public double flywheelOutSpeed = 0.6;
+    public double flywheelInSpeed = 0.2;
+    public double flywheelOutSpeed = 0.2;
     public double funnelSpeed = 0.1; 
     
     public Double angleHoldSpeed = 0.015;
@@ -122,7 +122,7 @@ public class CoralSubsystem extends SubsystemBase {
     public Command funnelThrough(ElevatorSubsystem elevatorSubsystem) {
         return Commands.run(
             () -> {
-                if (Math.abs(elevatorSubsystem.getElevatorHeight()) < 2) {
+                if (Math.abs(elevatorSubsystem.getElevatorHeight()) < 5) {
                     funnelLeft.set(funnelSpeed);
                     funnelRight.set(-funnelSpeed);
                 } 
@@ -149,10 +149,10 @@ public class CoralSubsystem extends SubsystemBase {
 
     public boolean getLimitAsBool(boolean isUpperLimit) {
         if (isUpperLimit) {
-            return coralAngleIsConnected() ? (getCoralAngle() < angleUpperLimit): (krakenGetCoralAngle() > krakenAngleUpperLimit);
+            return krakenGetCoralAngle() < krakenAngleUpperLimit;
         }
         else {
-            return coralAngleIsConnected() ? (getCoralAngle() > angleLowerLimit): (krakenGetCoralAngle() < krakenAngleLowerLimit);
+            return krakenGetCoralAngle() > krakenAngleLowerLimit;
         }
     }
 }

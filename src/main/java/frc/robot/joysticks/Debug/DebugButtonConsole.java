@@ -17,10 +17,12 @@ import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralAngleManager;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralInCommand;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralOutCommand;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.FunnelInCommand;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.FunnelOutCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.HandoffManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class DebugButtonConsole {
@@ -106,7 +108,9 @@ public class DebugButtonConsole {
         );
 
         // MARK: DPAD Bindings
-        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povDown().onTrue(
+            new HandoffManager(coralSubsystem, elevatorSubsystem)
+        );
         joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset());

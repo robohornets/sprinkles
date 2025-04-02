@@ -12,15 +12,14 @@ public class ElevatorHeightManager extends Command {
     private boolean isFinishedToggle = false;
 
     // Hard limits for the elevator
-    private static final double minHeight = 0.0; 
-    private static final double maxHeight = 58.0;
+
 
     // How close we have to be to "done"
     private static final double threshold = 2.0;
     
     public ElevatorHeightManager(double desiredHeight, ElevatorSubsystem elevatorSubsystem) {
         // Clamp the incoming desiredHeight between 0 and 65
-        this.targetHeight = Math.max(minHeight, Math.min(maxHeight, desiredHeight));
+        this.targetHeight = Math.max(elevatorSubsystem.minHeight, Math.min(elevatorSubsystem.maxHeight, desiredHeight));
         this.elevatorSubsystem = elevatorSubsystem;
         
         addRequirements(elevatorSubsystem);
@@ -50,7 +49,7 @@ public class ElevatorHeightManager extends Command {
             isFinishedToggle = true;
         }
         // 2. If we're already above the max limit
-        else if (currentHeight >= maxHeight) {
+        else if (currentHeight >= elevatorSubsystem.maxHeight) {
             if (targetHeight < currentHeight) {
                 // We still want to go down
                 System.out.println("At/above max limit. Moving down.");
@@ -65,7 +64,7 @@ public class ElevatorHeightManager extends Command {
             }
         }
         // 3. If we're below the min limit
-        else if (currentHeight <= minHeight) {
+        else if (currentHeight <= elevatorSubsystem.minHeight) {
             if (targetHeight > currentHeight) {
                 // We want to go up
                 System.out.println("At/below min limit. Moving up.");

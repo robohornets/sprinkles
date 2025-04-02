@@ -12,6 +12,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     public final double elevatorUpDownSpeed = 0.4;//0.65;
     public final double elevatorUpDownSpeedSlow = 0.1;
 
+    public static final double minHeight = 0.0; 
+    public static final double maxHeight = 58.0;
+
     public final TalonFX elevatorLeft = new TalonFX(10);
     public final TalonFX elevatorRight = new TalonFX(9);
 

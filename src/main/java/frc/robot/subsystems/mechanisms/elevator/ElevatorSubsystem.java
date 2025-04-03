@@ -13,7 +13,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public final double elevatorUpDownSpeedSlow = 0.1;
 
     public static final double minHeight = 0.0; 
-    public static final double maxHeight = 58.0;
+    public static final double maxHeight = 65.0;
 
     public final TalonFX elevatorLeft = new TalonFX(10);
     public final TalonFX elevatorRight = new TalonFX(9);
@@ -32,7 +32,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public Command elevatorUp() {
         return Commands.run(
             () -> {
-                if (Math.abs(elevatorLeft.getPosition().getValueAsDouble()) <= 50.0) {
+                if (Math.abs(elevatorLeft.getPosition().getValueAsDouble()) <= 65.0) {
                     elevatorLeft.set(-elevatorUpDownSpeed);
                     elevatorRight.set(elevatorUpDownSpeed);
                     CommandScheduler.getInstance().cancelAll();

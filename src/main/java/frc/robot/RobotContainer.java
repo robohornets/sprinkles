@@ -154,13 +154,29 @@ public class RobotContainer {
             .setDefaultCommand( 
                 Commands.run(
                     () -> {
-                        coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed);
+                        if (coralSubsystem.coralForwardTrigger.getAsBoolean() && coralSubsystem.krakenGetCoralAngle() < -1.5) {
+                            coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed);
+                        }
+                        else {
+                            coralSubsystem.angleMotor.set(0.0);
+                        }
                         if (coralSubsystem.funnelSensor.getDistance(true).getValueAsDouble() < 0.1){
                             coralSubsystem.funnelLeft.set(0);
                             coralSubsystem.funnelRight.set(0);
                         } else {
                             coralSubsystem.funnelLeft.set(-coralSubsystem.funnelSpeed);
                             coralSubsystem.funnelRight.set(coralSubsystem.funnelSpeed);
+                        }
+
+                        double leftSpeed = cappedJoystick(-debugJoystick.getLeftY());
+                        double rightSpeed = cappedJoystick(debugJoystick.getRightY());
+                        ShuffleboardUtil.put("Funnel Speed Left", leftSpeed);
+                        ShuffleboardUtil.put("Funnel Speed Right", rightSpeed);
+                        if (leftSpeed != 0) {
+                            coralSubsystem.funnelLeft.set(leftSpeed);
+                        }
+                        if (rightSpeed != 0) {
+                            coralSubsystem.funnelRight.set(rightSpeed);
                         }
                     },
                     coralSubsystem
@@ -192,4 +208,10 @@ public class RobotContainer {
         /* Run the path selected from the auto chooser */
         return autoChooser.getSelected();
     }
+
+    private double cappedJoystick(double value) {
+        if (Math.abs(value) < 0.05) return 0.0;
+        return Math.copySign(Math.min(Math.abs(value), 0.2), -value);
+    }
+    
 }

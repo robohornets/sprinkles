@@ -24,8 +24,9 @@ public class HandoffManager extends Command {
         addRequirements(this.coralSubsystem, this.elevatorSubsystem);
     }
 
-    private int handoffStep = 1;
+    private int handoffStep = -1;
     private double handoffStartTime = -1;
+    private double handoffStartTime2 = -1;
     private double downBrakeDelay = 0.25;
 
     @Override
@@ -33,6 +34,7 @@ public class HandoffManager extends Command {
         isFinishedToggle = false;
         handoffStep = 1;
         handoffStartTime = -1;
+        handoffStartTime2 = -1;
         updateState();
     }    
 
@@ -133,8 +135,8 @@ public class HandoffManager extends Command {
         }
         // Step 3 angles for intake
         else if (handoffStep == 3) {
-            double target = -1.44;
-            if (moveAngleToTarget(target)) {
+            double target = -1.3;
+            if (moveAngleToTarget(target, 0.02)) {
                 handoffStep++;
             }
         }
@@ -166,9 +168,23 @@ public class HandoffManager extends Command {
         // Step 5 angles for movement and elevator
         else if (handoffStep == 5) {
             double target = -9;
-            if (moveAngleToTarget(target)) {
+            if (moveAngleToTarget(target, 0.08)) {
                 handoffStep++;
-                isFinishedToggle = true;
+            }
+        }
+        else if (handoffStep == 6) {
+            if (handoffStartTime2 < 0) {
+                coralSubsystem.flywheelMotor.set(-0.06);
+
+                handoffStartTime2 = Timer.getFPGATimestamp();
+                return;
+            }
+        
+            if (Timer.getFPGATimestamp() - handoffStartTime2 >= 0.45) {
+                coralSubsystem.flywheelMotor.set(0.0);
+
+                handoffStartTime2 = -1;
+                handoffStep++;
             }
         }
         else {
@@ -186,9 +202,10 @@ public class HandoffManager extends Command {
         System.out.println("Command Ended. Motor Stopped.");
     }
 
-    private boolean moveAngleToTarget(double target) {
+    private boolean moveAngleToTarget(double target, double toleranceValue) {
         double currentAngle = coralSubsystem.angleMotor.getPosition().getValueAsDouble();
-        double tolerance = 0.05;
+        //double tolerance = 0.02;
+        double tolerance = toleranceValue;
     
         if (Math.abs(currentAngle - target) <= tolerance) {
             System.out.println("At target. Stopping.");

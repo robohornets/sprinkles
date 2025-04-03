@@ -69,7 +69,7 @@ public class CoralAngleManager extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        coralSubsystem.angleMotor.set(0.015);
+        coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed);
         System.out.println("Command Ended. Motor Stopped.");
     }
 

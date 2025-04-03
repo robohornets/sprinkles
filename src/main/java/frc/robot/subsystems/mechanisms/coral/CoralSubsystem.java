@@ -30,12 +30,12 @@ public class CoralSubsystem extends SubsystemBase {
     public TalonFX funnelRight = new TalonFX(15);
     public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(4);
     
-    public double angleSpeed = 0.15;
+    public double angleSpeed = 0.1;
     public double flywheelInSpeed = 0.2;
     public double flywheelOutSpeed = 0.4;
-    public double funnelSpeed = 0.1;
+    public double funnelSpeed = 0.08;
     
-    public Double angleHoldSpeed = 0.015;
+    public Double angleHoldSpeed = 0.02;
 
 
     public CANrange coralForwardSensor = new CANrange(35);
@@ -78,7 +78,7 @@ public class CoralSubsystem extends SubsystemBase {
                 if (getLimitAsBool(true)) {
                     angleMotor.set(angleSpeed); }
                 else {
-                    angleMotor.set(0.0);
+                    angleMotor.set(angleHoldSpeed);
                 }
             }
         );
@@ -90,7 +90,7 @@ public class CoralSubsystem extends SubsystemBase {
                 if (getLimitAsBool(false)) {
                     angleMotor.set(-angleSpeed);} 
                 else {
-                    angleMotor.set(0.0);
+                    angleMotor.set(angleHoldSpeed);
                 }
             }
         );
@@ -102,7 +102,7 @@ public class CoralSubsystem extends SubsystemBase {
                 if (getLimitAsBool(true)) {
                     angleMotor.set(-0.1); }
                 else {
-                    angleMotor.set(0.0);
+                    angleMotor.set(angleHoldSpeed);
                 }
             }
         );
@@ -114,7 +114,7 @@ public class CoralSubsystem extends SubsystemBase {
                 if (getLimitAsBool(false)) {
                     angleMotor.set(0.1);} 
                 else {
-                    angleMotor.set(0.0);
+                    angleMotor.set(angleHoldSpeed);
                 }
             }
         );

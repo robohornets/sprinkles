@@ -132,7 +132,7 @@ public class DebugJoystick {
             .whileTrue(coralSubsystem.angleDown())
             .onFalse(Commands.run(
                     () -> {
-                        coralSubsystem.angleMotor.set(0.0);
+                        coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed);
 
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -145,7 +145,7 @@ public class DebugJoystick {
             .onFalse(
                 Commands.run(
                     () -> {
-                        coralSubsystem.angleMotor.set(0.0);
+                        coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed);
 
                         CommandScheduler.getInstance().cancelAll();
 

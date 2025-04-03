@@ -105,8 +105,8 @@ public class DebugButtonConsole {
         joystick.y().onTrue(
             Commands.run(
                 () -> {
-                    coralSubsystem.funnelLeft.set(0.6);
-                    coralSubsystem.funnelRight.set(-0.6);
+                    coralSubsystem.funnelLeft.set(0.25);
+                    coralSubsystem.funnelRight.set(-0.25);
                 }
             ).withTimeout(1.5)
         );

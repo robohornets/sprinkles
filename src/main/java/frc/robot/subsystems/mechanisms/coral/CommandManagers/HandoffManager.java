@@ -126,6 +126,7 @@ public class HandoffManager extends Command {
             }
         
             if (Timer.getFPGATimestamp() - handoffStartTime >= downBrakeDelay) {
+                elevatorSubsystem.elevatorLeft.setPosition(0.0);
                 elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
                 elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
 
@@ -169,9 +170,10 @@ public class HandoffManager extends Command {
         else if (handoffStep == 5) {
             double target = -9;
             if (moveAngleToTarget(target, 0.08)) {
-                handoffStep++;
+                handoffStep+=2;
             }
         }
+        // Not used currently
         else if (handoffStep == 6) {
             if (handoffStartTime2 < 0) {
                 coralSubsystem.flywheelMotor.set(-0.06);

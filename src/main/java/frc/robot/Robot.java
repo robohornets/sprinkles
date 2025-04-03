@@ -39,9 +39,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     // MARK: Configure Cameras
-    // UsbCamera zane1 = CameraServer.startAutomaticCapture(0);
-    // zane1.setResolution(320, 180);
-    // zane1.setFPS(60);
+    UsbCamera zane1 = CameraServer.startAutomaticCapture(0);
+    zane1.setResolution(320, 180);
+    zane1.setFPS(60);
 
     // vision = new Vision();
 

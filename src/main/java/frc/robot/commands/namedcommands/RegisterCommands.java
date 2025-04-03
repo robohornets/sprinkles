@@ -41,13 +41,6 @@ public class RegisterCommands {
         NamedCommands.registerCommand("eatCoral", 
             new HandoffManager(coralSubsystem, elevatorSubsystem)
         );
-        // NamedCommands.registerCommand("eatCoral",
-        //     Commands.sequence(
-        //         coralSubsystem.flywheelIn().withTimeout(0.8),
-                
-        //         Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
-        //     )
-        // );
         NamedCommands.registerCommand("stopCoral",
             Commands.run(
                 () -> {
@@ -56,11 +49,7 @@ public class RegisterCommands {
             ) 
         );
         NamedCommands.registerCommand("spitCoral",
-            Commands.sequence(
-                //coralSubsystem.flywheelOut().withTimeout(0.3),
-                new CoralOutCommand(coralSubsystem),
-                Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
-            )
+            new CoralOutCommand(coralSubsystem)
         );
     }
 }

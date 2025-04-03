@@ -38,7 +38,7 @@ public class ElevatorHeightManager extends Command {
 
     private void updateMotorSpeed() {
         double currentHeight = -elevatorSubsystem.getElevatorHeight();
-        double heightLimiter = (currentHeight >= -5 ? 0.4: currentHeight >= -10 ? 0.6: currentHeight >= -15 ? 0.8: 1.0);
+        double heightLimiter = 1;//(currentHeight >= -5 ? 0.4: currentHeight >= -10 ? 0.6: currentHeight >= -15 ? 0.8: 1.0);
         // 1. If we’re close enough to target, just hold and finish
         if (Math.abs(currentHeight - targetHeight) <= threshold) {
             System.out.println("Stopping at target");

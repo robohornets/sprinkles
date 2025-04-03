@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "eatCoral"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "L1 - To I"

@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ElevatorSubsystem extends SubsystemBase {
-    public final double elevatorUpDownSpeed = 0.7;
+    public final double elevatorUpDownSpeed = 0.5;
     public final double elevatorUpDownSpeedSlow = 0.1;
 
     public static final double minHeight = 0.0; 

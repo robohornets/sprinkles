@@ -32,7 +32,7 @@ public class HandoffManager extends Command {
     @Override
     public void initialize() {
         isFinishedToggle = false;
-        handoffStep = 1;
+        handoffStep = 0;
         handoffStartTime = -1;
         handoffStartTime2 = -1;
         updateState();

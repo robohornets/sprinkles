@@ -46,6 +46,7 @@ public class CoralOutCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
+        coralSubsystem.flywheelMotor.set(0.0);
         System.out.println("Command Ended. Motor Stopped.");
     }
 }

@@ -33,7 +33,7 @@ public class LevelManager {
         // Assign values based on the selected level
         switch (selectedLevel) {
             case LEVEL_1:
-                targetHeight = 0.0;
+                targetHeight = 5.0;
                 krakenTargetAngle = 0.0;
                 break;
 

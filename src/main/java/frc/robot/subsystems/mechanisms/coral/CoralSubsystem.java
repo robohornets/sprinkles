@@ -136,6 +136,21 @@ public class CoralSubsystem extends SubsystemBase {
         );
     }
 
+    public Command funnelUneven(boolean isLeftSide) {
+        return Commands.run(
+            () -> {
+                if (isLeftSide) {
+                    funnelLeft.set(-0.1);
+                    funnelRight.set(0.05);
+                }
+                else {
+                    funnelLeft.set(-0.05);
+                    funnelRight.set(0.1);
+                }
+            }
+        );
+    }
+
 
     public double getCoralAngle() {
         return angleDCEncoder.get();

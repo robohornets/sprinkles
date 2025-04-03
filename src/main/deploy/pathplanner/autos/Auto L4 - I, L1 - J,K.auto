@@ -5,9 +5,21 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "eatCoral"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "L2 - To I"
+            "pathName": "L4 - To I"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.1
           }
         },
         {
@@ -19,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "I to Coral Station"
+            "pathName": "I to Coral Station Fast"
           }
         },
         {
@@ -31,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L2 - To J"
+            "pathName": "L1 - To J"
           }
         },
         {
@@ -43,7 +55,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "J to Coral Station"
+            "pathName": "J to Coral Station Fast"
           }
         },
         {
@@ -55,7 +67,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "L2 - To K"
+            "pathName": "L1 - To K"
           }
         },
         {

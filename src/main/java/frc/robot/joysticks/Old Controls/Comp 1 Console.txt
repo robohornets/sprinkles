@@ -1,0 +1,72 @@
+// MARK: Empty for now
+        joystick.leftTrigger()
+            .onTrue(
+                new CoralOutCommand(coralSubsystem)
+            );
+
+        joystick.rightTrigger()
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        //ClimberVariables.alexHonnold.set(1.0);
+                    }
+                )
+            ).onFalse(
+                Commands.run(
+                    () -> {
+                        //ClimberVariables.alexHonnold.set(0.0);
+                    }
+                )
+            );
+
+        
+        joystick.leftBumper()
+            .whileTrue(elevatorSubsystem.elevatorUpManual())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        elevatorSubsystem.elevatorLeft.set(0.0);
+                        elevatorSubsystem.elevatorRight.set(0.0);
+                    }
+                )
+            );
+    
+        joystick.rightBumper()
+            .whileTrue(elevatorSubsystem.elevatorDownManual())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        elevatorSubsystem.elevatorLeft.set(0.0);
+                        elevatorSubsystem.elevatorRight.set(0.0);
+                    }
+                )
+            );
+        
+        
+
+        joystick.b()
+            .whileTrue(coralSubsystem.flywheelIn())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+
+        joystick.x()
+            .onTrue(
+                new CoralInCommand(coralSubsystem)
+            );
+
+        joystick.y().onTrue(
+            Commands.sequence(
+                new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset()
+            )
+        );
+
+        // MARK: DPAD Bindings
+        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset());

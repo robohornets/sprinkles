@@ -15,6 +15,7 @@ import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.HandoffManager;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralInCommand;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralOutCommand;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
@@ -39,74 +40,83 @@ public class ButtonConsole {
     }
 
     public void configureBindings() {
-        // MARK: Empty for now
+        // MARK: A - Left Faster
         joystick.leftTrigger()
-            .onTrue(
-                new CoralOutCommand(coralSubsystem)
-            );
-
-        joystick.rightTrigger()
-            .whileTrue(
-                Commands.run(
-                    () -> {
-                        //ClimberVariables.alexHonnold.set(1.0);
-                    }
-                )
-            ).onFalse(
-                Commands.run(
-                    () -> {
-                        //ClimberVariables.alexHonnold.set(0.0);
-                    }
-                )
-            );
-
-        
-        joystick.leftBumper()
-            .whileTrue(elevatorSubsystem.elevatorUpManual())
+            .whileTrue(coralSubsystem.funnelUneven(true))
             .onFalse(
                 Commands.run(
                     () -> {
-                        elevatorSubsystem.elevatorLeft.set(0.0);
-                        elevatorSubsystem.elevatorRight.set(0.0);
-                    }
-                )
-            );
-    
-        joystick.rightBumper()
-            .whileTrue(elevatorSubsystem.elevatorDownManual())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        elevatorSubsystem.elevatorLeft.set(0.0);
-                        elevatorSubsystem.elevatorRight.set(0.0);
-                    }
-                )
-            );
-        
-        
-
-        joystick.b()
-            .whileTrue(coralSubsystem.flywheelIn())
-            .onFalse(
-                Commands.run(
-                    () -> {
+                        coralSubsystem.funnelLeft.set(0.0);
+                        coralSubsystem.funnelRight.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
             );
 
-        joystick.x()
-            .onTrue(
-                new CoralInCommand(coralSubsystem)
+        // MARK: B - Right Faster
+        joystick.rightTrigger()
+            .whileTrue(coralSubsystem.funnelUneven(false))
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.funnelLeft.set(0.0);
+                        coralSubsystem.funnelRight.set(0.0);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
             );
 
-        joystick.y().onTrue(
-            Commands.sequence(
-                new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset()
+        // MARK: D - Eject
+        joystick.a()
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.funnelLeft.set(0.1);
+                        coralSubsystem.funnelRight.set(-0.1);
+                    }
+                )
             )
-        );
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.funnelLeft.set(0.0);
+                        coralSubsystem.funnelRight.set(0.0);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
 
-        // MARK: DPAD Bindings
+        // MARK: E - Handoff
+        joystick.b()
+            .onTrue(
+                new HandoffManager(coralSubsystem, elevatorSubsystem)
+            );
+
+        // MARK: G - Recalibrate Coral
+        // This code does not exist yet.
+
+        // MARK: H - Algae In
+        joystick.y()
+            .whileTrue(
+                coralSubsystem.flywheelIn()
+            )
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.flywheelMotor.set(0.0);
+                    }
+                )
+            );
+
+        // MARK: J - Algae L3
+        joystick.povDown().onTrue(new LevelManager(Levels.ALGAE_3, elevatorSubsystem, coralSubsystem).goToPreset());
+
+
+        // MARK: K - Algae L2
+        joystick.povDown().onTrue(new LevelManager(Levels.ALGAE_2, elevatorSubsystem, coralSubsystem).goToPreset());
+
+
+        // MARK: DPAD - Elevator
         joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());

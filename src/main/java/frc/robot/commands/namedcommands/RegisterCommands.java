@@ -6,6 +6,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.HandoffManager;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralOutCommand;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class RegisterCommands {
@@ -36,13 +38,16 @@ public class RegisterCommands {
         NamedCommands.registerCommand("defaultPosition",
                 new LevelManager(Levels.DEFAULT_POSITION, elevatorSubsystem, coralSubsystem).goToPreset()
         );
-        NamedCommands.registerCommand("eatCoral",
-            Commands.sequence(
-                coralSubsystem.flywheelIn().withTimeout(0.8),
-                
-                Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
-            )
+        NamedCommands.registerCommand("eatCoral", 
+            new HandoffManager(coralSubsystem, elevatorSubsystem)
         );
+        // NamedCommands.registerCommand("eatCoral",
+        //     Commands.sequence(
+        //         coralSubsystem.flywheelIn().withTimeout(0.8),
+                
+        //         Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
+        //     )
+        // );
         NamedCommands.registerCommand("stopCoral",
             Commands.run(
                 () -> {
@@ -52,8 +57,8 @@ public class RegisterCommands {
         );
         NamedCommands.registerCommand("spitCoral",
             Commands.sequence(
-                coralSubsystem.flywheelOut().withTimeout(0.3),
-                
+                //coralSubsystem.flywheelOut().withTimeout(0.3),
+                new CoralOutCommand(coralSubsystem),
                 Commands.runOnce(() -> coralSubsystem.flywheelMotor.set(0.0))
             )
         );

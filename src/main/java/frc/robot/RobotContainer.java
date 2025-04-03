@@ -168,15 +168,17 @@ public class RobotContainer {
                             coralSubsystem.funnelRight.set(coralSubsystem.funnelSpeed);
                         }
 
-                        double leftSpeed = cappedJoystick(-debugJoystick.getLeftY());
-                        double rightSpeed = cappedJoystick(debugJoystick.getRightY());
-                        ShuffleboardUtil.put("Funnel Speed Left", leftSpeed);
-                        ShuffleboardUtil.put("Funnel Speed Right", rightSpeed);
-                        if (leftSpeed != 0) {
-                            coralSubsystem.funnelLeft.set(leftSpeed);
-                        }
-                        if (rightSpeed != 0) {
-                            coralSubsystem.funnelRight.set(rightSpeed);
+                        if (false) {
+                            double leftSpeed = cappedJoystick(-debugJoystick.getLeftY());
+                            double rightSpeed = cappedJoystick(debugJoystick.getRightY());
+                            ShuffleboardUtil.put("Funnel Speed Left", leftSpeed);
+                            ShuffleboardUtil.put("Funnel Speed Right", rightSpeed);
+                            if (leftSpeed != 0) {
+                                coralSubsystem.funnelLeft.set(leftSpeed);
+                            }
+                            if (rightSpeed != 0) {
+                                coralSubsystem.funnelRight.set(rightSpeed);
+                            }
                         }
                     },
                     coralSubsystem

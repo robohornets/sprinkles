@@ -6,13 +6,16 @@ import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 
 public class CoralAngleManager extends Command {
     private double krakenAngle;
+    private double pigeonAngle;
     private CoralSubsystem coralSubsystem;
     private boolean isFinishedToggle = false;
     private double oopsieThreshold = 0.01;
     private double krakenOopsieThreshold = 0.1;
+    private double pigeonOopsieThreshold = 0.1;
 
-    public CoralAngleManager(double krakenAngle, CoralSubsystem coralSubsystem) {
+    public CoralAngleManager(double krakenAngle, double pigeonAngle, CoralSubsystem coralSubsystem) {
         this.krakenAngle = krakenAngle;
+        this.pigeonAngle = pigeonAngle;
         this.coralSubsystem = coralSubsystem;
         addRequirements(this.coralSubsystem);
     }
@@ -30,33 +33,34 @@ public class CoralAngleManager extends Command {
 
     private void updateMotorSpeed() {
         double krakenCurrentAngle = krakenGetCoralAngle();
+        double pigeonCurrentAngle = pigeonGetCoralAngle();
     
-        if (Math.abs(krakenCurrentAngle - krakenAngle) <= krakenOopsieThreshold) {
+        if (coralSubsystem.usePigeon ? (Math.abs(pigeonCurrentAngle-pigeonAngle) <= pigeonOopsieThreshold): (Math.abs(krakenCurrentAngle - krakenAngle) <= krakenOopsieThreshold)) {
             System.out.println("Stopping at target");
             isFinishedToggle = true;
             return;
         }
     
-        if (krakenCurrentAngle > coralSubsystem.krakenAngleUpperLimit) {
-            if (krakenAngle < krakenCurrentAngle) {
+        if (coralSubsystem.usePigeon ? (pigeonCurrentAngle > coralSubsystem.pigeonAngleUpperLimit): (krakenCurrentAngle > coralSubsystem.krakenAngleUpperLimit)) {
+            if (coralSubsystem.usePigeon ? (pigeonAngle < pigeonCurrentAngle): (krakenAngle < krakenCurrentAngle)) {
                 System.out.println("Above upper limit, moving down");
                 coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
             } else {
                 System.out.println("Above upper limit, stopping");
                 isFinishedToggle = true;
             }
-        } else if (krakenCurrentAngle < coralSubsystem.krakenAngleLowerLimit) {
-            if (krakenAngle > krakenCurrentAngle) {
+        } else if (coralSubsystem.usePigeon ? (pigeonCurrentAngle < coralSubsystem.pigeonAngleLowerLimit): (krakenCurrentAngle < coralSubsystem.krakenAngleLowerLimit)) {
+            if (coralSubsystem.usePigeon ? (pigeonAngle > pigeonCurrentAngle): krakenAngle > krakenCurrentAngle) {
                 System.out.println("Below lower limit, moving up");
                 coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
             } else {
                 System.out.println("Below lower limit, stopping");
                 isFinishedToggle = true;
             }
-        } else if (krakenCurrentAngle > krakenAngle) {
+        } else if (coralSubsystem.usePigeon ? (pigeonCurrentAngle > pigeonAngle): (krakenCurrentAngle > krakenAngle)) {
             System.out.println("Moving Down");
             coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
-        } else if (krakenCurrentAngle < krakenAngle) {
+        } else if (coralSubsystem.usePigeon ? (pigeonCurrentAngle < pigeonAngle): (krakenCurrentAngle < krakenAngle)) {
             System.out.println("Moving Up");
             coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
         }
@@ -75,5 +79,8 @@ public class CoralAngleManager extends Command {
 
     public double krakenGetCoralAngle() {
         return coralSubsystem.angleMotor.getPosition().getValueAsDouble();
+    }
+    public double pigeonGetCoralAngle() {
+        return coralSubsystem.pigeonGetCoralAngle();
     }
 }

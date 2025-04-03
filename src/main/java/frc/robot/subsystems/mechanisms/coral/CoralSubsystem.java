@@ -1,6 +1,7 @@
 package frc.robot.subsystems.mechanisms.coral;
 
 import com.ctre.phoenix6.hardware.CANrange;
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
@@ -23,6 +24,9 @@ public class CoralSubsystem extends SubsystemBase {
     public double krakenAngleUpperLimit = 0.0;
     public double krakenAngleLowerLimit = -9.5;
 
+    public double pigeonAngleUpperLimit = 0.0;
+    public double pigeonAngleLowerLimit = -9.5;
+
     public TalonFX angleMotor = new TalonFX(12);
     public TalonFX flywheelMotor = new TalonFX(11);
 
@@ -37,6 +41,8 @@ public class CoralSubsystem extends SubsystemBase {
     
     public Double angleHoldSpeed = 0.02;
 
+    public Pigeon2 coralPigeon = new Pigeon2(37);
+    public boolean usePigeon = false;
 
     public CANrange coralForwardSensor = new CANrange(35);
     public Trigger coralForwardTrigger = new Trigger(() -> 
@@ -171,5 +177,9 @@ public class CoralSubsystem extends SubsystemBase {
         else {
             return krakenGetCoralAngle() > krakenAngleLowerLimit;
         }
+    }
+
+    public double pigeonGetCoralAngle() {
+        return -coralPigeon.getRoll().getValueAsDouble();
     }
 }

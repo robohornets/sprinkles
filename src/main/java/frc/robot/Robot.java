@@ -86,6 +86,10 @@ public class Robot extends TimedRobot {
 
     ShuffleboardUtil.put("Coral Angle", m_robotContainer.coralSubsystem.angleDCEncoder.get());
     ShuffleboardUtil.put("Coral Angle Kraken", m_robotContainer.coralSubsystem.angleMotor.getPosition().getValueAsDouble());
+
+    ShuffleboardUtil.put("Coral yaw", m_robotContainer.coralSubsystem.coralPigeon.getYaw().getValueAsDouble());
+    ShuffleboardUtil.put("Coral pitch", m_robotContainer.coralSubsystem.coralPigeon.getPitch().getValueAsDouble());
+    ShuffleboardUtil.put("Coral roll", m_robotContainer.coralSubsystem.pigeonGetCoralAngle());
     if (DriverStation.getMatchTime() <= 1.5) {
       m_robotContainer.coralSubsystem.flywheelOut();
     }

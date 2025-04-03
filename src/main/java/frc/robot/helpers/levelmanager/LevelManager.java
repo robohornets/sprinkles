@@ -27,6 +27,7 @@ public class LevelManager {
         double targetHeight = 0.0;
         double targetAngle = 0.0;
         double krakenTargetAngle = 0.0;
+        double pigeonTargetAngle = 0.0;
         // max Coral: 0.693
         // min coral: 0.262
 
@@ -35,46 +36,55 @@ public class LevelManager {
             case LEVEL_1:
                 targetHeight = 5.0;
                 krakenTargetAngle = 0.0;
+                pigeonTargetAngle = 0.0;
                 break;
 
             case LEVEL_2:
                 targetHeight = 15.88;
                 krakenTargetAngle = -3.77;
+                pigeonTargetAngle = 0.0;
                 break;
 
             case LEVEL_3:
                 targetHeight = 35;
                 krakenTargetAngle = -3.82;
+                pigeonTargetAngle = 0.0;
                 break;
 
             case LEVEL_4:
                 targetHeight = 65;
                 krakenTargetAngle = -3.86;
+                pigeonTargetAngle = 0.0;
                 break;
 
             case DEFAULT_POSITION:
                 targetHeight = 0.0;
                 krakenTargetAngle = 0.0;
+                pigeonTargetAngle = 0.0;
                 break;
 
             case CORAL_STATION:
                 targetHeight = 2.1;
                 krakenTargetAngle = 2.4;
+                pigeonTargetAngle = 0.0;
                 break;
 
             case ZERO:
                 targetHeight = 0.0;
                 krakenTargetAngle = 2.4;
+                pigeonTargetAngle = 0.0;
                 break;
             
             case ALGAE_2:
                 targetHeight = 21.0;
                 krakenTargetAngle = 0.0;
+                pigeonTargetAngle = 0.0;
                 break;
 
             case ALGAE_3:
                 targetHeight = 36.5;
                 krakenTargetAngle = 0.0;
+                pigeonTargetAngle = 0.0;
                 break;
 
             default:
@@ -83,7 +93,7 @@ public class LevelManager {
 
         // Run both the coral angle and elevator height commands
         return Commands.parallel(
-            new CoralAngleManager(krakenTargetAngle, coralSubsystem),
+            new CoralAngleManager(krakenTargetAngle, pigeonTargetAngle, coralSubsystem),
             new ElevatorHeightManager(targetHeight, elevatorSubsystem)
         );
     }

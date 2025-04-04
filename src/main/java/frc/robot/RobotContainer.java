@@ -154,8 +154,11 @@ public class RobotContainer {
             .setDefaultCommand( 
                 Commands.run(
                     () -> {
-                        if (coralSubsystem.coralForwardTrigger.getAsBoolean() && coralSubsystem.krakenGetCoralAngle() < -1.5) {
+                        if (coralSubsystem.coralForwardTrigger.getAsBoolean() && coralSubsystem.pigeonGetCoralAngle() < -30) {
                             coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed);
+                        }
+                        else if (coralSubsystem.pigeonGetCoralAngle() < -20) {
+                            coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed/2);
                         }
                         else {
                             coralSubsystem.angleMotor.set(0.0);

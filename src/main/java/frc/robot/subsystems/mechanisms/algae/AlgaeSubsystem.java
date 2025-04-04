@@ -24,7 +24,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     public Command angleAlgaeUp() {
         return Commands.run(
             () -> {
-                if (getAlgaeAngle() < angleUpperLimit) {
+                if (getAlgaeAngle() < angleUpperLimit || true) {
                     angleMotor.set(angleAlgaeSpeed); }
                 else {
                     angleMotor.set(0.0);
@@ -36,7 +36,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     public Command angleAlgaeDown() {
         return Commands.run(
             () -> {
-                if (getAlgaeAngle() > angleLowerLimit) {
+                if (getAlgaeAngle() > angleLowerLimit || true) {
                     angleMotor.set(-angleAlgaeSpeed);} 
                 else {
                     angleMotor.set(0.0);
@@ -49,7 +49,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     public Command angleAlgaeUpSlow() {
         return Commands.run(
             () -> {
-                if (getAlgaeAngle() < angleUpperLimit) {
+                if (getAlgaeAngle() < angleUpperLimit || true) {
                     angleMotor.set(-0.1); }
                 else {
                     angleMotor.set(0.0);
@@ -61,7 +61,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     public Command angleAlgaeDownSlow() {
         return Commands.run(
             () -> {
-                if (getAlgaeAngle() > angleLowerLimit) {
+                if (getAlgaeAngle() > angleLowerLimit || true) {
                 angleMotor.set(0.1);} 
                 else {
                     angleMotor.set(0.0);

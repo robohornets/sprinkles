@@ -71,8 +71,8 @@ public class ButtonConsole {
             .whileTrue(
                 Commands.run(
                     () -> {
-                        coralSubsystem.funnelLeft.set(0.1);
-                        coralSubsystem.funnelRight.set(-0.1);
+                        coralSubsystem.funnelLeft.set(0.25);
+                        coralSubsystem.funnelRight.set(-0.25);
                     }
                 )
             )

@@ -42,19 +42,19 @@ public class LevelManager {
             case LEVEL_2:
                 targetHeight = 15.88;
                 krakenTargetAngle = -3.77;
-                pigeonTargetAngle = 0.0;
+                pigeonTargetAngle = -32.7;
                 break;
 
             case LEVEL_3:
                 targetHeight = 35;
                 krakenTargetAngle = -3.82;
-                pigeonTargetAngle = 0.0;
+                pigeonTargetAngle = -32.7;
                 break;
 
             case LEVEL_4:
                 targetHeight = 65;
                 krakenTargetAngle = -3.86;
-                pigeonTargetAngle = 0.0;
+                pigeonTargetAngle = -40;
                 break;
 
             case DEFAULT_POSITION:

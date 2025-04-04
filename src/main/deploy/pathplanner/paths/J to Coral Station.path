@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.085511363636364,
-        "y": 5.126860795454545
+        "x": 3.8590056818181817,
+        "y": 5.146803977272728
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.769971590909092,
-        "y": 6.273943181818181
+        "x": 4.54346590909091,
+        "y": 6.293886363636364
       },
       "isLocked": false,
       "linkedName": "J End"
@@ -95,9 +95,9 @@
   ],
   "globalConstraints": {
     "maxVelocity": 4.73,
-    "maxAcceleration": 4.0,
+    "maxAcceleration": 4.8,
     "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 360.0,
+    "maxAngularAcceleration": 500.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
@@ -109,7 +109,7 @@
   "folder": "To Coral Station",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -59.99999999999999
   },
   "useDefaultConstraints": true
 }

@@ -42,8 +42,8 @@ public class DriverJoystick {
                 new HandoffManager(coralSubsystem, elevatorSubsystem)
             );
 
-        // MARK: X - Algae Up
-        joystick.x()
+        // MARK: A - Algae Up
+        joystick.a()
             .whileTrue(algaeSubsystem.angleAlgaeUp())
             .onFalse(
                 Commands.run(
@@ -54,7 +54,7 @@ public class DriverJoystick {
             );
 
         // MARK: Y - Algae Down
-        joystick.x()
+        joystick.y()
             .whileTrue(algaeSubsystem.angleAlgaeDown())
             .onFalse(
                 Commands.run(

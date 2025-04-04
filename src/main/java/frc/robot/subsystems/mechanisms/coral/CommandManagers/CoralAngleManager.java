@@ -1,5 +1,7 @@
 package frc.robot.subsystems.mechanisms.coral.CommandManagers;
 
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
@@ -9,9 +11,7 @@ public class CoralAngleManager extends Command {
     private double pigeonAngle;
     private CoralSubsystem coralSubsystem;
     private boolean isFinishedToggle = false;
-    private double oopsieThreshold = 0.01;
-    private double krakenOopsieThreshold = 0.1;
-    private double pigeonOopsieThreshold = 0.1;
+    private double pigeonThreshold = 1;
 
     public CoralAngleManager(double krakenAngle, double pigeonAngle, CoralSubsystem coralSubsystem) {
         this.krakenAngle = krakenAngle;
@@ -23,7 +23,8 @@ public class CoralAngleManager extends Command {
     @Override
     public void initialize() {
         isFinishedToggle = false;
-        updateMotorSpeed();
+        coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Brake);
+        //updateMotorSpeed();
     }
 
     @Override
@@ -32,39 +33,40 @@ public class CoralAngleManager extends Command {
     }
 
     private void updateMotorSpeed() {
-        double krakenCurrentAngle = krakenGetCoralAngle();
-        double pigeonCurrentAngle = pigeonGetCoralAngle();
-    
-        if (coralSubsystem.usePigeon ? (Math.abs(pigeonCurrentAngle-pigeonAngle) <= pigeonOopsieThreshold): (Math.abs(krakenCurrentAngle - krakenAngle) <= krakenOopsieThreshold)) {
-            System.out.println("Stopping at target");
+        double currentAngle = pigeonGetCoralAngle();
+        double targetAngle = pigeonAngle;
+        double lowerLimit = coralSubsystem.pigeonAngleLowerLimit;
+        double upperLimit = coralSubsystem.pigeonAngleUpperLimit;
+
+        // Debug print to see what's going on
+        System.out.printf("Current: %.2f Target: %.2f (Limit: %.2f - %.2f)\n", currentAngle, targetAngle, lowerLimit, upperLimit);
+
+        if (Math.abs(currentAngle - targetAngle) <= pigeonThreshold) {
+            System.out.println("At target. Stopping.");
+            coralSubsystem.angleMotor.set(0.0);
             isFinishedToggle = true;
             return;
         }
-    
-        if (coralSubsystem.usePigeon ? (pigeonCurrentAngle > coralSubsystem.pigeonAngleUpperLimit): (krakenCurrentAngle > coralSubsystem.krakenAngleUpperLimit)) {
-            if (coralSubsystem.usePigeon ? (pigeonAngle < pigeonCurrentAngle): (krakenAngle < krakenCurrentAngle)) {
-                System.out.println("Above upper limit, moving down");
-                coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
-            } else {
-                System.out.println("Above upper limit, stopping");
-                isFinishedToggle = true;
+
+        if (currentAngle > targetAngle) {
+            if (currentAngle <= lowerLimit) {
+                System.out.println("At/below lower limit. Cannot move down.");
+                coralSubsystem.angleMotor.set(0.0);
+                return;
             }
-        } else if (coralSubsystem.usePigeon ? (pigeonCurrentAngle < coralSubsystem.pigeonAngleLowerLimit): (krakenCurrentAngle < coralSubsystem.krakenAngleLowerLimit)) {
-            if (coralSubsystem.usePigeon ? (pigeonAngle > pigeonCurrentAngle): krakenAngle > krakenCurrentAngle) {
-                System.out.println("Below lower limit, moving up");
-                coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
-            } else {
-                System.out.println("Below lower limit, stopping");
-                isFinishedToggle = true;
-            }
-        } else if (coralSubsystem.usePigeon ? (pigeonCurrentAngle > pigeonAngle): (krakenCurrentAngle > krakenAngle)) {
-            System.out.println("Moving Down");
+            System.out.println("Moving Down.");
             coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
-        } else if (coralSubsystem.usePigeon ? (pigeonCurrentAngle < pigeonAngle): (krakenCurrentAngle < krakenAngle)) {
-            System.out.println("Moving Up");
+        } else {
+            if (currentAngle >= upperLimit) {
+                System.out.println("At/above upper limit. Cannot move up.");
+                coralSubsystem.angleMotor.set(0.0);
+                return;
+            }
+            System.out.println("Moving Up.");
             coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
         }
-    }    
+    }
+    
 
     @Override
     public boolean isFinished() {
@@ -73,12 +75,8 @@ public class CoralAngleManager extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        coralSubsystem.angleMotor.set(0.0);
+        coralSubsystem.angleMotor.set(coralSubsystem.angleHoldSpeed);
         System.out.println("Command Ended. Motor Stopped.");
-    }
-
-    public double krakenGetCoralAngle() {
-        return coralSubsystem.angleMotor.getPosition().getValueAsDouble();
     }
     public double pigeonGetCoralAngle() {
         return coralSubsystem.pigeonGetCoralAngle();

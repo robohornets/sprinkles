@@ -2,12 +2,14 @@ package frc.robot.commands.namedcommands;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.HandoffManager;
 import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralOutCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.FunnelInCommand;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class RegisterCommands {
@@ -51,5 +53,26 @@ public class RegisterCommands {
         NamedCommands.registerCommand("spitCoral",
             new CoralOutCommand(coralSubsystem)
         );
+        NamedCommands.registerCommand("Eject",
+            Commands.sequence(
+                Commands.run(
+                () -> {
+                    coralSubsystem.funnelLeft.set(0.3);
+                    coralSubsystem.funnelRight.set(-0.3);
+                }
+            ).withTimeout(0.1),
+            Commands.runOnce(
+                () -> {
+                    coralSubsystem.funnelLeft.set(0);
+                    coralSubsystem.funnelRight.set(0);
+                }
+            )
+            )
+        );
+        NamedCommands.registerCommand("funnelHold",
+            new FunnelInCommand(coralSubsystem)
+        );
+
+        
     }
 }

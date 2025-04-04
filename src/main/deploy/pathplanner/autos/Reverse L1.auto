@@ -1,0 +1,97 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reverse L1 - To I"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reverse I to coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "funnelHold"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reverse L1 - To J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reverse J to coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "funnelHold"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reverse L1 - To J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reverse J to coral"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "funnelHold"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Reverse L1 - To J"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Eject"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

@@ -25,7 +25,7 @@ public class CoralSubsystem extends SubsystemBase {
     public double krakenAngleLowerLimit = -9.5;
 
     public double pigeonAngleUpperLimit = 0.0;
-    public double pigeonAngleLowerLimit = -9.5;
+    public double pigeonAngleLowerLimit = -90;
 
     public TalonFX angleMotor = new TalonFX(12);
     public TalonFX flywheelMotor = new TalonFX(11);
@@ -42,7 +42,7 @@ public class CoralSubsystem extends SubsystemBase {
     public Double angleHoldSpeed = 0.02;
 
     public Pigeon2 coralPigeon = new Pigeon2(37);
-    public boolean usePigeon = false;
+    public boolean usePigeon = true;
 
     public CANrange coralForwardSensor = new CANrange(35);
     public Trigger coralForwardTrigger = new Trigger(() -> 
@@ -94,7 +94,7 @@ public class CoralSubsystem extends SubsystemBase {
         return Commands.run(
             () -> {
                 if (getLimitAsBool(false)) {
-                    angleMotor.set(-angleSpeed);} 
+                    angleMotor.set(angleSpeed);} 
                 else {
                     angleMotor.set(angleHoldSpeed);
                 }
@@ -106,7 +106,7 @@ public class CoralSubsystem extends SubsystemBase {
         return Commands.run(
             () -> {
                 if (getLimitAsBool(true)) {
-                    angleMotor.set(-0.1); }
+                    angleMotor.set(0.1); }
                 else {
                     angleMotor.set(angleHoldSpeed);
                 }
@@ -118,7 +118,7 @@ public class CoralSubsystem extends SubsystemBase {
         return Commands.run(
             () -> {
                 if (getLimitAsBool(false)) {
-                    angleMotor.set(0.1);} 
+                    angleMotor.set(-0.1);} 
                 else {
                     angleMotor.set(angleHoldSpeed);
                 }
@@ -172,10 +172,10 @@ public class CoralSubsystem extends SubsystemBase {
 
     public boolean getLimitAsBool(boolean isUpperLimit) {
         if (isUpperLimit) {
-            return krakenGetCoralAngle() < krakenAngleUpperLimit;
+            return pigeonGetCoralAngle() < pigeonAngleUpperLimit;
         }
         else {
-            return krakenGetCoralAngle() > krakenAngleLowerLimit;
+            return pigeonGetCoralAngle() > pigeonAngleLowerLimit;
         }
     }
 

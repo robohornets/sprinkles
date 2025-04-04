@@ -137,7 +137,8 @@ public class HandoffManager extends Command {
         // Step 3 angles for intake
         else if (handoffStep == 3) {
             double target = -1.3;
-            if (moveAngleToTarget(target, 0.02)) {
+            double targetPigeon = -21.7;
+            if (moveAngleToTarget(target, targetPigeon, 1)) {
                 handoffStep++;
             }
         }
@@ -169,7 +170,8 @@ public class HandoffManager extends Command {
         // Step 5 angles for movement and elevator
         else if (handoffStep == 5) {
             double target = -9;
-            if (moveAngleToTarget(target, 0.08)) {
+            double targetPigeon = -89;
+            if (moveAngleToTarget(target, targetPigeon, 1)) {
                 handoffStep+=2;
             }
         }
@@ -204,9 +206,21 @@ public class HandoffManager extends Command {
         System.out.println("Command Ended. Motor Stopped.");
     }
 
-    private boolean moveAngleToTarget(double target, double toleranceValue) {
-        double currentAngle = coralSubsystem.angleMotor.getPosition().getValueAsDouble();
-        //double tolerance = 0.02;
+    private boolean moveAngleToTarget(double targetKraken, double targetPigeon, double toleranceValue) {
+        double currentAngle = coralSubsystem.usePigeon 
+            ? coralSubsystem.pigeonGetCoralAngle()
+            : coralSubsystem.angleMotor.getPosition().getValueAsDouble();
+    
+        double target = coralSubsystem.usePigeon ? targetPigeon : targetKraken;
+    
+        double upperLimit = coralSubsystem.usePigeon 
+            ? coralSubsystem.pigeonAngleUpperLimit 
+            : coralSubsystem.krakenAngleUpperLimit;
+    
+        double lowerLimit = coralSubsystem.usePigeon 
+            ? coralSubsystem.pigeonAngleLowerLimit 
+            : coralSubsystem.krakenAngleLowerLimit;
+    
         double tolerance = toleranceValue;
     
         if (Math.abs(currentAngle - target) <= tolerance) {
@@ -215,26 +229,27 @@ public class HandoffManager extends Command {
             return true;
         }
     
+        // Moving down (toward smaller angle)
         if (currentAngle > target) {
-            if (currentAngle <= coralSubsystem.krakenAngleLowerLimit) {
-                System.out.println("At/below lower limit. Cannot move down. Stopping.");
+            if (currentAngle <= lowerLimit) {
+                System.out.println("At/below lower limit. Cannot move down.");
                 coralSubsystem.angleMotor.set(0.0);
-                return true;
+                return false;  // Not at target, so don't return true
             }
-    
             System.out.println("Moving Down.");
             coralSubsystem.angleMotor.set(-coralSubsystem.angleSpeed);
-        } else {
-            if (currentAngle >= coralSubsystem.krakenAngleUpperLimit) {
-                System.out.println("At/above upper limit. Cannot move up. Stopping.");
+        }
+        // Moving up (toward larger angle)
+        else {
+            if (currentAngle >= upperLimit) {
+                System.out.println("At/above upper limit. Cannot move up.");
                 coralSubsystem.angleMotor.set(0.0);
-                return true;
+                return false;
             }
-    
             System.out.println("Moving Up.");
             coralSubsystem.angleMotor.set(coralSubsystem.angleSpeed);
         }
     
         return false;
-    }    
+    }        
 }

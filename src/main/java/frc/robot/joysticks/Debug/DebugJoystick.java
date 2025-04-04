@@ -68,20 +68,20 @@ public class DebugJoystick {
 
 
         // MARK: Start
-        joystick.start()
-        .onTrue(
-            Commands.run(
-                () -> {
-                    coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Coast);
-                    coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
-                    coralSubsystem.funnelLeft.setNeutralMode(NeutralModeValue.Coast);
-                    coralSubsystem.funnelRight.setNeutralMode(NeutralModeValue.Coast);
-                    algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Coast);
-                    elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-                    elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
-                }
-            )
-        );
+        // joystick.start()
+        // .onTrue(
+        //     Commands.run(
+        //         () -> {
+        //             coralSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Coast);
+        //             coralSubsystem.flywheelMotor.setNeutralMode(NeutralModeValue.Coast);
+        //             coralSubsystem.funnelLeft.setNeutralMode(NeutralModeValue.Coast);
+        //             coralSubsystem.funnelRight.setNeutralMode(NeutralModeValue.Coast);
+        //             algaeSubsystem.angleMotor.setNeutralMode(NeutralModeValue.Coast);
+        //             elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
+        //             elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
+        //         }
+        //     )
+        // );
 
         joystick.back()
         .onTrue(

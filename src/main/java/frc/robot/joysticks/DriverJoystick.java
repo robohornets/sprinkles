@@ -63,6 +63,22 @@ public class DriverJoystick {
                     }
                 )
             );
+
+        joystick.x()
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.flywheelMotor.set(-0.08);
+                    }
+                )
+            )
+            .onFalse(
+                Commands.runOnce(
+                    () -> {
+                        coralSubsystem.flywheelMotor.set(0);
+                    }
+                )
+            );
         
         
         // MARK: LT - Algae Out

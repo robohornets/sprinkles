@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.12167910733975,
-        "y": 5.179152317070499
+        "x": 2.6345466012749315,
+        "y": 5.342493501705145
       },
       "isLocked": false,
       "linkedName": "J Start"
     },
     {
       "anchor": {
-        "x": 3.5199715909090905,
-        "y": 4.927428977272727
+        "x": 3.2108522727272732,
+        "y": 4.049928977272727
       },
       "prevControl": {
-        "x": 3.164661311264681,
-        "y": 5.620491203213726
+        "x": 2.799604332168945,
+        "y": 4.731777785411155
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "L1 I-J-K Reverse",

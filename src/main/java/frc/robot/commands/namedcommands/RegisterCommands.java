@@ -73,6 +73,23 @@ public class RegisterCommands {
             new FunnelInCommand(coralSubsystem)
         );
 
+        NamedCommands.registerCommand("FunnelInShort",
+            Commands.sequence(
+                Commands.run(
+                () -> {
+                    coralSubsystem.funnelLeft.set(-0.1);
+                    coralSubsystem.funnelRight.set(0.1);
+                }
+            ).withTimeout(0.04),
+            Commands.runOnce(
+                () -> {
+                    coralSubsystem.funnelLeft.set(0);
+                    coralSubsystem.funnelRight.set(0);
+                }
+            )
+            )
+        );
+
         
     }
 }

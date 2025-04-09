@@ -84,16 +84,12 @@ public class DriverJoystick {
         // MARK: LT - Algae Out
         joystick.rightTrigger()
             .whileTrue(
-                Commands.run(
-                    () -> {
-                        
-                    }
-                )
+                coralSubsystem.flywheelIn()
             )
             .onFalse(
                 Commands.run(
                     () -> {
-                        
+                        coralSubsystem.flywheelMotor.set(0.0);
                     }
                 )
             );

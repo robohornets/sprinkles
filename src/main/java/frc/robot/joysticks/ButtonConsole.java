@@ -74,8 +74,8 @@ public class ButtonConsole {
             .whileTrue(
                 Commands.run(
                     () -> {
-                        coralSubsystem.funnelLeft.set(0.25);
-                        coralSubsystem.funnelRight.set(-0.25);
+                        coralSubsystem.funnelLeft.set(0.2);
+                        coralSubsystem.funnelRight.set(-0.2);
                     }
                 )
             )
@@ -101,7 +101,7 @@ public class ButtonConsole {
         // MARK: H - Algae In
         joystick.y()
             .whileTrue(
-                coralSubsystem.flywheelIn()
+                coralSubsystem.flywheelOut()
             )
             .onFalse(
                 Commands.run(
@@ -124,11 +124,11 @@ public class ButtonConsole {
             );
 
         // MARK: J - Algae L3
-        joystick.povDown().onTrue(new LevelManager(Levels.ALGAE_3, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.leftBumper().onTrue(new LevelManager(Levels.ALGAE_3, elevatorSubsystem, coralSubsystem).goToPreset());
 
 
         // MARK: K - Algae L2
-        joystick.povDown().onTrue(new LevelManager(Levels.ALGAE_2, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.rightBumper().onTrue(new LevelManager(Levels.ALGAE_2, elevatorSubsystem, coralSubsystem).goToPreset());
 
 
         // MARK: DPAD - Elevator

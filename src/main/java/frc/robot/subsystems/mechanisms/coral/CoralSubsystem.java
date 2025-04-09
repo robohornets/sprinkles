@@ -37,7 +37,7 @@ public class CoralSubsystem extends SubsystemBase {
     public double angleSpeed = 0.1;
     public double flywheelInSpeed = 0.2;
     public double flywheelOutSpeed = 0.4;
-    public double funnelSpeed = 0.08;
+    public double funnelSpeed = 0.12;
     
     public Double angleHoldSpeed = 0.02;
 

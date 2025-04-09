@@ -58,7 +58,7 @@ public class RobotContainer {
 
     public boolean slowRobotSpeed = false;
 
-    public double robotSpeedLimiter = 0.80;
+    public double robotSpeedLimiter = 1.0;
 
     // MARK: Mechanisms
     public final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
@@ -187,6 +187,16 @@ public class RobotContainer {
                     coralSubsystem
                 )
             );
+
+        algaeSubsystem
+        .setDefaultCommand(
+            Commands.run(
+                () -> {
+                    algaeSubsystem.angleMotor.set(-0.015);
+                },
+                algaeSubsystem
+            )
+        );
 
         elevatorSubsystem
             .setDefaultCommand(

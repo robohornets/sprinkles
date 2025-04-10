@@ -3,13 +3,10 @@
   "robotLength": 0.84,
   "holonomicMode": true,
   "pathFolders": [
-    "3 Auto K-L-A",
-    "L1 Right Side",
-    "L1 Auto I-J-K",
     "L1 I-J-K Reverse",
-    "L4 Auto F-E-D",
-    "L4 Auto H-I-J",
+    "L1 Right Reverse",
     "L4 Auto I-J-K",
+    "L1 No Stop",
     "To Coral Station"
   ],
   "autoFolders": [],

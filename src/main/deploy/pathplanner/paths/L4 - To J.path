@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.3262215909090906,
-        "y": 7.15109375
+        "x": 1.0968749999999998,
+        "y": 7.280724431818181
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.54462861884871,
-        "y": 6.926341201006355
+        "x": 2.3152820279396193,
+        "y": 7.055971882824537
       },
       "isLocked": false,
       "linkedName": "J Start"
     },
     {
       "anchor": {
-        "x": 5.085511363636364,
-        "y": 5.126860795454545
+        "x": 3.8590056818181817,
+        "y": 5.146803977272728
       },
       "prevControl": {
-        "x": 5.986695652566449,
-        "y": 6.339833352393104
+        "x": 4.760189970748266,
+        "y": 6.359776534211287
       },
       "nextControl": null,
       "isLocked": false,
@@ -81,22 +81,22 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-"maxAcceleration": 2.0,
-    "maxAngularVelocity": 540.0,
-    "maxAngularAcceleration": 360.0,
+    "maxVelocity": 5.3,
+    "maxAcceleration": 5.6,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 300.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": -59.99999999999999
   },
   "reversed": false,
   "folder": "L4 Auto I-J-K",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 126.0
+    "rotation": -54.0
   },
   "useDefaultConstraints": true
 }

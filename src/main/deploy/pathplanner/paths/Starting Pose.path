@@ -1,0 +1,87 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.019688079316737,
+        "y": 4.636230882547669
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.243056053957931,
+        "y": 4.759139330479753
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.097399281647245,
+        "y": 5.166077280852754
+      },
+      "prevControl": {
+        "x": 6.419333271007886,
+        "y": 4.717773153295762
+      },
+      "nextControl": {
+        "x": 3.8952686766632247,
+        "y": 5.57375278992834
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.5059501591435174,
+        "y": 7.358028428819445
+      },
+      "prevControl": {
+        "x": 1.844826172712386,
+        "y": 7.2270989255675895
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Speedy Start to Coral"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.0041940789473673,
+      "rotationDegrees": 59.99999999999999
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "spitCoral",
+      "waypointRelativePos": 0.9790541943521591,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "spitCoral"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.3,
+    "maxAcceleration": 5.6,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 300.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -54.0
+  },
+  "reversed": false,
+  "folder": "L1 No Stop",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}

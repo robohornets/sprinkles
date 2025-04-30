@@ -4,149 +4,151 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.RobotContainer;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.algae.AlgaeController;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.HandoffManager;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralOutCommand;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.RobotContainer;
 
 
 public class DriverJoystick {
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
-    private final ElevatorController elevator;
     private final ElevatorSubsystem elevatorSubsystem;
-    private final CoralController coral;
     private final CoralSubsystem coralSubsystem;
-    private final AlgaeController algae;
-    private final AlgaeSubsystem algaeSubsytem;
+    private final AlgaeSubsystem algaeSubsystem;
     
     public DriverJoystick(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem, AlgaeController algae, AlgaeSubsystem algaeSubsystem) {
+        ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem, AlgaeSubsystem algaeSubsystem) {
 
         this.joystick = joystick;
         this.drivetrain = drivetrain;
-        this.elevator = elevator;
         this.elevatorSubsystem = elevatorSubsystem;
-        this.coral = coral;
         this.coralSubsystem = coralSubsystem;
-        this.algae = algae;
-        this.algaeSubsytem = algaeSubsystem;
+        this.algaeSubsystem = algaeSubsystem;
     }
 
     public void configureBindings() {
         
-
-        // MARK: Y-Button
-        // Reset field centric heading
-        joystick.povDown().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-        // joystick.x().onTrue(new InstantCommand(() -> RobotContainer.setUseFieldCentric(false)));
        
+        // MARK: B - Handoff
+        joystick.b()
+            .onTrue(
+                new HandoffManager(coralSubsystem, elevatorSubsystem)
+            );
+
+        // MARK: A - Algae Up
+        joystick.a()
+            .whileTrue(algaeSubsystem.angleAlgaeUp())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        algaeSubsystem.angleMotor.set(0.0);
+                    }
+                )
+            );
+
+        // MARK: Y - Algae Down
         joystick.y()
-        .whileTrue(algae.angleAlgaeUp())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    algaeSubsytem.angleAlgaeMotor.set(0.0);
-                }
-            )
-        );
+            .whileTrue(algaeSubsystem.angleAlgaeDown())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        algaeSubsystem.angleMotor.set(0.0);
+                    }
+                )
+            );
 
-    joystick.a()
-        .whileTrue(algae.angleAlgaeDown())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    algaeSubsytem.angleAlgaeMotor.set(0.0);
-                }
+        joystick.x()
+            .whileTrue(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.flywheelMotor.set(-0.08);
+                    }
+                )
             )
-        );
-
-        joystick.b().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset());
+            .onFalse(
+                Commands.runOnce(
+                    () -> {
+                        coralSubsystem.flywheelMotor.set(0);
+                    }
+                )
+            );
         
-        // MARK: L Trigger
-        joystick.leftTrigger()
-        .whileTrue(algae.flywheelAlgaeOut())
-        .onFalse(
-            Commands.run(
-                () -> {
-                    AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    
-                    CommandScheduler.getInstance().cancelAll();
-                }
-            )
-        );
         
-        // MARK: R Trigger
+        // MARK: LT - Algae Out
         joystick.rightTrigger()
-            .whileTrue(RobotContainer.coral.flywheelOut())
+            .whileTrue(
+                coralSubsystem.flywheelIn()
+            )
             .onFalse(
                 Commands.run(
                     () -> {
-                        RobotContainer.coral.flywheelStop();
-                        CoralSubsystem.flywheelMotor.set(0.0);
-                        CommandScheduler.getInstance().cancelAll();
+                        coralSubsystem.flywheelMotor.set(0.0);
                     }
                 )
             );
+        
+        // MARK: RT - Coral Out
+        joystick.rightTrigger()
+            .onTrue(new CoralOutCommand(coralSubsystem));
 
-        // MARK: Left Bumper
+        // MARK: LB - Coral Down
         joystick.leftBumper()
-            .whileTrue(coral.angleDownSlow())
+            .whileTrue(coralSubsystem.angleDownSlow())
             .onFalse(
                 Commands.run(
                     () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
             );
         
-        // MARK: Right Bumper
+        // MARK: RB - Coral Up
         joystick.rightBumper()
-            .whileTrue(coral.angleUpSlow())
+            .whileTrue(coralSubsystem.angleUpSlow())
             .onFalse(
                 Commands.run(
                     () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
             );
 
-        // MARK: D-Pad
+        // MARK: L - RoboCentric
         joystick.povLeft()
             .whileTrue(drivetrain.applyRequest(
                 () -> RobotContainer.driveRobotCentric
                     .withVelocityX(0)
                     .withVelocityY(RobotContainer.MaxSpeed * 0.15)
-            ));
+                )
+            );
 
+        // MARK: R - RoboCentric
         joystick.povRight()
-            .whileTrue(drivetrain.applyRequest(
-                () -> RobotContainer.driveRobotCentric
-                    .withVelocityX(0)
-                    .withVelocityY(-RobotContainer.MaxSpeed * 0.15)
-            ));
+            .whileTrue(
+                drivetrain.applyRequest(
+                    () -> RobotContainer.driveRobotCentric
+                        .withVelocityX(0)
+                        .withVelocityY(-RobotContainer.MaxSpeed * 0.15)
+                )
+            );
 
+        // MARK: U - RoboCentric
         joystick.povUp()
             .whileTrue(drivetrain.applyRequest(
                 () -> RobotContainer.driveRobotCentric
                     .withVelocityX(RobotContainer.MaxSpeed * 0.15)
                     .withVelocityY(0)
-            ));
+                )
+            );
+        
+        // MARK: D - Reset FC
+        joystick.povDown().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
     }
 }

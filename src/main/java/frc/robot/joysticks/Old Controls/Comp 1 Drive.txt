@@ -1,0 +1,67 @@
+
+
+        // MARK: Y-Button
+        // Reset field centric heading
+        joystick.povDown().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // joystick.x().onTrue(new InstantCommand(() -> RobotContainer.setUseFieldCentric(false)));
+       
+
+        joystick.b().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset());
+        
+        
+        // MARK: R Trigger
+        joystick.rightTrigger()
+            .whileTrue(coralSubsystem.flywheelOut())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.flywheelStop();
+                        coralSubsystem.flywheelMotor.set(0.0);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+
+        // MARK: Left Bumper
+        joystick.leftBumper()
+            .whileTrue(coralSubsystem.angleDownSlow())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+        
+        // MARK: Right Bumper
+        joystick.rightBumper()
+            .whileTrue(coralSubsystem.angleUpSlow())
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+
+        // MARK: D-Pad
+        joystick.povLeft()
+            .whileTrue(drivetrain.applyRequest(
+                () -> RobotContainer.driveRobotCentric
+                    .withVelocityX(0)
+                    .withVelocityY(RobotContainer.MaxSpeed * 0.15)
+            ));
+
+        joystick.povRight()
+            .whileTrue(drivetrain.applyRequest(
+                () -> RobotContainer.driveRobotCentric
+                    .withVelocityX(0)
+                    .withVelocityY(-RobotContainer.MaxSpeed * 0.15)
+            ));
+
+        joystick.povUp()
+            .whileTrue(drivetrain.applyRequest(
+                () -> RobotContainer.driveRobotCentric
+                    .withVelocityX(RobotContainer.MaxSpeed * 0.15)
+                    .withVelocityY(0)
+            ));

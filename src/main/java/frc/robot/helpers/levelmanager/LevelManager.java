@@ -1,15 +1,13 @@
 package frc.robot.helpers.levelmanager;
 
+import com.ctre.phoenix6.hardware.CANrange;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.coral.CoralController;
-import frc.robot.subsystems.mechanisms.coral.CoralAngleManager;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.CoralAngleManager;
 
 public class LevelManager {
     private final Levels selectedLevel;
@@ -29,59 +27,64 @@ public class LevelManager {
         double targetHeight = 0.0;
         double targetAngle = 0.0;
         double krakenTargetAngle = 0.0;
+        double pigeonTargetAngle = 0.0;
         // max Coral: 0.693
         // min coral: 0.262
 
         // Assign values based on the selected level
         switch (selectedLevel) {
             case LEVEL_1:
-                targetHeight = 0.0;
-                targetAngle = 0.4;
-                krakenTargetAngle = 5.0;
-                // kraken angle : 5
+                targetHeight = 5.0;
+                krakenTargetAngle = 0.0;
+                pigeonTargetAngle = 0.0;
                 break;
 
             case LEVEL_2:
-                targetHeight = 11.17;
-                targetAngle = 0.372;
-                krakenTargetAngle = 5.8;
-                // kraken angle : 5.8
+                targetHeight = 15.88;
+                krakenTargetAngle = -3.77;
+                pigeonTargetAngle = -32.7;
                 break;
 
             case LEVEL_3:
-                targetHeight = 30.690;
-                targetAngle = 0.372;
-                krakenTargetAngle = 5.7;
-                // kraken angle : 5.7
+                targetHeight = 35;
+                krakenTargetAngle = -3.82;
+                pigeonTargetAngle = -32.7;
                 break;
 
             case LEVEL_4:
-                targetHeight = 65.049;
-                targetAngle = 0.385;
-                krakenTargetAngle = 5.8;
-
-                // kraken angle : 5.8
+                targetHeight = 65;
+                krakenTargetAngle = -3.86;
+                pigeonTargetAngle = -47;
                 break;
 
             case DEFAULT_POSITION:
                 targetHeight = 0.0;
-                targetAngle = 0.82;
                 krakenTargetAngle = 0.0;
-                // kraken angle : 0.0
+                pigeonTargetAngle = 0.0;
                 break;
 
             case CORAL_STATION:
                 targetHeight = 2.1;
-                targetAngle = 0.55;
                 krakenTargetAngle = 2.4;
-                // kraken angle : 2.4
+                pigeonTargetAngle = 0.0;
                 break;
 
             case ZERO:
                 targetHeight = 0.0;
-                targetAngle = 0.55;
                 krakenTargetAngle = 2.4;
-                // kraken angle : 2.4
+                pigeonTargetAngle = 0.0;
+                break;
+            
+            case ALGAE_2:
+                targetHeight = 21.0;
+                krakenTargetAngle = 0.0;
+                pigeonTargetAngle = 0.0;
+                break;
+
+            case ALGAE_3:
+                targetHeight = 36.5;
+                krakenTargetAngle = 0.0;
+                pigeonTargetAngle = 0.0;
                 break;
 
             default:
@@ -90,7 +93,7 @@ public class LevelManager {
 
         // Run both the coral angle and elevator height commands
         return Commands.parallel(
-            new CoralAngleManager(targetAngle, krakenTargetAngle, coralSubsystem),
+            new CoralAngleManager(krakenTargetAngle, pigeonTargetAngle, coralSubsystem),
             new ElevatorHeightManager(targetHeight, elevatorSubsystem)
         );
     }

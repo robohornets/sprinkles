@@ -7,5 +7,7 @@ public enum Levels {
     LEVEL_4,
     DEFAULT_POSITION,
     CORAL_STATION,
-    ZERO
+    ZERO,
+    ALGAE_2,
+    ALGAE_3
 }

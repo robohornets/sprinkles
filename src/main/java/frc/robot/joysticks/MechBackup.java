@@ -11,38 +11,25 @@ import frc.robot.commands.Destinations;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.algae.AlgaeAngleManager;
-import frc.robot.subsystems.mechanisms.algae.AlgaeController;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.climber.ClimberController;
-import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
-import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 public class MechBackup {
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
-    private final ElevatorController elevator;
     private final ElevatorSubsystem elevatorSubsystem;
-    private final CoralController coral;
     private final CoralSubsystem coralSubsystem;
-    private final AlgaeController algae;
     private final AlgaeSubsystem algaeSubsytem;
     
     public MechBackup(CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem, AlgaeController algae, AlgaeSubsystem algaeSubsystem) {
+        ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem, AlgaeSubsystem algaeSubsystem) {
 
         this.joystick = joystick;
         this.drivetrain = drivetrain;
-        this.elevator = elevator;
         this.elevatorSubsystem = elevatorSubsystem;
-        this.coral = coral;
         this.coralSubsystem = coralSubsystem;
-        this.algae = algae;
         this.algaeSubsytem = algaeSubsystem;
     }
 
@@ -57,54 +44,31 @@ public class MechBackup {
         // MARK: AutoAlign
         joystick.leftBumper().onTrue(new AlignOnTheFlyClosest(Destinations.LEFT_REEF, drivetrain));
         joystick.rightBumper().onTrue(new AlignOnTheFlyClosest(Destinations.RIGHT_REEF, drivetrain));        
-        //joystick.a().onTrue(new AlignOnTheFlyClosest(Destinations.COLLECTOR, drivetrain));
 
         joystick.x().onTrue(new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset());
 
 
         // MARK: Coral Intake
         joystick.leftTrigger()
-            .whileTrue(coral.flywheelIn())
+            .whileTrue(coralSubsystem.flywheelIn())
             .onFalse(
                 Commands.run(
                     () -> {
-                        CoralSubsystem.flywheelMotor.set(0.0);
+                        coralSubsystem.flywheelMotor.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
             );
 
-        // MARK: Algae Intake
-        joystick.rightTrigger()
-        .whileTrue(algae.flywheelAlgaeIn())
-        .onTrue(
-            Commands.run(
-                () -> {
-                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-                }
-            )
-        )
-        .onFalse(
-            Commands.run(
-                () -> {
-                    AlgaeSubsystem.flywheelAlgaeMotor.set(0.0);
-                    AlgaeSubsystem.flywheelAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-                    CommandScheduler.getInstance().cancelAll();
-                }
-            )
-        );
         
         // MARK: Elevator U/D
         joystick.povDown()
-            .whileTrue(elevator.elevatorDown())
+            .whileTrue(elevatorSubsystem.elevatorDown())
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorSubsystem.elevatorLeft.set(-0.015);
-                        ElevatorSubsystem.elevatorRight.set(0.015);
-
-                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorLeft.set(-0.015);
+                        elevatorSubsystem.elevatorRight.set(0.015);
                         
                         CommandScheduler.getInstance().cancelAll();
                     }
@@ -112,15 +76,12 @@ public class MechBackup {
             );
 
         joystick.povUp()
-            .whileTrue(elevator.elevatorUp())
+            .whileTrue(elevatorSubsystem.elevatorUp())
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorSubsystem.elevatorLeft.set(-0.015);
-                        ElevatorSubsystem.elevatorRight.set(0.015);
-
-                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                        ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
+                        elevatorSubsystem.elevatorLeft.set(-0.015);
+                        elevatorSubsystem.elevatorRight.set(0.015);
 
                         CommandScheduler.getInstance().cancelAll();
                     }

@@ -1,0 +1,98 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.257094594594594,
+        "y": 5.023057432432432
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.546388272780035,
+        "y": 5.621834063218511
+      },
+      "isLocked": false,
+      "linkedName": "I End"
+    },
+    {
+      "anchor": {
+        "x": 1.0968749999999998,
+        "y": 7.280724431818181
+      },
+      "prevControl": {
+        "x": 1.8662739077478094,
+        "y": 6.552956174944805
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "J Start"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2061170212765957,
+      "rotationDegrees": -119.99999999999999
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Slow Start",
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.143646408839779,
+      "constraints": {
+        "maxVelocity": 2.5,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Slow End",
+      "minWaypointRelativePos": 0.8855564325177596,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "defaultPosition",
+      "waypointRelativePos": 0.03348909657320827,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "defaultPosition"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.3,
+    "maxAcceleration": 5.6,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 300.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -54.0
+  },
+  "reversed": false,
+  "folder": "To Coral Station",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -119.99999999999999
+  },
+  "useDefaultConstraints": true
+}

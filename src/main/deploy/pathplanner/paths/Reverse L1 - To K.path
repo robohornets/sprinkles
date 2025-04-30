@@ -1,0 +1,93 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.1367613636363636,
+        "y": 7.26078125
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.2928878973181446,
+        "y": 5.679942811480939
+      },
+      "isLocked": false,
+      "linkedName": "K Start"
+    },
+    {
+      "anchor": {
+        "x": 3.2108522727272732,
+        "y": 4.049928977272727
+      },
+      "prevControl": {
+        "x": 2.5331587977186163,
+        "y": 5.340792597399724
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "J reverse"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.2067876874506718,
+      "constraints": {
+        "maxVelocity": 4.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 100.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.21,
+      "maxWaypointRelativePos": 0.6093133385951067,
+      "constraints": {
+        "maxVelocity": 5.3,
+        "maxAcceleration": 5.6,
+        "maxAngularVelocity": 300.0,
+        "maxAngularAcceleration": 100.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "FunnelInShort",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "FunnelInShort"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.3,
+    "maxAcceleration": 5.6,
+    "maxAngularVelocity": 300.0,
+    "maxAngularAcceleration": 300.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "L1 I-J-K Reverse",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -54.0
+  },
+  "useDefaultConstraints": true
+}

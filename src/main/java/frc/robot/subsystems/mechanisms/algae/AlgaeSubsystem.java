@@ -1,35 +1,77 @@
 package frc.robot.subsystems.mechanisms.algae;
 
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class AlgaeSubsystem extends SubsystemBase {
-    // public void initDefaultCommand() {
-    //     setDefaultCommand(Commands.run(
-    //         () -> {
-    //             angleAlgaeMotor.setNeutralMode(NeutralModeValue.Brake);
-    //         }
-    //     ));
-    // }
+    public double angleUpperLimit = 0.0;
+    public double angleLowerLimit = -15.0;
 
-    public static double angleAlgaeUpperLimit = 0.0;
-    public static double angleAlgaeLowerLimit = -15.0;
-
-    public static TalonFX angleAlgaeMotor = new TalonFX(15);
-    public static TalonFX flywheelAlgaeMotor = new TalonFX(14);
-    public static DutyCycleEncoder angleAlgaeDCEncoder = new DutyCycleEncoder(3);
-
-    public static Boolean angleAlgaeDisabled = false;
-    public static Boolean flywheelAlgaeDisabled = false;
+    public TalonFX angleMotor = new TalonFX(13);
+    public DutyCycleEncoder angleDCEncoder = new DutyCycleEncoder(3);
     
-    // Angle 12, flywheel 11
-    public static Double angleAlgaeSpeed = 0.2;
-    public static Double flywheelAlgaeInSpeed = 0.3;
-    public static Double flywheelAlgaeOutSpeed = 1.0;
+    public Double angleAlgaeSpeed = 0.05;
+    public Double flywheelAlgaeInSpeed = 0.3;
+    public Double flywheelAlgaeOutSpeed = 1.0;
 
-    public static Double angleAlgaeHoldSpeed = 0.015;
+    public Double angleAlgaeHoldSpeed = 0.015;
+
+    // MARK: Angle Commands
+    public Command angleAlgaeUp() {
+        return Commands.run(
+            () -> {
+                if (getAlgaeAngle() < angleUpperLimit || true) {
+                    angleMotor.set(angleAlgaeSpeed); }
+                else {
+                    angleMotor.set(0.0);
+                }
+            }
+        );
+    }
+
+    public Command angleAlgaeDown() {
+        return Commands.run(
+            () -> {
+                if (getAlgaeAngle() > angleLowerLimit || true) {
+                    angleMotor.set(-angleAlgaeSpeed);} 
+                else {
+                    angleMotor.set(0.0);
+                }
+            }
+        );
+    }
+
+
+    public Command angleAlgaeUpSlow() {
+        return Commands.run(
+            () -> {
+                if (getAlgaeAngle() < angleUpperLimit || true) {
+                    angleMotor.set(-0.1); }
+                else {
+                    angleMotor.set(0.0);
+                }
+            }
+        );
+    }
+
+    public Command angleAlgaeDownSlow() {
+        return Commands.run(
+            () -> {
+                if (getAlgaeAngle() > angleLowerLimit || true) {
+                angleMotor.set(0.1);} 
+                else {
+                    angleMotor.set(0.0);
+                }
+            }
+        );
+    }
+
+
+    public double getAlgaeAngle() {
+        return angleMotor.getPosition().getValueAsDouble();
+    }
 }

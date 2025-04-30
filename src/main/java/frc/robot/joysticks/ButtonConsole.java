@@ -4,167 +4,134 @@ import java.util.Optional;
 
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.RobotContainer;
-import frc.robot.commands.AlignOnTheFlyByPose;
 import frc.robot.helpers.levelmanager.LevelManager;
 import frc.robot.helpers.levelmanager.Levels;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.mechanisms.algae.AlgaeController;
 import frc.robot.subsystems.mechanisms.algae.AlgaeSubsystem;
-import frc.robot.subsystems.mechanisms.climber.ClimberVariables;
-import frc.robot.subsystems.mechanisms.coral.CoralController;
 import frc.robot.subsystems.mechanisms.coral.CoralSubsystem;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorController;
-import frc.robot.subsystems.mechanisms.elevator.ElevatorHeightManager;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.HandoffManager;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralInCommand;
+import frc.robot.subsystems.mechanisms.coral.CommandManagers.InOutCommands.CoralOutCommand;
 import frc.robot.subsystems.mechanisms.elevator.ElevatorSubsystem;
 
 public class ButtonConsole {
     private final RobotContainer robotContainer;
     private final CommandXboxController joystick;
     private final CommandSwerveDrivetrain drivetrain;
-    private final ElevatorController elevator;
     private final ElevatorSubsystem elevatorSubsystem;
-    private final CoralController coral;
     private final CoralSubsystem coralSubsystem;
-        private final AlgaeController algae;
     private final AlgaeSubsystem algaeSubsytem;
     Optional<Alliance> ally = DriverStation.getAlliance();
     
-    public ButtonConsole(RobotContainer robotContainer, CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, 
-        ElevatorController elevator, ElevatorSubsystem elevatorSubsystem, CoralController coral, CoralSubsystem coralSubsystem, AlgaeController algae, AlgaeSubsystem algaeSubsystem) {
+    public ButtonConsole(RobotContainer robotContainer, CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem, AlgaeSubsystem algaeSubsystem) {
 
         this.robotContainer = robotContainer;
         this.joystick = joystick;
         this.drivetrain = drivetrain;
-        this.elevator = elevator;
         this.elevatorSubsystem = elevatorSubsystem;
-        this.coral = coral;
         this.coralSubsystem = coralSubsystem;
-        this.algae = algae;
         this.algaeSubsytem = algaeSubsystem;
     }
 
     public void configureBindings() {
-        // MARK: Climber
-        joystick.leftTrigger().whileTrue(
-            Commands.run(
-                () -> {
-                    //ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
-                    ClimberVariables.alexHonnold.set(-1.0);
-                }
-            )
-        ).onFalse(
-            Commands.run(
-                () -> {
-                    ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
-                    ClimberVariables.alexHonnold.set(0.0);
-                }
-            )
-        );
+        // MARK: A - Left Faster
+        joystick.leftTrigger()
+            .whileTrue(coralSubsystem.funnelUneven(true))
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.funnelLeft.set(0.0);
+                        coralSubsystem.funnelRight.set(0.0);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+            
 
+        // MARK: B - Right Faster
         joystick.rightTrigger()
+            .whileTrue(coralSubsystem.funnelUneven(false))
+            .onFalse(
+                Commands.run(
+                    () -> {
+                        coralSubsystem.funnelLeft.set(0.0);
+                        coralSubsystem.funnelRight.set(0.0);
+                        CommandScheduler.getInstance().cancelAll();
+                    }
+                )
+            );
+
+        // MARK: D - Eject
+        joystick.a()
             .whileTrue(
                 Commands.run(
                     () -> {
-                        //ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
-                        ClimberVariables.alexHonnold.set(1.0);
+                        coralSubsystem.funnelLeft.set(0.2);
+                        coralSubsystem.funnelRight.set(-0.2);
                     }
                 )
-            ).onFalse(
-                Commands.run(
-                    () -> {
-                        ClimberVariables.alexHonnold.setNeutralMode(NeutralModeValue.Brake);
-                        ClimberVariables.alexHonnold.set(0.0);
-                    }
-                )
-            );
-
-        
-        joystick.leftBumper()
-            .whileTrue(elevator.elevatorUpManual())
+            )
             .onFalse(
                 Commands.run(
                     () -> {
-                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
-                        elevatorSubsystem.elevatorLeft.set(0.0);
-                        elevatorSubsystem.elevatorRight.set(0.0);
-                    }
-                )
-            );
-    
-        joystick.rightBumper()
-            .whileTrue(elevator.elevatorDownManual())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        ElevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Brake);
-                    ElevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Brake);
-                        elevatorSubsystem.elevatorLeft.set(0.0);
-                        elevatorSubsystem.elevatorRight.set(0.0);
-                    }
-                )
-            );
-        
-
-        joystick.a()
-            .whileTrue(algae.flywheelAlgaeIn())
-            .onFalse(
-                Commands.run(
-                    () -> {
-                        algaeSubsytem.angleAlgaeMotor.set(0.0);
-                        algaeSubsytem.angleAlgaeMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
+                        coralSubsystem.funnelLeft.set(0.0);
+                        coralSubsystem.funnelRight.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
             );
-        
 
+        // MARK: E - Handoff
         joystick.b()
-            .whileTrue(coral.flywheelIn())
+            .onTrue(
+                new HandoffManager(coralSubsystem, elevatorSubsystem)
+            );
+
+        // MARK: G - Recalibrate Coral
+        // This code does not exist yet.
+
+        // MARK: H - Algae In
+        joystick.y()
+            .whileTrue(
+                coralSubsystem.flywheelOut()
+            )
             .onFalse(
                 Commands.run(
                     () -> {
-                        // CoralSubsystem.angleMotor.set(-0.015);
-                        CoralSubsystem.angleMotor
-                                .setNeutralMode(NeutralModeValue.Brake);
-                        CommandScheduler.getInstance().cancelAll();
+                        coralSubsystem.flywheelMotor.set(0.0);
                     }
                 )
             );
 
         joystick.x()
             .onTrue(
-                Commands.run(
+                Commands.runOnce(
                     () -> {
+                        coralSubsystem.funnelLeft.set(0.0);
+                        coralSubsystem.funnelRight.set(0.0);
+                        coralSubsystem.flywheelMotor.set(0.0);
                         CommandScheduler.getInstance().cancelAll();
-                       // if (Math.abs(elevatorSubsystem.elevatorLeft.getPosition().getValueAsDouble()) <= 20) {
-                            elevatorSubsystem.elevatorLeft.setNeutralMode(NeutralModeValue.Coast);
-                            elevatorSubsystem.elevatorRight.setNeutralMode(NeutralModeValue.Coast);
-
-                        //}
                     }
                 )
             );
 
-        joystick.y().onTrue(
-            Commands.sequence(
-                // new LevelManager(Levels.ZERO, elevatorSubsystem, coralSubsystem).goToPreset(),
-                new LevelManager(Levels.CORAL_STATION, elevatorSubsystem, coralSubsystem).goToPreset()
-            )
-        );
+        // MARK: J - Algae L3
+        joystick.leftBumper().onTrue(new LevelManager(Levels.ALGAE_3, elevatorSubsystem, coralSubsystem).goToPreset());
 
-        // MARK: DPAD Bindings
+
+        // MARK: K - Algae L2
+        joystick.rightBumper().onTrue(new LevelManager(Levels.ALGAE_2, elevatorSubsystem, coralSubsystem).goToPreset());
+
+
+        // MARK: DPAD - Elevator
         joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());

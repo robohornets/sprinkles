@@ -35,7 +35,7 @@ public class VisionConstants {
 
         // The layout of the AprilTags on the field
         public static final AprilTagFieldLayout kTagLayout =
-                AprilTagFieldLayout.loadField(AprilTagFields.k2025Reefscape);
+                AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
 
         // The standard deviations of our vision estimated poses, which affect correction rate
         // (Fake values. Experiment and determine estimation noise on an actual robot.)

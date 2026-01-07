@@ -137,7 +137,7 @@ public class HandoffManager extends Command {
         // Step 3 angles for intake
         else if (handoffStep == 3) {
             double target = -1.3;
-            double targetPigeon = -21.7;
+            double targetPigeon = -24.65;
             if (moveAngleToTarget(target, targetPigeon, 1)) {
                 handoffStep++;
             }

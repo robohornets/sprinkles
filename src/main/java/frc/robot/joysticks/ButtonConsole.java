@@ -2,6 +2,9 @@ package frc.robot.joysticks;
 
 import java.util.Optional;
 
+import com.WhatTime.frc.FlywheelPair;
+import com.WhatTime.frc.MotorWrapper;
+import com.WhatTime.frc.PositionManager
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -30,15 +33,28 @@ public class ButtonConsole {
     private final CoralSubsystem coralSubsystem;
     private final AlgaeSubsystem algaeSubsytem;
     Optional<Alliance> ally = DriverStation.getAlliance();
+    public FlywheelPair funnelWheels;
     
-    public ButtonConsole(RobotContainer robotContainer, CommandXboxController joystick, CommandSwerveDrivetrain drivetrain, ElevatorSubsystem elevatorSubsystem, CoralSubsystem coralSubsystem, AlgaeSubsystem algaeSubsystem) {
-
+    public ButtonConsole(
+        RobotContainer robotContainer, 
+        CommandXboxController joystick, 
+        CommandSwerveDrivetrain drivetrain, 
+        ElevatorSubsystem elevatorSubsystem, 
+        CoralSubsystem coralSubsystem, 
+        AlgaeSubsystem algaeSubsystem
+    ) {
         this.robotContainer = robotContainer;
         this.joystick = joystick;
         this.drivetrain = drivetrain;
         this.elevatorSubsystem = elevatorSubsystem;
         this.coralSubsystem = coralSubsystem;
         this.algaeSubsytem = algaeSubsystem;
+
+        this.funnelWheels = new FlywheelPair(
+            new MotorWrapper(coralSubsystem.funnelLeft, false),
+            new MotorWrapper(coralSubsystem.funnelRight, true),
+            0.2
+        );
     }
 
     public void configureBindings() {
@@ -74,16 +90,14 @@ public class ButtonConsole {
             .whileTrue(
                 Commands.run(
                     () -> {
-                        coralSubsystem.funnelLeft.set(0.2);
-                        coralSubsystem.funnelRight.set(-0.2);
+                        funnelWheels.runBackward();
                     }
                 )
             )
             .onFalse(
                 Commands.run(
                     () -> {
-                        coralSubsystem.funnelLeft.set(0.0);
-                        coralSubsystem.funnelRight.set(0.0);
+                        funnelWheels.stopMotors();
                         CommandScheduler.getInstance().cancelAll();
                     }
                 )
@@ -115,6 +129,7 @@ public class ButtonConsole {
             .onTrue(
                 Commands.runOnce(
                     () -> {
+
                         coralSubsystem.funnelLeft.set(0.0);
                         coralSubsystem.funnelRight.set(0.0);
                         coralSubsystem.flywheelMotor.set(0.0);
@@ -132,7 +147,19 @@ public class ButtonConsole {
 
 
         // MARK: DPAD - Elevator
-        joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
+        // joystick.povDown().onTrue(new LevelManager(Levels.LEVEL_1, elevatorSubsystem, coralSubsystem).goToPreset());
+        joystick.povDown().onTrue(
+            new PositionManager(
+                0.0,
+                65.0,
+                [MotorWrapper(ElevatorSubsystem.elevatorLeft, true), MotorWrapper(ElevatorSubsystem.elevatorRight, false)],
+                15.0,
+                0.3,
+                0.015,
+                2.0,
+                elevator.getElevatorHeight()
+            )
+        )
         joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset());

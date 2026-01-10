@@ -1,10 +1,11 @@
 package frc.robot.joysticks;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.WhatTime.frc.FlywheelPair;
 import com.WhatTime.frc.MotorWrapper;
-import com.WhatTime.frc.PositionManager
+import com.WhatTime.frc.PositionManager;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj.DriverStation;
@@ -152,14 +153,17 @@ public class ButtonConsole {
             new PositionManager(
                 0.0,
                 65.0,
-                [MotorWrapper(ElevatorSubsystem.elevatorLeft, true), MotorWrapper(ElevatorSubsystem.elevatorRight, false)],
+                List.of(
+                    new MotorWrapper(elevatorSubsystem.elevatorLeft, true),
+                    new  MotorWrapper(elevatorSubsystem.elevatorRight, false)
+                ),
                 15.0,
                 0.3,
                 0.015,
                 2.0,
-                elevator.getElevatorHeight()
+                () -> elevatorSubsystem.getElevatorHeight()
             )
-        )
+        );
         joystick.povLeft().onTrue(new LevelManager(Levels.LEVEL_2, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povRight().onTrue(new LevelManager(Levels.LEVEL_3, elevatorSubsystem, coralSubsystem).goToPreset());
         joystick.povUp().onTrue(new LevelManager(Levels.LEVEL_4, elevatorSubsystem, coralSubsystem).goToPreset());

@@ -12,4 +12,4 @@ This is our code for the 2025 FRC competition Reefscape.
 - The custom commands use sensors including a pigeon gyroscope axis for coral mechanism and Kraken motor encoders for elevator and algae.
 
 ## Using the code
-You are permitted to use the code for your own robots. However, it is licensed under the GNU General Public License Version 3 (GPL v3). This means if you share your code, you must make your entire codebase open source as well and licensed under GPL v3.
+You are permitted to use the code for your own robots. It is licensed under MIT, so you can do almost anything with it.
